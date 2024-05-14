@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'pybo.apps.CmappConfig', # cmapp 추가 / CmappConfig : cmapp/apps.py에 있는 클래스
+    'cmapp.apps.CmappConfig', # cmapp 추가 / CmappConfig : cmapp/apps.py에 있는 클래스
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
