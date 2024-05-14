@@ -1,0 +1,132 @@
+.question-list {
+    margin: 100px 150px 10px 150px;
+}
+
+.question-list-title {
+    font-size: 40px;
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.question-nav {
+    border: 1px solid rgb(183, 84, 79);
+    padding: 20px;
+    margin-bottom: 30px;
+}
+
+.question-nav .menu-list {
+    display: flex;
+    text-align: center;
+    justify-content: space-between;
+    list-style-type: circle;
+}
+
+.question-nav .menu-list li {
+    a {
+        color: black;
+    }
+
+    i {
+        margin-right: 8px;
+    }
+
+    font-size: 18px;
+}
+
+.question-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.question-list-sum {
+    font-size: 18px;
+
+    span {
+        font-weight: 600;
+    }
+}
+
+.question-search {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.search-key {
+    width: 90px;
+    height: 40px;
+    padding: 3px;
+}
+
+.search-box {
+    padding: 5px;
+    margin-left: 10px;
+    border: 1px solid gray;
+}
+
+.search-txt {
+    padding: 5px;
+    border: none;
+    border-right: 1px solid black;
+    font-size: 18px;
+    font-weight: 300;
+}
+
+.search-btn {
+    border: none;
+    margin-left: 3px;
+    background-color: white;
+    font-size: 18px;
+}
+
+.question-list-table {
+    border-top: 3px solid rgb(183, 84, 79);
+    margin-top: 30px;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+.question-list-table tr.clickable {
+    cursor: pointer;
+}
+
+.question-list-table th {
+    padding: 15px 0;
+    border-bottom: 1px solid gray;
+    font-size: 15px;
+}
+
+.question-list-table td {
+    padding: 15px 0;
+    border-bottom: 1px solid rgb(227, 223, 223);
+    font-size: 15px;
+}
+
+.question-create-btn {
+    float: right;
+    margin-top: 10px;
+    margin-right: 30px;
+    padding: 7px 20px;
+    border-radius: 20px;
+    background-color: rgb(183, 84, 79);
+
+    a {
+        color: white;
+    }
+}
+
+.questionPag {
+    clear: both;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin: 10px 0;
+}
+
+.questionPag div {
+    text-align: center;
+    font-size: 17px;
+}
