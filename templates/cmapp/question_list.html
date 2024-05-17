@@ -22,6 +22,7 @@
                 <th>번호</th>
                 <th style="width:50%">제목</th>
                 <th>글쓴이</th>
+                <th>조회수</th>
                 <th>작성일시</th>
             </tr>
         </thead>
@@ -40,12 +41,13 @@
                     {% endif %}                
                 </td>
                 <td> {{ question.author.username }}</td>
+                <td> {{ question.views }}</td>
                 <td> {{ question.create_date }}</td>
             </tr>
             {% endfor %}
             {% else %}
             <tr>
-                <td colspan="4">질문이 없습니다.</td>
+                <td colspan="5">질문이 없습니다.</td>
             </tr>
         {% endif %}
         </tbody>
