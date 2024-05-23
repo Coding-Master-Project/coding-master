@@ -1,13 +1,14 @@
 from django import forms
-from .models import Question, Answer
+from .models import Question, Answer, Comment
 
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
-        fields = ['subject', 'content']
+        fields = ['subject', 'content', 'imgs']
         labels = {
             'subject': '제목',
             'content': '내용',
+            'imgs': '이미지',
         }
 
 class AnswerForm(forms.ModelForm):
@@ -16,4 +17,12 @@ class AnswerForm(forms.ModelForm):
         fields = ['content']
         labels = {
             'content': '답변내용',
+        }
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+        labels = {
+            'content': '댓글내용',
         }
