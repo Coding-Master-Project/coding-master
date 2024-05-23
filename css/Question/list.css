@@ -1,0 +1,136 @@
+/* top 배경 이미지 */
+.top-background {
+    background-image: url('/img/top-background-1.jpg');
+}
+
+/* 질문 리스트 영역 */
+.question-list {
+    margin: 70px 150px 10px 150px;
+}
+
+/* 질문 언어 별 nav */
+.question-language-nav {
+    border: 2px solid rgb(183, 84, 79);
+    padding: 20px;
+    margin-bottom: 60px;
+}
+
+.languageList {
+    display: flex;
+    text-align: center;
+    justify-content: space-between;
+}
+
+.languageList li {
+    a {
+        color: black;
+    }
+
+    i {
+        margin-right: 8px;
+    }
+
+    font-size: 18px;
+}
+
+/* 질문 top */
+.question-list-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.question-list-sum {
+    font-size: 18px;
+
+    span {
+        font-weight: 600;
+    }
+}
+
+.question-search-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.searchKey {
+    width: 90px;
+    height: 40px;
+    padding: 3px;
+}
+
+.question-searchBox {
+    padding: 5px;
+    margin-left: 10px;
+    border: 1px solid gray;
+}
+
+.question-search-input {
+    padding: 5px;
+    border: none;
+    border-right: 1px solid black;
+    font-size: 18px;
+    font-weight: 300;
+}
+
+.searchBtn {
+    border: none;
+    margin-left: 3px;
+    background-color: white;
+    font-size: 18px;
+}
+
+/* 질문 list 테이블 */
+.question-list-table {
+    border-top: 3px solid rgb(183, 84, 79);
+    margin-top: 30px;
+    width: 100%;
+    text-align: center;
+    border-collapse: collapse;
+}
+
+.question-list-table tr.clickable {
+    cursor: pointer;
+}
+
+.question-list-table th {
+    padding: 15px 0;
+    border-bottom: 1px solid gray;
+    font-size: 15px;
+}
+
+.question-list-table td {
+    padding: 15px 0;
+    border-bottom: 1px solid rgb(227, 223, 223);
+    font-size: 15px;
+}
+
+/* 질문 글쓰기 버튼 */
+.question-create-btn {
+    float: right;
+    margin-top: 10px;
+    margin-right: 30px;
+    padding: 7px 20px;
+    border-radius: 20px;
+    background-color: rgb(183, 84, 79);
+
+    a {
+        color: white;
+    }
+}
+
+/* 질문 pag */
+.questionPag {
+    clear: both;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin: 30px 0;
+}
+
+.questionPag div {
+    text-align: center;
+    font-size: 17px;
+}

@@ -1,0 +1,176 @@
+/* top 배경 이미지 */
+.top-background {
+    background-image: url('/img/top-background-2.jpg');
+}
+
+/* 정보 영역*/
+.information-view {
+    margin: 100px 150px 60px 150px;
+    border: 2px solid rgb(123, 117, 117);
+}
+
+.informationView {
+    padding: 20px;
+}
+
+/* 정보 제목 */
+.information-view-top {
+    margin-bottom: 10px;
+    display: flex;
+}
+
+.informationLanguage {
+    font-size: 25px;
+    font-weight: 500;
+    margin-right: 10px;
+}
+
+.informationSubject {
+    font-size: 25px;
+    font-weight: 500;
+}
+
+/* 정보 top 버튼 (수정+삭제) */
+.information-top-btn {
+    display: flex;
+    gap: 10px;
+    float: right;
+    font-size: 13px;
+    color: black;
+}
+
+.modifyBtn {
+    padding-right: 10px;
+    border-right: 1px solid rgb(123, 117, 117);
+}
+
+/* 정보 meta */
+.information-view-meta {
+    display: flex;
+    color: rgb(123, 117, 117);
+    font-size: 15px;
+    margin-left: 10px;
+}
+
+.informationWriter {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.informationDate {
+    padding: 0 10px 0 10px;
+    border-left: 1px solid rgb(123, 117, 117);
+}
+
+.informationCount {
+    border-left: 1px solid rgb(123, 117, 117);
+    padding-left: 10px;
+}
+
+/* 정보 내용 */
+.information-view-content {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid gray;
+}
+
+/* 좋아요, 스크랩, 댓글 버튼 */
+.information-view-bottom {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.likeBtn span,
+.comment-notBtn span {
+    font-weight: bold;
+}
+
+/* 댓글 영역 */
+.commentBox {
+    margin-top: 10px;
+    padding: 15px;
+
+    span {
+        font-size: 20px;
+        font-weight: 600;
+    }
+}
+
+.comment-input {
+    border: 1px solid gray;
+    border-radius: 5px;
+    margin-top: 10px;
+    padding: 14px 14px 10px 14px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+}
+
+.commentWriter {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.commentText {
+    border: none;
+    outline: none;
+    resize: none;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.commentText:empty:before {
+    content: attr(placeholder);
+    color: gray;
+}
+
+.commentCreateBtn {
+    border: none;
+    margin-left: auto;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: gray;
+    background-color: white;
+}
+
+.comment-list {
+    margin-top: 20px;
+}
+
+.comment-list>div {
+    padding: 20px;
+    border-bottom: 1px solid gray;
+    display: flex;
+}
+
+.comment-list>div>i {
+    font-size: 30px;
+    margin-right: 15px;
+    float: left;
+}
+
+.comment-list>div:last-child {
+    border-bottom: none;
+    padding-bottom: 10px;
+}
+
+.comment-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.commentWriter {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+.commentBottom {
+    display: flex;
+    gap: 10px;
+    margin-top: 3px;
+    font-size: 13px;
+    color: gray;
+}

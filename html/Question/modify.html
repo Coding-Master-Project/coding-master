@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>질문 수정</title>
+    <link rel="stylesheet" href="/common.css">
+    <script src="/js/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#headers").load("/header.html");
+            $("#footers").load("/footer.html");
+        });
+    </script>
+</head>
+
+<body>
+    <div id="headers"></div>
+    <main class="question-modity">
+        <div class="question-modity-title">
+            <p>질문 수정</p>
+        </div>
+        <form class="question-modityFrm">
+            <div class="question-modityFrm-group">
+                <label for="question-modity-subject">제목</label>
+                <input type="text" id="question-modity-subject" name="question-modity-subject" placeholder="제목을 입력하세요">
+            </div>
+            <div class="question-modityFrm-group">
+                <label for="question-modity-content">내용</label>
+                <textarea id="question-modity-content" name="question-modity-content"
+                    placeholder="내용을 입력하세요"></textarea>
+            </div>
+            <button type="submit" class="question-modity-submit" value="수정완료">수정</button>
+        </form>
+    </main>
+    <div id="footers"></div>
+</body>
+
+</html>

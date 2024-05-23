@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>질문 보기</title>
+
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/top-background.css">
+    <link rel="stylesheet" href="/css/Question/view.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="/js/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".headers").load("/html/header.html");
+            $(".footers").load("/html/footer.html");
+        });
+    </script>
+</head>
+
+<body>
+    <!-- 헤더 -->
+    <div class="headers"></div>
+
+    <!-- top 배경이미지 -->
+    <div class="top-background">
+        <h1 class="top-background-text">질문</h1>
+    </div>
+
+    <!-- 질문 영역 (질문 + 댓글) -->
+    <div class="question-view">
+        <!-- 질문만 -->
+        <div class="questionView">
+            <!-- 질문 제목 영역 -->
+            <div class="question-view-top">
+                <!-- 해당 언어 -->
+                <div class="questionLanguage">
+                    <p>[C]</p>
+                </div>
+                <!-- 질문 제목 -->
+                <div class="questionSubject">
+                    <p>우리학교 YB 온다!!!</p>
+                </div>
+            </div>
+            <!-- 본인 계정의 글이라면 나타남 -->
+            <!-- !! 이와 관련된 것은 장고에서 하는 것으로 알아서 일단 패스 혹시 제가 필요하다면 불러주세요 -->
+            <div class="question-top-btn">
+                <div id="question-modify-btn" class="modifyBtn">
+                    <a href="/Question/modify.html">수정</a>
+                </div>
+                <div id="question-delete-btn" class="deleteBtn">
+                    <span>삭제</span>
+                </div>
+            </div>
+            <!-- 질문 정보 (작성자, 날짜, 조회수) -->
+            <div class="question-view-meta">
+                <div class="writer-profile-img">
+                    <i class="fa-solid fa-hat-wizard" style="color: rgb(183, 84, 79);"></i>
+                </div>
+                <div class="questionWriter">수빈</div>
+                <div class="questionDate">2024-05-14 09:00</div>
+                <div class="questionCount">조회수 236</div>
+            </div>
+            <!-- 질문 내용 -->
+            <div class="question-view-content">
+                <p>안녕하세요. 자료구조 조교 채현우입니다.
+
+                    과제 3의 성적이 게시되었습니다.
+
+                    성적 확인은 집현 캠퍼스 성적부를 통해 가능합니다.
+
+                    이의 신청은 이메일(hyunwoo0081@gmail.com)로 해주시거나,
+
+                    005분반인 학생분들은 오늘(5/16 목) 또는 다음주 화요일(5/21) 수업 시간에 직접 질문 주셔도 됩니다.
+
+                    이의 신청은 다음 주 화요일(5/21)까지 받겠습니다.
+
+                    감사합니다.
+                </p>
+            </div>
+            <!-- 답변 쓰기 버튼 -->
+            <!-- !! 버튼 누르면 답변 쓰는 화면으로 이동 -->
+            <div class="question-answer-create-btn">
+                <i class="fa-solid fa-pen"></i> 답변 쓰기
+            </div>
+            <!-- 좋아요, 스크랩, 댓글 버튼 -->
+            <div class="question-view-bottom">
+                <!-- span : 좋아요 개수 -->
+                <!-- !! 좋아요 누르면 span에 있는 숫자 +1 / 다시 누르면 span에 있는 숫자 -1 -->
+                <div id="question-good-btn" class="likeBtn">
+                    <i class="fa-regular fa-heart" style="color: rgb(183, 84, 79);"></i> 좋아요 <span>345</span>
+                </div>
+                <!-- 스크랩 누르면 자신의 스크랩 목록에 해당 질문 페이지 추가됨 -->
+                <div id="question-scrap-btn" class="scrapBtn">
+                    <i class="fa-regular fa-star" style="color: rgb(232, 232, 20);"></i> 스크랩
+                </div>
+                <!-- span : 댓글 개수 -->
+                <!-- 댓글 누르면 댓글 영역 보임 / 댓글 등록하면 span에 있는 숫자 +1 -->
+                <div id="question-comment-btn" class="commentBtn">
+                    <i class="fa-regular fa-comment" style="color: rgb(95, 93, 93)"></i> 댓글 <span>3</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 질문 댓글 (댓글 버튼 눌러야 보임) -->
+        <div class="commentBox" id="question-commentBox" style="display: none;">
+            <span>댓글</span>
+            <!-- 댓글 작성 영역 -->
+            <div class="comment-input">
+                <div id="question-comment-writer" class="commentWriter">수빈</div>
+                <!-- 댓글 작성 시작 전에 css로 placeholder 보이게 함 -->
+                <!-- 댓글 작성 시작하면 placeholder 안 보이고 changeButtonColor 함수가 실행되어 등록 색깔 바뀜 -->
+                <div id="question-comment-input" class="commentText" contenteditable="true" placeholder="댓글을 입력하세요.">
+                </div>
+                <!-- 등록 버튼 누르면 댓글 list 맨 밑에 추가됨 -->
+                <button id="question-comment-create-btn" class="commentCreateBtn">등록</button>
+            </div>
+            <!-- 댓글 목록 -->
+            <div class="comment-list">
+                <!-- 댓글이 맨 밑에 추가 -->
+                <div id="question-comment-1">
+                    <!-- 작성자 img -->
+                    <i class="fa-solid fa-hat-wizard" style="color: rgb(183, 84, 79);"></i>
+                    <div class="comment-content" id="question-comment-content-1">
+                        <div class="commentWriter">수빈</div>
+                        <div class="commentContent">졸려요졸려요졸려요졸려요졸려요졸려요졸려요졸려요졸려요졸려요</div>
+                        <div class="commentBottom">
+                            <div class="commentDate">2024-05-21 09:15</div>
+                            <!-- 답글쓰기를 누르면 밑에 답글쓸 수 있는 영역 만들어짐 -->
+                            <div class="commentReplyBtn">답글쓰기</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="question-comment-2">
+                    <i class="fa-solid fa-hat-wizard" style="color: rgb(183, 84, 79);"></i>
+                    <div class="comment-content" id="question-comment-content-2">
+                        <div class="commentWriter">예랑</div>
+                        <div class="commentContent">놀러가자<br>출튀 ㄱㄱ</div>
+                        <div class="commentBottom">
+                            <div class="commentDate">2024-05-21 09:30</div>
+                            <div class="commentReplyBtn">답글쓰기</div>
+                        </div>
+                    </div>
+                </div>
+                <div id="question-comment-3">
+                    <i class="fa-solid fa-hat-wizard" style="color: rgb(183, 84, 79);"></i>
+                    <div class="comment-content" id="question-comment-content-3">
+                        <div class="commentWriter">천재윤진만세..?</div>
+                        <div class="commentContent">언니가 밥 쏜다</div>
+                        <div class="commentBottom">
+                            <div class="commentDate">2024-05-21 09:55</div>
+                            <div class="commentReplyBtn">답글쓰기</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 답변 영역 -->
+    <div class="question-answer-view">
+        <!-- 답변 1 (답변 + 댓글) -->
+        <div class="questionAnswer" id="question-answer-1">
+            <!-- 답변만 -->
+            <div class="answerView">
+                <!-- 답변 번호 -->
+                <div class="answerCount" id="answer-1">답변 1</div>
+                <!-- 답변 정보 (작성자, 날짜) -->
+                <div class="answerMeta" id="answer-1-meta">
+                    <div class="writer-profile-img">
+                        <i class="fa-solid fa-hat-wizard" style="color: rgb(183, 84, 79);"></i>
+                    </div>
+                    <div class="answerWriter">천재윤진만세</div>
+                    <div class="answerDate">2024-05-15 10:00</div>
+                </div>
+                <!-- 답변 내용 -->
+                <div class="answerContent">
+                    ◼npm (Node Package Manager) is a package manager for the JavaScript
+                    ◼ It is used to install, share, and manage packages of reusable code (libraries,
+                    frameworks, tools, etc.) that are built for use with Node.js.
+                    ◼ It helps JavaScript and Node.js developers to streamline development
+                    workflows and improve productivity by providing access to a vast library of
+                    packages and tools.
+                    ◼ It consists of three parts:
+                    ❑ The website for hosting all the documentation
+                    and package searches https://www.npmjs.com/
+                    ❑ The CLI that gets installed with Node.js
+                    ❑ The registry, which is where all of the modules
+                    are stored and made installable
+                </div>
+                <!-- 좋아요, 댓글 버튼 -->
+                <div class="answer-bottom">
+                    <!-- span : 좋아요 개수 -->
+                    <!-- 좋아요 누르면 span에 있는 숫자 +1 / 다시 누르면 span에 있는 숫자 -1 -->
+                    <div id="answer-1-good-btn" class="likeBtn">
+                        <i class="fa-regular fa-heart" style="color: rgb(183, 84, 79);"></i> 좋아요 수 <span>256</span>
+                    </div>
+                    <!-- span : 댓글 개수 -->
+                    <!-- 댓글 누르면 댓글 영역 보임 / 댓글 등록하면 span에 있는 숫자 +1 -->
+                    <div id="answer-1-comment-btn" class="commentBtn">
+                        <i class="fa-regular fa-comment" style="color: rgb(95, 93, 93)"></i> 댓글 수 <span>2</span>
+                    </div>
+                </div>
+            </div>
+            <!-- 답변 댓글 (댓글 버튼 눌러야 보임) -->
+            <!-- 현재로는 질문 댓글과 유사한 레이아웃을 갖음 -->
+            <div class="commentBox" id="answer-1-commentBox" style="display: none;">
+                <span>댓글</span>
+                <!-- 댓글 작성 영역 -->
+                <div class="comment-input">
+                    <div id="answer-1-comment-writer" class="commentWriter">수빈</div>
+                    <!-- 댓글 작성 시작 전에 css로 placeholder 보이게 함 -->
+                    <!-- 댓글 작성 시작하면 placeholder 안 보이고 changeButtonColor 함수가 실행되어 등록 색깔 바뀜 -->
+                    <div id="answer-1-comment-input" class="commentText" contenteditable="true"
+                        placeholder="댓글을 입력하세요.">
+                    </div>
+                    <!-- 등록 버튼 누르면 댓글 list 맨 밑에 추가됨 -->
+                    <button id="answer-1-comment-create-btn" class="commentCreateBtn">등록</button>
+                </div>
+                <!-- 댓글 목록 -->
+                <div class="comment-list">
+                    <!-- 댓글이 맨 밑에 추가 -->
+                    <div id="answer-1-comment-1">
+                        <!-- 작성자 img -->
+                        <i class="fa-solid fa-hat-wizard" style="color: rgb(183, 84, 79);"></i>
+                        <div class="comment-content" id="answer-1-comment-content-1">
+                            <div class="commentWriter">수빈</div>
+                            <div class="commentContent">졸려요졸려요졸려요졸려요졸려요졸려요졸려요졸려요졸려요졸려요</div>
+                            <div class="commentBottom">
+                                <div class="commentDate">2024-05-21 09:15</div>
+                                <!-- 답글쓰기를 누르면 밑에 답글쓸 수 있는 영역 만들어짐 -->
+                                <div class="commentReplyBtn">답글쓰기</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="answer-1-comment-2">
+                        <!-- 작성자 img -->
+                        <i class="fa-solid fa-hat-wizard" style="color: rgb(183, 84, 79);"></i>
+                        <div class="comment-content" id="answer-1-comment-content-2">
+                            <div class="commentWriter">수빈</div>
+                            <div class="commentContent">졸려요졸려요졸려요졸려요졸려요졸려요졸려요졸려요졸려요졸려요</div>
+                            <div class="commentBottom">
+                                <div class="commentDate">2024-05-21 09:15</div>
+                                <!-- 답글쓰기를 누르면 밑에 답글쓸 수 있는 영역 만들어짐 -->
+                                <div class="commentReplyBtn">답글쓰기</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 답변 2 (답변 + 댓글) -->
+        <div class="questionAnswer" id="question-answer-1">
+            <!-- 답변만 -->
+            <div class="answerView">
+                <!-- 답변 번호 -->
+                <div class="answerCount" id="answer-2">답변 2</div>
+                <!-- 답변 정보 (작성자, 날짜) -->
+                <div class="answerMeta" id="answer-2-meta">
+                    <div class="writer-profile-img">
+                        <i class="fa-solid fa-hat-wizard" style="color: rgb(183, 84, 79);"></i>
+                    </div>
+                    <div class="answerWriter">천재예랑만세</div>
+                    <div class="answerDate">2024-05-15 10:00</div>
+                </div>
+                <!-- 답변 내용 -->
+                <div class="answerContent">
+                    ◼npm (Node Package Manager) is a package manager for the JavaScript
+                    ◼ It is used to install, share, and manage packages of reusable code (libraries,
+                    frameworks, tools, etc.) that are built for use with Node.js.
+                    ◼ It helps JavaScript and Node.js developers to streamline development
+                    workflows and improve productivity by providing access to a vast library of
+                    packages and tools.
+                    ◼ It consists of three parts:
+                    ❑ The website for hosting all the documentation
+                    and package searches https://www.npmjs.com/
+                    ❑ The CLI that gets installed with Node.js
+                    ❑ The registry, which is where all of the modules
+                    are stored and made installable
+                </div>
+                <!-- 좋아요, 댓글 버튼 -->
+                <div class="answer-bottom">
+                    <!-- span : 좋아요 개수 -->
+                    <!-- 좋아요 누르면 span에 있는 숫자 +1 / 다시 누르면 span에 있는 숫자 -1 -->
+                    <div id="answer-2-good-btn" class="likeBtn">
+                        <i class="fa-regular fa-heart" style="color: rgb(183, 84, 79);"></i> 좋아요 수 <span>256</span>
+                    </div>
+                    <!-- span : 댓글 개수 -->
+                    <!-- 댓글 누르면 댓글 영역 보임 / 댓글 등록하면 span에 있는 숫자 +1 -->
+                    <div id="answer-2-comment-btn" class="commentBtn">
+                        <i class="fa-regular fa-comment" style="color: rgb(95, 93, 93)"></i> 댓글 수 <span>1</span>
+                    </div>
+                </div>
+            </div>
+            <!-- 답변 댓글 (댓글 버튼 눌러야 보임) -->
+            <!-- 현재로는 질문 댓글과 유사한 레이아웃을 갖음 -->
+            <div class="commentBox" id="answer-2-commentBox" style="display: none;">
+                <span>댓글</span>
+                <!-- 댓글 작성 영역 -->
+                <div class="comment-input">
+                    <div id="answer-2-comment-writer" class="commentWriter">수빈</div>
+                    <!-- 댓글 작성 시작 전에 css로 placeholder 보이게 함 -->
+                    <!-- 댓글 작성 시작하면 placeholder 안 보이고 changeButtonColor 함수가 실행되어 등록 색깔 바뀜 -->
+                    <div id="answer-2-comment-input" class="commentText" contenteditable="true"
+                        placeholder="댓글을 입력하세요.">
+                    </div>
+                    <!-- 등록 버튼 누르면 댓글 list 맨 밑에 추가됨 -->
+                    <button id="answer-2-comment-create-btn" class="commentCreateBtn">등록</button>
+                </div>
+                <!-- 댓글 목록 -->
+                <div class="comment-list">
+                    <!-- 댓글이 맨 밑에 추가 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 바닥글 -->
+    <div class="footers"></div>
+
+    <script src="/js/buttonEvents.js"></script>
+
+</body>
+
+</html>
