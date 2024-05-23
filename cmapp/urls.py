@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import base_views, question_views, answer_views
+from .views import base_views, question_views, answer_views, comment_views
 
 app_name = 'cmapp'
 
@@ -20,4 +20,7 @@ urlpatterns = [
     path('answer/modify/<int:answer_id>/', answer_views.answer_modify, name='answer_modify'), #답변 수정
     path('answer/delete/<int:answer_id>/', answer_views.answer_delete, name='answer_delete'), #답변 삭제
     path('answer/vote/<int:answer_id>/', answer_views.answer_vote, name='answer_vote'), #답변 추천
+
+    #comment_views.py
+    path('comment/create/<int:question_id>/', comment_views.comment_create, name='comment_create'), #댓글 등록
 ]

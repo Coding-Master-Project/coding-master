@@ -10,7 +10,7 @@ from cmapp.models import Question
 @login_required(login_url='common:login')
 def question_create(request):
     if request.method == 'POST':
-        form = QuestionForm(request.POST)
+        form = QuestionForm(request.POST, request.FILES) # 파일(이미지) 정보는 request.FILES 방식으로 받기 때문에 추가
         if form.is_valid():
             question = form.save(commit=False) #임시 저장
             question.author = request.user
@@ -31,7 +31,7 @@ def question_modify(request, question_id):
         messages.error(request, '수정권한이 없습니다')
         return redirect('cmapp:detail', question_id=question.id)
     if request.method == "POST":
-        form = QuestionForm(request.POST, instance=question)
+        form = QuestionForm(request.POST, request.FILES, instance=question)
         if form.is_valid():
             question = form.save(commit=False)
             question.modify_date = timezone.now()  # 수정일시 저장
