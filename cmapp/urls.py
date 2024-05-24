@@ -22,5 +22,5 @@ urlpatterns = [
     path('answer/vote/<int:answer_id>/', answer_views.answer_vote, name='answer_vote'), #답변 추천
 
     #comment_views.py
-    path('comment/create/<int:question_id>/', comment_views.comment_create, name='comment_create'), #댓글 등록
+    path('comment/create/<int:question_id>/<int:comment_id>', comment_views.comment_create, name='comment_create'), #댓글 등록
 ]

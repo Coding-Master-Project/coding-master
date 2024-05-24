@@ -49,51 +49,24 @@
 
     <!-- 댓글 -->
     <h5 class="border-bottom my-3 py-2">{{ question.comment_set.count }}개의 댓글이 있습니다.</h5>
-    {% for comment in question.comment_set.all %}
-    <a id="comment_{{ comment.id }}"></a>
-    <div class="card my-3">
-        <div class="card-body">
-            <div class="card-text">{{ comment.content }}</div>
-            <div class="d-flex justify-content-end">
-                {% comment %} {% if answer.modify_date %}
-                <div class="badge bg-light text-dark p-2 text-start mx-3">
-                    <div class="mb-2">수정 일시</div>
-                    <div>{{ answer.modify_date }}</div>
-                </div>
-                {% endif %} {% endcomment %}
-                <div class="badge bg-light text-dark p-2 text-start">
-                    <div class="mb-2">{{ comment.author.username }}</div>
-                    <div>{{ comment.create_date }}</div>
-                </div>
-            </div>
-
-            {% comment %} <!-- 답변 추천/수정/삭제 -->
-            <div class="my-3">
-                <a href="javascript:void(0)" data-uri="{% url 'cmapp:answer_vote' answer.id  %}"
-               class="recommend btn btn-sm btn-outline-secondary">추천
-                    <span class="badge rounded-pill bg-success">{{answer.voter.count}}</span>
-                </a>
-                {% if request.user == answer.author %}
-                <a href="{% url 'cmapp:answer_modify' answer.id  %}" 
-                class="btn btn-sm btn-outline-secondary">수정</a>
-                <a href="#" class="delete btn btn-sm btn-outline-secondary "
-               data-uri="{% url 'cmapp:answer_delete' answer.id  %}">삭제</a>
-                {% endif %}
-            </div> {% endcomment %}
-        </div>
-    </div>
+    {% for comment_id, comment_data in comment_tree.items %}
+    {% if comment_id in comment_id_list %}
+        {% include 'cmapp/comment.html' with comment_tree=comment_tree comment_data=comment_data comment=comment_data.c question_id=question.id flag=0 %}
+    {% endif %}
     {% endfor %}
 
     <!-- 댓글 등록 -->
-    <form action="{% url 'cmapp:comment_create' question.id %}" method="post" class="my-3">
+    <form action="{% url 'cmapp:comment_create' question.id 0 %}" method="post" class="my-3">
         {% csrf_token %}
+        {% if form.prefix == 'comment' %}
         {% include "form_errors.html" %}
-    
+        {% endif %}
+
         <div class="mb-3">
-            <label for="content" class="form-label">댓글내용</label>
+            <label for="comment-content" class="form-label">댓글내용</label>
             <textarea 
             {% if not user.is_authenticated %} disabled {% endif %}
-            name="content" id="content" class="form-control" rows="5"></textarea>
+            name="comment-content" id="comment-content" class="form-control" rows="5"></textarea>
         </div>
         <input type="submit" value="댓글등록" class="btn btn-primary">
     </form>
@@ -138,13 +111,17 @@
     <!-- 답변 등록 -->
     <form action="{% url 'cmapp:answer_create' question.id %}" method="post" class="my-3">
     {% csrf_token %}
-    {% include "form_errors.html" %}
 
+    <!-- prefix로 form 구분, 아래 폼 필드 name과 id, for 등을 다 (prefix)-(기존), ex. answer-content 식으로 바꿔줘야 에러 안 남!!! -->
+    {% if form.prefix == 'answer' %} 
+    {% include "form_errors.html" %}
+    {% endif %}
+    
     <div class="mb-3">
-        <label for="content" class="form-label">답변내용</label>
+        <label for="answer-content" class="form-label">답변내용</label>
         <textarea 
         {% if not user.is_authenticated %} disabled {% endif %}
-        name="content" id="content" class="form-control" rows="15"></textarea>
+        name="answer-content" id="answer-content" class="form-control" rows="15"></textarea>
     </div>
     <input type="submit" value="답변등록" class="btn btn-primary">
     </form>
@@ -153,7 +130,6 @@
 
 {% block script %}
 <script type='text/javascript'>
-
 const delete_elements = document.getElementsByClassName("delete");
 Array.from(delete_elements).forEach(function(element) {
     element.addEventListener('click', function() {
@@ -172,6 +148,41 @@ Array.from(recommend_elements).forEach(function(element) {
         };
     });
 });
+
+// 댓글 달기 버튼 -> 댓글 등록 부분 보여주기
+function show_comment_create(question_detail_url, form_url, question_id, comment_id) {
+    // 기존에 열려 있는 모든 폼을 닫기
+    var openForms = document.querySelectorAll('form[id^="comment_create_"]');
+    openForms.forEach(function(form) {
+        form.remove();
+    });
+
+    // 폼 HTML을 문자열로 작성
+    var formHtml = `
+        <form action="${form_url}" method="post" class="my-3" id="comment_create_${comment_id}">
+            {% csrf_token %}
+            {% if form.prefix == 'comment'%}
+            {% include "form_errors.html" %}
+            {% endif %}
+            <div class="mb-3">
+                <label for="comment-content" class="form-label">댓글내용</label>
+                <textarea 
+                {% if not user.is_authenticated %} disabled {% endif %}
+                name="comment-content" id="comment-content" class="form-control" rows="5"></textarea>
+            </div>
+            <input type="submit" value="댓글등록" class="btn btn-primary">
+        </form>
+    `;
+
+    // 새로운 div 요소를 생성하고 HTML을 삽입
+    var formContainer = document.createElement('div');
+    formContainer.innerHTML = formHtml;
+
+    // 버튼 아래에 폼 추가
+    var button = document.getElementById('comment_create_btn_' + comment_id);
+    node = button.parentNode.insertBefore(formContainer.firstChild, button.nextSibling);
+    console.log(button.parentNode.insertBefore(formContainer.firstChild, button.nextSibling));
+}
 
 </script>
 {% endblock %}

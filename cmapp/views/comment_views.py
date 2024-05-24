@@ -5,9 +5,10 @@ from django.utils import timezone
 from cmapp.forms import CommentForm
 from cmapp.models import Question, Answer, Comment
 
-#답변 등록
+#댓글 등록
 @login_required(login_url='common:login')
-def comment_create(request, question_id):
+def comment_create(request, question_id, comment_id):
+    not_recomment_id = 0
     question = get_object_or_404(Question, pk=question_id)
     if request.method == "POST":
         form = CommentForm(request.POST)
@@ -16,10 +17,13 @@ def comment_create(request, question_id):
             comment.author = request.user
             comment.create_date = timezone.now()
             comment.question = question
+            if (comment_id != not_recomment_id): #그냥 댓글이면
+                comment.parent_comment_id = comment_id
+                print('*')
+                print(comment.parent_comment_id)
             comment.save()
-            return redirect('{}#answer_{}'.format(resolve_url('cmapp:detail', question_id=question.id), comment.id))
+            return redirect('{}#comment_{}'.format(resolve_url('cmapp:detail', question_id=question.id), comment.id))
     else:
         form = CommentForm()
-    
-    context = {'question': question, 'form': form}
-    return render(request, 'cmapp/question_detail.html', context)
+
+    return redirect('cmapp:detail', question_id=question.id)
