@@ -24,3 +24,7 @@ def mul(value, arg):
 def mark(value):
     extensions = ["nl2br", "fenced_code"]
     return mark_safe(markdown.markdown(value, extensions=extensions))
+
+@register.filter
+def get_item(dictionary, key):
+    return dictionary.get(key)

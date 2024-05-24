@@ -2,7 +2,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 
-from cmapp.models import Question
+from cmapp.models import Question, Comment
 
 #질문 목록(메인)
 def index(request):
@@ -23,11 +23,28 @@ def index(request):
     context = {'question_list': page_obj, 'page':page, 'kw':kw}
     return render(request, 'cmapp/question_list.html', context)
 
+# 댓글 계층 구조로 만들기
+def get_comment_tree(comments):
+    comment_dict = {}
+    comment_id_list = []
+    for comment in comments:
+        if comment.parent_comment_id is None: #그냥 댓글
+            comment_dict[comment.id] = {'c': comment, 'rcs': []} # c: 댓글 / rcs: 대댓글 / rr_data : 대댓글에 달린 대댓글 데이터(딕셔너리)
+            comment_id_list.append(comment.id)
+        else: #대댓글
+            if comment.parent_comment_id in comment_dict: #그냥 댓글에 바로 달린 대댓글
+                comment_dict[comment.parent_comment_id]['rcs'].append(comment)
+            else: #대댓글에 달린 대댓글
+                comment_dict[comment.parent_comment_id] = {'c': None, 'rcs': [comment]}
+    return comment_dict, comment_id_list
+
 #질문 상세
 def detail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
-    context = {'question': question}
-
+    comments = Comment.objects.filter(question=question).order_by('create_date')
+    comment_tree, comment_id_list = get_comment_tree(comments)
+    context = {'question': question, 'comment_tree': comment_tree, 'comment_id_list': comment_id_list}
+    
     # 중복 방지를 위해 쿠키 설정
     session_cookie = request.COOKIES.get('sessionid') # 로그인할 때 생기는 sessionid 쿠키 받아오기
     print(session_cookie)

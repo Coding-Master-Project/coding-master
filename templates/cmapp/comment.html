@@ -1,0 +1,31 @@
+{% load cmapp_filter %}
+<a id="comment_{{ comment.id }}"></a>
+<div class="card my-3">
+    <div class="card-body">
+        <!-- 댓글 -->
+        <div class="card-text">{{ comment.content }}</div>
+        <div class="d-flex justify-content-end">
+            <div class="badge bg-light text-dark p-2 text-start">
+                <div class="mb-2">{{ comment.author.username }}</div>
+                <div>{{ comment.create_date }}</div>
+            </div>
+        </div>
+
+        <!-- 댓글 달기 버튼 -->
+        <button onclick="show_comment_create('{% url 'cmapp:detail' question_id %}', '{% url 'cmapp:comment_create' question_id comment.id %}', {{ question_id }}, {{ comment.id }})" class="btn btn-primary" id = "comment_create_btn_{{ comment.id }}">댓글 달기</button>
+        <!-- 댓글 달기 버튼 누르면 댓글 등록 부분 생성 -->
+    </div>
+</div>
+
+<!-- 대댓글 -->
+{% if comment_data.rcs %}
+<div class="rcs" style="margin-left:50px;">
+    {% for rc in comment_data.rcs %}
+        {% if comment_tree|get_item:rc.id %}
+            {% include 'cmapp/comment.html' with comment_tree=comment_tree comment_data=comment_tree|get_item:rc.id comment=rc question_id=question_id flag=0 %}
+        {% else %}
+            {% include 'cmapp/comment.html' with comment_tree=comment_tree comment_data=none comment=rc question_id=question_id flag=0 %}
+        {% endif %}
+    {% endfor %}
+</div>
+{% endif %}

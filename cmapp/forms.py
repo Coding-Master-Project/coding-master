@@ -12,6 +12,7 @@ class QuestionForm(forms.ModelForm):
         }
 
 class AnswerForm(forms.ModelForm):
+    prefix = 'answer'
     class Meta:
         model = Answer
         fields = ['content']
@@ -20,6 +21,7 @@ class AnswerForm(forms.ModelForm):
         }
 
 class CommentForm(forms.ModelForm):
+    prefix = 'comment'
     class Meta:
         model = Comment
         fields = ['content']
