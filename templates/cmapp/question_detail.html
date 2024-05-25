@@ -50,13 +50,13 @@
     <!-- 댓글 -->
     <h5 class="border-bottom my-3 py-2">{{ question.comment_set.count }}개의 댓글이 있습니다.</h5>
     {% for comment_id, comment_data in comment_tree.items %}
-    {% if comment_id in comment_id_list %}
-        {% include 'cmapp/comment.html' with comment_tree=comment_tree comment_data=comment_data comment=comment_data.c question_id=question.id flag=0 %}
+    {% if comment_data.c.answer_id == None and comment_id in comment_id_list  %}
+        {% include 'cmapp/comment.html' with comment_tree=comment_tree comment_data=comment_data comment=comment_data.c question_id=question.id answer_id=0 %}
     {% endif %}
     {% endfor %}
 
     <!-- 댓글 등록 -->
-    <form action="{% url 'cmapp:comment_create' question.id 0 %}" method="post" class="my-3">
+    <form action="{% url 'cmapp:comment_create' question.id 0 0 %}" method="post" class="my-3">
         {% csrf_token %}
         {% if form.prefix == 'comment' %}
         {% include "form_errors.html" %}
@@ -104,6 +104,18 @@
                data-uri="{% url 'cmapp:answer_delete' answer.id  %}">삭제</a>
                 {% endif %}
             </div>
+
+            <!-- 댓글 달기 버튼 -->
+            <button onclick="show_comment_create('{% url 'cmapp:comment_create' question.id answer.id 0 %}', {{ answer.id|add:10000 }})" class="btn btn-primary" id = "comment_create_btn_{{ answer.id|add:10000 }}">댓글 달기</button>
+
+            <!-- 답변의 댓글 -->
+            <div class="border-bottom my-3 py-2">{{ answer.comment_set.count }}개의 댓글이 있습니다.</div>
+            {% for comment_id, comment_data in comment_tree.items %}
+            <!-- 현재 답변의 댓글만 -->
+            {% if comment_data.c.answer_id == answer.id and comment_id in comment_id_list %}
+                {% include 'cmapp/comment.html' with comment_tree=comment_tree comment_data=comment_data comment=comment_data.c question_id=question.id answer_id=answer.id %}
+            {% endif %}
+            {% endfor %}
         </div>
     </div>
     {% endfor %}
@@ -150,7 +162,7 @@ Array.from(recommend_elements).forEach(function(element) {
 });
 
 // 댓글 달기 버튼 -> 댓글 등록 부분 보여주기
-function show_comment_create(question_detail_url, form_url, question_id, comment_id) {
+function show_comment_create(form_url, comment_id) {
     // 기존에 열려 있는 모든 폼을 닫기
     var openForms = document.querySelectorAll('form[id^="comment_create_"]');
     openForms.forEach(function(form) {
@@ -171,6 +183,7 @@ function show_comment_create(question_detail_url, form_url, question_id, comment
                 name="comment-content" id="comment-content" class="form-control" rows="5"></textarea>
             </div>
             <input type="submit" value="댓글등록" class="btn btn-primary">
+            <button onclick="form.remove();"class="btn btn-danger">x</button>
         </form>
     `;
 
@@ -178,10 +191,12 @@ function show_comment_create(question_detail_url, form_url, question_id, comment
     var formContainer = document.createElement('div');
     formContainer.innerHTML = formHtml;
 
+    var formElement = formContainer.querySelector('form');
+    
     // 버튼 아래에 폼 추가
     var button = document.getElementById('comment_create_btn_' + comment_id);
-    node = button.parentNode.insertBefore(formContainer.firstChild, button.nextSibling);
-    console.log(button.parentNode.insertBefore(formContainer.firstChild, button.nextSibling));
+    node = button.parentNode.insertBefore(formElement, button.nextSibling);
+    console.log(node);
 }
 
 </script>

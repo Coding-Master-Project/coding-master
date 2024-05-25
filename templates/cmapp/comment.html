@@ -12,7 +12,7 @@
         </div>
 
         <!-- 댓글 달기 버튼 -->
-        <button onclick="show_comment_create('{% url 'cmapp:detail' question_id %}', '{% url 'cmapp:comment_create' question_id comment.id %}', {{ question_id }}, {{ comment.id }})" class="btn btn-primary" id = "comment_create_btn_{{ comment.id }}">댓글 달기</button>
+        <button onclick="show_comment_create('{% url 'cmapp:comment_create' question_id answer_id comment.id %}', {{ comment.id }})" class="btn btn-primary" id = "comment_create_btn_{{ comment.id }}">댓글 달기</button>
         <!-- 댓글 달기 버튼 누르면 댓글 등록 부분 생성 -->
     </div>
 </div>
@@ -22,9 +22,9 @@
 <div class="rcs" style="margin-left:50px;">
     {% for rc in comment_data.rcs %}
         {% if comment_tree|get_item:rc.id %}
-            {% include 'cmapp/comment.html' with comment_tree=comment_tree comment_data=comment_tree|get_item:rc.id comment=rc question_id=question_id flag=0 %}
+            {% include 'cmapp/comment.html' with comment_tree=comment_tree comment_data=comment_tree|get_item:rc.id comment=rc question_id=question_id answer_id=answer_id %}
         {% else %}
-            {% include 'cmapp/comment.html' with comment_tree=comment_tree comment_data=none comment=rc question_id=question_id flag=0 %}
+            {% include 'cmapp/comment.html' with comment_tree=comment_tree comment_data=none comment=rc question_id=question_id answer_id=answer_id %}
         {% endif %}
     {% endfor %}
 </div>

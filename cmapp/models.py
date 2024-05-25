@@ -28,7 +28,7 @@ class Answer(models.Model):
 class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author_comment')
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    # answer = models.ForeignKey(Answer, on_delete=models.CASCADE, related_name='answer_comment')
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE, null=True)
     parent_comment = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name='recomment')
     content = models.TextField(max_length=200)
     create_date = models.DateTimeField()
