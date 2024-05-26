@@ -1,0 +1,214 @@
+/* top 배경 이미지 */
+.top-background {
+    background-image: url('/img/top-background-1.jpg');
+}
+
+/* 질문 영역*/
+.question-view {
+    margin: 100px 150px 60px 150px;
+    border: 2px solid rgb(123, 117, 117);
+}
+
+.questionView {
+    padding: 20px;
+}
+
+/* 답변 영역 */
+.question-answer-view {
+    margin: 30px 150px;
+}
+
+.questionAnswer {
+    border: 2px solid rgb(183, 84, 79);
+    margin-bottom: 20px;
+}
+
+.answerView {
+    padding: 20px;
+}
+
+/* 질문 제목 */
+.question-view-top {
+    margin-bottom: 10px;
+    display: flex;
+}
+
+.questionLanguage {
+    font-size: 25px;
+    font-weight: 500;
+    margin-right: 10px;
+}
+
+.questionSubject {
+    font-size: 25px;
+    font-weight: 500;
+}
+
+/* 답변 번호 */
+.answerCount {
+    margin-bottom: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* 질문 top 버튼 (수정+삭제) */
+.question-top-btn {
+    display: flex;
+    gap: 10px;
+    float: right;
+    font-size: 13px;
+    color: black;
+}
+
+.modifyBtn {
+    padding-right: 10px;
+    border-right: 1px solid rgb(123, 117, 117);
+}
+
+/* 질문 정보, 답변 정보 */
+.question-view-meta,
+.answerMeta {
+    display: flex;
+    color: rgb(123, 117, 117);
+    font-size: 15px;
+    margin-left: 10px;
+}
+
+.questionWriter,
+.answerWriter {
+    padding-right: 10px;
+    padding-left: 10px;
+}
+
+.questionDate,
+.answerDate {
+    padding: 0 10px 0 10px;
+    border-left: 1px solid rgb(123, 117, 117);
+}
+
+.questionCount {
+    border-left: 1px solid rgb(123, 117, 117);
+    padding-left: 10px;
+}
+
+/* 질문 내용, 답변 내용 */
+.question-view-content,
+.answerContent {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid gray;
+}
+
+/* 답변 쓰기 버튼 (질문에만) */
+.question-answer-create-btn {
+    float: right;
+    margin-top: 20px;
+}
+
+/* 좋아요, 스크랩, 댓글 버튼 (질문, 답변) */
+.question-view-bottom,
+.answer-bottom {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.likeBtn span,
+.commentBtn span {
+    font-weight: bold;
+}
+
+/* 댓글 영역 */
+.commentBox {
+    margin-top: 10px;
+    padding: 15px;
+    /* border-top: 1px solid black; */
+    background-color: rgb(253, 249, 242);
+
+    span {
+        font-size: 20px;
+        font-weight: 600;
+    }
+}
+
+.comment-input {
+    border: 1px solid gray;
+    border-radius: 5px;
+    margin-top: 10px;
+    padding: 14px 14px 10px 14px;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+}
+
+.commentWriter {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.commentText {
+    border: none;
+    outline: none;
+    resize: none;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.commentText:empty:before {
+    content: attr(placeholder);
+    color: gray;
+}
+
+.commentCreateBtn {
+    border: none;
+    margin-left: auto;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    color: gray;
+    background-color: white;
+}
+
+.comment-list {
+    margin-top: 20px;
+}
+
+.comment-list>div {
+    padding: 20px;
+    border-bottom: 1px solid gray;
+    display: flex;
+}
+
+.comment-list>div>i {
+    font-size: 30px;
+    margin-right: 15px;
+    float: left;
+}
+
+.comment-list>div:last-child {
+    border-bottom: none;
+    padding-bottom: 10px;
+}
+
+.comment-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.commentWriter {
+    font-size: 15px;
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+.commentBottom {
+    display: flex;
+    gap: 10px;
+    margin-top: 3px;
+    font-size: 13px;
+    color: gray;
+}
+
+img {
+    width: 50%;
+}

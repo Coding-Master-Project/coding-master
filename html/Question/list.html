@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>질문 리스트</title>
+
+    <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/Login/login.css">
+    <link rel="stylesheet" href="/css/top-background.css">
+    <link rel="stylesheet" href="/css/Question/list.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <script src="/js/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".headers").load("/html/header.html");
+            $(".footers").load("/html/footer.html");
+            $(".login").load("/html/Login/login.html", function () {
+                initializeLoginModal();
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <!-- 헤더 -->
+    <div class="headers"></div>
+
+    <div class="login"></div>
+
+    <!-- top 배경이미지 -->
+    <div class="top-background">
+        <h1 class="top-background-text">질문</h1>
+    </div>
+
+    <!-- 질문 list 영역 -->
+    <main class="question-list">
+        <!-- 언어 별 nav -->
+        <div class="question-language-nav">
+            <ul class="languageList">
+                <li class="view-all">
+                    <a href="/"><i class="fa-solid fa-house" style="color: rgb(183, 84, 79);"></i>전체</a>
+                </li>
+                <li class="c">
+                    <a href="/"><i class="fa-regular fa-folder" style="color: rgb(183, 84, 79);"></i>C</a>
+                </li>
+                <li class="c++">
+                    <a href="/"><i class="fa-regular fa-folder" style="color: rgb(183, 84, 79);"></i>C++</a>
+                </li>
+                <li class="c#">
+                    <a href="/"><i class="fa-regular fa-folder" style="color: rgb(183, 84, 79);"></i>C#</a>
+                </li>
+                <li class="python">
+                    <a href="/"><i class="fa-regular fa-folder" style="color: rgb(183, 84, 79);"></i>Python</a>
+                </li>
+                <li class="java">
+                    <a href="/"><i class="fa-regular fa-folder" style="color: rgb(183, 84, 79);"></i>Java</a>
+                </li>
+                <li class="js">
+                    <a href="/"><i class="fa-regular fa-folder" style="color: rgb(183, 84, 79);"></i>Javascript</a>
+                </li>
+                <li class="html">
+                    <a href="/"><i class="fa-regular fa-folder" style="color: rgb(183, 84, 79);"></i>Html</a>
+                </li>
+                <li class="css">
+                    <a href="/"><i class="fa-regular fa-folder" style="color: rgb(183, 84, 79);"></i>Css</a>
+                </li>
+                <li class="others">
+                    <a href="/"><i class="fa-regular fa-folder" style="color: rgb(183, 84, 79);"></i>기타</a>
+                </li>
+            </ul>
+        </div>
+        <!-- 질문 top -->
+        <div class="question-list-top">
+            <!-- 질문 총 개수 -->
+            <!-- !! span은 장고로 바뀌는 부분 -->
+            <div class="question-list-sum">
+                <p>총 <span>5</span> 건</p>
+            </div>
+            <!-- 질문 관련 검색 영역 -->
+            <form class="question-search-container" action="" method="get">
+                <!-- 질문 분류 (제목/내용/제목+내용) -->
+                <select name="search-key" class="searchKey">
+                    <option value="search-title">제목</option>
+                    <option value="search-content">내용</option>
+                    <option value="search-t+c">제목+내용</option>
+                </select>
+                <!-- 질문 검색 -->
+                <div class="question-searchBox">
+                    <input class="question-search-input" type="text">
+                    <button class="searchBtn" type="submit">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+        <!-- 질문 list 테이블 형식으로 보여줌 -->
+        <table class="question-list-table">
+            <tr class="table-header">
+                <th class="questionLanguage">언어</th>
+                <th class="questionSubject">제목</th>
+                <th class="questionWriter">작성자</th>
+                <th class="questionDate">작성일</th>
+                <th class="questionCount">조회수</th>
+            </tr>
+            <tr class="questionBtn clickable" id="question-5">
+                <td class="questionLanguage">C</td>
+                <td class="questionSubject">우리학교 YB 온다!!!</td>
+                <td class="questionWriter">수빈</td>
+                <td class="questionDate">16:00</td>
+                <td class="questionCount">345</td>
+            </tr>
+            <tr class="questionBtn clickable" id="question-4">
+                <td class="questionLanguage">C#</td>
+                <td class="questionSubject">우리학교 싸이 온다!!!</td>
+                <td class="questionWriter">수빈</td>
+                <td class="questionDate">10:00</td>
+                <td class="questionCount">235</td>
+            </tr>
+            <tr class="questionBtn clickable" id="question-3">
+                <td class="questionLanguage">Python</td>
+                <td class="questionSubject">우리학교 뉴진스 온다!!!</td>
+                <td class="questionWriter">수빈</td>
+                <td class="questionDate">2024-05-14</td>
+                <td class="questionCount">1002</td>
+            </tr>
+            <tr class="questionBtn clickable" id="question-2">
+                <td class="questionLanguage">Html</td>
+                <td class="questionSubject">졸려</td>
+                <td class="questionWriter">예랑</td>
+                <td class="questionDate">2024-05-11</td>
+                <td class="questionCount">1035</td>
+            </tr>
+            <tr class="questionBtn clickable" id="question-1">
+                <td class="questionLanguage">Java</td>
+                <td class="questionSubject">놀고싶어</td>
+                <td class="questionWriter">윤진</td>
+                <td class="questionDate">2024-05-03</td>
+                <td class="questionCount">1235</td>
+            </tr>
+        </table>
+        <!-- 질문 글쓰기 버튼 -->
+        <!-- 누르면 글쓰기 페이지로 넘어감 -->
+        <div class="question-create-btn">
+            <a href="/html/Question/write.html">글쓰기</a>
+        </div>
+        <!-- 질문 pag -->
+        <!-- !! 이부분 장고로 가능하다고 들었음 -->
+        <!-- !! 혹시 디자인으로 내가 해야할 것 있으면 알려줘 -->
+        <!-- !! 현재는 디자인만 보이고 관련 이벤트는 없음 -->
+        <div class="questionPag">
+            <div id="question-list-backward">
+                <i class="fa-solid fa-backward"></i>
+            </div>
+            <div id="question-list-left-10">
+                <i class="fa-solid fa-caret-left"></i>
+            </div>
+            <div class="question-list-count">1</div>
+            <div class="question-list-count">2</div>
+            <div class="question-list-count">3</div>
+            <div class="question-list-count">4</div>
+            <div class="question-list-count">5</div>
+            <div class="question-list-count">6</div>
+            <div class="question-list-count">7</div>
+            <div class="question-list-count">8</div>
+            <div class="question-list-count">9</div>
+            <div class="question-list-count">10</div>
+            <div id="question-list-right-10">
+                <i class="fa-solid fa-caret-right"></i>
+            </div>
+            <div id="question-list-forward">
+                <i class="fa-solid fa-forward"></i>
+            </div>
+        </div>
+    </main>
+    <!-- 바닥글 -->
+    <div class="footers"></div>
+
+    <script src="/js/login-modal.js"></script>
+    <script>
+        // 질문 언어 nav 마우스 대면 모양 변함
+        const listItems = document.querySelectorAll('.languageList li');
+
+        listItems.forEach(item => {
+            if (item.id !== 'view-all') {
+                item.addEventListener('mouseover', function () {
+                    const icon = this.querySelector('i');
+                    icon.classList.remove('fa-folder');
+                    icon.classList.add('fa-folder-open');
+                });
+
+                item.addEventListener('mouseout', function () {
+                    const icon = this.querySelector('i');
+                    icon.classList.remove('fa-folder-open');
+                    icon.classList.add('fa-folder');
+                });
+            }
+        })
+
+        // 질문 list 테이블 이벤트
+        document.addEventListener('DOMContentLoaded', function () {
+            const rows = document.querySelectorAll('.question-list-table tr.clickable');
+
+            rows.forEach(row => {
+                // 질문 list에 마우스 가져다대면 배경색 변함
+                row.addEventListener('mouseover', function () {
+                    this.style.backgroundColor = '#f1f1f1';
+                });
+
+                row.addEventListener('mouseout', function () {
+                    this.style.backgroundColor = '';
+                });
+
+                // 질문 클릭하면 해당 질문 페이지로 이동
+                // !! 일단은 전부 view.html로 이동하게 했음
+                // !! 장고로 이동하게 하고 아래 지워주세용
+                row.addEventListener('click', function () {
+                    const url = 'view.html';
+                    window.location.href = url;
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
