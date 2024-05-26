@@ -8,6 +8,7 @@
     <title>질문 보기</title>
 
     <link rel="stylesheet" href="/css/common.css">
+    <link rel="stylesheet" href="/css/Login/login.css">
     <link rel="stylesheet" href="/css/top-background.css">
     <link rel="stylesheet" href="/css/Question/view.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
@@ -19,6 +20,9 @@
         $(document).ready(function () {
             $(".headers").load("/html/header.html");
             $(".footers").load("/html/footer.html");
+            $(".login").load("/html/Login/login.html", function () {
+                initializeLoginModal();
+            });
         });
     </script>
 </head>
@@ -26,6 +30,8 @@
 <body>
     <!-- 헤더 -->
     <div class="headers"></div>
+
+    <div class="login"></div>
 
     <!-- top 배경이미지 -->
     <div class="top-background">
@@ -51,7 +57,7 @@
             <!-- !! 이와 관련된 것은 장고에서 하는 것으로 알아서 일단 패스 혹시 제가 필요하다면 불러주세요 -->
             <div class="question-top-btn">
                 <div id="question-modify-btn" class="modifyBtn">
-                    <a href="/Question/modify.html">수정</a>
+                    <a href="/">수정</a>
                 </div>
                 <div id="question-delete-btn" class="deleteBtn">
                     <span>삭제</span>
@@ -68,20 +74,23 @@
             </div>
             <!-- 질문 내용 -->
             <div class="question-view-content">
-                <p>안녕하세요. 자료구조 조교 채현우입니다.
+                <img
+                    src="https://search.pstatic.net/common/?src=http%3A%2F%2Fimgnews.naver.net%2Fimage%2F022%2F2024%2F05%2F19%2F20240519504326_20240519114403587.jpg&type=sc960_832">
+                <br />
+                안녕하세요. 자료구조 조교 채현우입니다.
 
-                    과제 3의 성적이 게시되었습니다.
+                과제 3의 성적이 게시되었습니다.
 
-                    성적 확인은 집현 캠퍼스 성적부를 통해 가능합니다.
+                성적 확인은 집현 캠퍼스 성적부를 통해 가능합니다.
 
-                    이의 신청은 이메일(hyunwoo0081@gmail.com)로 해주시거나,
+                이의 신청은 이메일(hyunwoo0081@gmail.com)로 해주시거나,
 
-                    005분반인 학생분들은 오늘(5/16 목) 또는 다음주 화요일(5/21) 수업 시간에 직접 질문 주셔도 됩니다.
+                005분반인 학생분들은 오늘(5/16 목) 또는 다음주 화요일(5/21) 수업 시간에 직접 질문 주셔도 됩니다.
 
-                    이의 신청은 다음 주 화요일(5/21)까지 받겠습니다.
+                이의 신청은 다음 주 화요일(5/21)까지 받겠습니다.
 
-                    감사합니다.
-                </p>
+                감사합니다.
+
             </div>
             <!-- 답변 쓰기 버튼 -->
             <!-- !! 버튼 누르면 답변 쓰는 화면으로 이동 -->
@@ -186,6 +195,10 @@
                     ◼ It helps JavaScript and Node.js developers to streamline development
                     workflows and improve productivity by providing access to a vast library of
                     packages and tools.
+                    <br />
+                    <img
+                        src="https://search.pstatic.net/common/?src=http%3A%2F%2Fimgnews.naver.net%2Fimage%2F022%2F2024%2F05%2F19%2F20240519504326_20240519114403587.jpg&type=sc960_832">
+                    <br />
                     ◼ It consists of three parts:
                     ❑ The website for hosting all the documentation
                     and package searches https://www.npmjs.com/
@@ -282,6 +295,9 @@
                     ❑ The CLI that gets installed with Node.js
                     ❑ The registry, which is where all of the modules
                     are stored and made installable
+                    <br />
+                    <img
+                        src="https://search.pstatic.net/common/?src=http%3A%2F%2Fimgnews.naver.net%2Fimage%2F009%2F2023%2F04%2F14%2F0005116757_001_20230414192003274.jpg&type=sc960_832">
                 </div>
                 <!-- 좋아요, 댓글 버튼 -->
                 <div class="answer-bottom">
@@ -323,7 +339,22 @@
     <!-- 바닥글 -->
     <div class="footers"></div>
 
+    <script src="/js/login-modal.js"></script>
     <script src="/js/buttonEvents.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const createButton = document.querySelector('.question-answer-create-btn');
+            // 답변 쓰기 버튼 클릭하면 답변 쓸 수 있는 페이지로 이동
+            // !! 일단은 아래와 같이 js를 이용해서 이동하게 했음
+            // !! 장고로 이동할 수 있다면 아래 지워주세염
+            if (createButton) {
+                createButton.addEventListener('click', function () {
+                    const url = 'answer.html';
+                    window.location.href = url;
+                });
+            }
+        });
+    </script>
 
 </body>
 

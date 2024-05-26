@@ -1,0 +1,94 @@
+.login-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.login-modal-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 30px;
+    width: 350px;
+    height: 380px;
+    background-color: white;
+    border-radius: 5px;
+    text-align: center;
+    align-items: center;
+}
+
+.login-closeBtn {
+    display: block;
+    padding: 10px;
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    font-size: 20px;
+}
+
+.logo-img {
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 17px;
+    margin-bottom: 30px;
+}
+
+.login-container {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.login-id,
+.login-password,
+.loginBtn {
+    font-size: 17px;
+    padding: 10px;
+    border-radius: 3px;
+    border: 1px solid gray;
+}
+
+.loginBtn {
+    margin-top: 20px;
+    margin-bottom: 7px;
+    background-color: rgb(185, 76, 70);
+    border: none;
+    color: white;
+    font-weight: bold;
+}
+
+.login-id:focus,
+.login-password:focus {
+    outline: none;
+    border: 1px solid rgb(164, 67, 61);
+}
+
+.login-more-action {
+    display: flex;
+    justify-content: space-between;
+    color: gray;
+    font-size: 13px;
+    padding: 0px 5px;
+}
+
+.find-id,
+.find-password {
+    padding-right: 20px;
+    border-right: 1px solid gray;
+}
+
+.find-id:hover,
+.find-password:hover,
+.signupNavigator:hover {
+    cursor: pointer;
+    color: rgb(65, 62, 62);
+}
+
+.login-modal.on {
+    display: block;
+}

@@ -23,6 +23,7 @@ header {
     height: 100%;
     display: flex;
     text-align: center;
+    gap: 25px;
 }
 
 .header-menutop li {
@@ -34,6 +35,8 @@ header {
 .login-btn {
     font-size: 20px;
     font-weight: 500;
+    color: white;
+    cursor: pointer;
 }
 
 header a {
@@ -47,6 +50,7 @@ header.active {
     border-bottom: 1px solid rgb(187, 185, 185);
 }
 
-header.active a {
+header.active a,
+header.active .login-btn {
     color: black;
 }

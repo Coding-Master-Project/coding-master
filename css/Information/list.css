@@ -66,6 +66,10 @@
     border: 1px solid gray;
 }
 
+.information-search-input:focus {
+    outline: none;
+}
+
 .information-search-input {
     padding: 5px;
     border: none;

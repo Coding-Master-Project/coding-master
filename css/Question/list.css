@@ -66,6 +66,10 @@
     border: 1px solid gray;
 }
 
+.question-search-input:focus {
+    outline: none;
+}
+
 .question-search-input {
     padding: 5px;
     border: none;
