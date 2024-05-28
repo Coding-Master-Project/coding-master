@@ -1,0 +1,30 @@
+{% load cmapp_filter %}
+ <!-- 댓글이 맨 밑에 추가 -->
+ <div id="comment_{{ comment.id }}">
+    <!-- 작성자 프로필 img -->
+    <i class="fa-solid fa-hat-wizard" style="color: rgb(183, 84, 79);"></i>
+    <div class="comment-content" id="comment-content-{{ comment.id }}">
+        <div class="commentWriter">{{ comment.author.username }}</div>
+        <div class="commentContent">{{ comment.content }}</div>
+        <div class="commentBottom">
+            <div class="commentDate">{{ comment.create_date }}</div>
+
+            <!-- 답글 쓰기 버튼 -->
+            <button onclick="show_comment_create('{% url 'cmapp:comment_create' question_id answer_id comment.id %}', {{ comment.id }}, '{{ username }}')" class="commentReplyBtn" id = "comment_create_part_{{ comment.id }}">답글 쓰기</button>
+        </div>
+    </div>
+</div>
+<!-- 답글쓰기를 누르면 밑에 답글쓸 수 있는 영역 만들어짐 -->
+
+<!-- 대댓글 -->
+{% if comment_data.rcs %}
+<div class="rcs"> <!-- ## 대댓글에 대한 css 필요, 일단 view.css에 rcs 스타일 임시로 지정해놓음-->
+    {% for rc in comment_data.rcs %}
+        {% if comment_tree|get_item:rc.id %}
+            {% include 'html/comment.html' with comment_tree=comment_tree comment_data=comment_tree|get_item:rc.id comment=rc question_id=question_id answer_id=answer_id username=username %}
+        {% else %}
+            {% include 'html/comment.html' with comment_tree=comment_tree comment_data=none comment=rc question_id=question_id answer_id=answer_id username=username %}
+        {% endif %}
+    {% endfor %}
+</div>
+{% endif %}

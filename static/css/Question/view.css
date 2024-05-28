@@ -1,6 +1,6 @@
 /* top 배경 이미지 */
 .top-background {
-    background-image: url('/img/top-background-1.jpg');
+    background-image: url('/media/img/top-background-1.jpg');
 }
 
 /* 질문 영역*/
@@ -176,7 +176,8 @@
 .comment-list>div {
     padding: 20px;
     border-bottom: 1px solid gray;
-    display: flex;
+    display: block;
+    /* ## flex로 하면 대댓글이 옆으로 퍼져서 수정함 */
 }
 
 .comment-list>div>i {
@@ -212,3 +213,12 @@
 img {
     width: 50%;
 }
+
+/* 대댓글 영역 */
+.rcs {
+    /* 한 칸씩 들어가는 거임 */
+    margin-left: 50px;
+}
+
+/* 대댓글 하나 */
+.rcs>div {}

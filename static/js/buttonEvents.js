@@ -53,6 +53,8 @@ $(document).ready(function () {
             // 해당 버튼의 댓글 상자를 닫음
             $(this).parent().parent().next('.commentBox').slideUp();
         });
+
+        // show_comment_create(this.dataset.formUrl, this.data.commentId)
     });
 
     // 댓글 입력 시 등록 버튼 색상 변경
