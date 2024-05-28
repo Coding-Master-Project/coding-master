@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <link rel="stylesheet" href="{%static '/css/header.css' %}">
+</head>
+
+<body>
+    <!-- header -->
+    <!-- !! 일단 다른 페이지의 이동을 a태그를 통해 함 -->
+    <!-- header 디자인이 바뀔 가능성이 많습니당 -->
+    <header>
+        <!-- 로고 이미지 -->
+        <div class="logo-img">
+            <a href="/html/Home/home.html">코딩 마스터</a>
+        </div>
+        <!-- nav -->
+        <nav>
+            <ul class="header-menutop">
+                <li class="question">
+                    <a href="/html/Question/list.html">질문</a>
+                </li>
+                <li class="information">
+                    <a href="/html/Information/list.html">정보</a>
+                </li>
+                <li class="counseling">
+                    <a href="/">상담</a>
+                </li>
+                <li class="study">
+                    <a href="/">스터디</a>
+                </li>
+                <li class="contest">
+                    <a href="/">공모전/대회</a>
+                </li>
+            </ul>
+        </nav>
+        <!-- 로그인 버튼 -->
+        <div class="login-btn">
+            로그인
+        </div>
+    </header>
+
+    <!-- 스크롤이 내려갔을때 .active 클래스를 addClass 함 -->
+    <script type="text/javascript">
+        $(window).on('scroll', function () {
+            if ($(window).scrollTop()) {
+                $('header').addClass('active');
+            } else {
+                $('header').removeClass('active');
+            }
+        });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- title -->
+    {% block title %}
+    {% endblock title %}
+
+    <!-- Bootstrap CSS -->
+    {% comment %} <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}"> {% endcomment %}
+
+    <link rel="stylesheet" href="{% static '/css/common.css' %}">
+    <link rel="stylesheet" href="{% static '/css/Login/login.css' %}">
+    <link rel="stylesheet" href="{% static '/css/top-background.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- custom css-->
+    {% block css %}
+    {% endblock %}
+
+    <!-- head js -->
+    <script src="{%static '/js/jquery-3.7.1.min.js' %}"></script>
+    <script src="{%static '/js/login-modal.js' %}"></script>
+    {% block head_script %}
+    {% endblock %}
+</head>
+<body>
+
+<!-- 헤더 -->
+<div class="headers">{% include "html/header.html" %}</div>
+<div class="login">{% include "html/Login/login.html" %}</div>
+
+<!-- 기본 템플릿 안에 삽입될 내용 Start -->
+{% block content %}
+{% endblock %}
+<!-- 기본 템플릿 안에 삽입될 내용 End -->
+
+<!-- 바닥글 -->
+<div class="footers">{% include "html/footer.html" %}</div>
+
+<!-- 자바스크립트 -->
+<!-- Bootstrap JS -->
+<script src="{% static 'bootstrap.min.js' %}"></script>
+
+<!-- 삽입할 자바스크립트 Start -->
+{% block script %}
+{% endblock %}
+<!-- 자바스크립트 End -->
+
+</body>
+</html>

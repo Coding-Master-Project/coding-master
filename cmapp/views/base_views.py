@@ -2,26 +2,42 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 
-from cmapp.models import Question, Comment
+from cmapp.models import Question, Comment, PLanguage
 
 #질문 목록(메인)
 def index(request):
-    # request.session['user_id'] = request.user
     page = request.GET.get('page', '1') #페이지
     kw = request.GET.get('kw', '') #검색어
+    type = request.GET.get('type', 'search-title') #검색 타입
     question_list = Question.objects.order_by('-create_date')
     if kw:
-        question_list = question_list.filter(
-            Q(subject__icontains=kw) | #제목 검색
-            Q(content__icontains=kw) | #내용 검색
-            Q(answer__content__icontains=kw) | #답변 내용 검색
-            Q(author__username__icontains=kw) | #질문 글쓴이 검색
-            Q(answer__author__username__icontains=kw) #답변 글쓴이 검색
-        ).distinct()
+        if type == 'search-title': #제목 검색
+            question_list = question_list.filter(
+                Q(subject__icontains=kw) 
+            ).distinct()
+        elif type == 'search-content': #내용 검색
+            question_list = question_list.filter(
+                Q(content__icontains=kw) 
+            ).distinct()
+        elif type == 'search-t+c': #제목+내용 검색
+            question_list = question_list.filter(
+                Q(subject__icontains=kw) | #제목
+                Q(content__icontains=kw) #내용
+            ).distinct()
+
+        # question_list = question_list.filter(
+        #     Q(subject__icontains=kw) | #제목 검색
+        #     Q(content__icontains=kw) | #내용 검색
+        #     Q(answer__content__icontains=kw) | #답변 내용 검색
+        #     Q(author__username__icontains=kw) | #질문 글쓴이 검색
+        #     Q(answer__author__username__icontains=kw) #답변 글쓴이 검색
+        # ).distinct()
+
     paginator = Paginator(question_list, 10) #페이지 당 10개씩 보여주기
     page_obj = paginator.get_page(page)
-    context = {'question_list': page_obj, 'page':page, 'kw':kw}
-    return render(request, 'cmapp/question_list.html', context)
+    planguage_list = PLanguage.objects.all()
+    context = {'question_list': page_obj, 'page': page, 'kw': kw, 'type': type, 'question_count': question_list.count, 'planguage_list': planguage_list}
+    return render(request, 'html/Question/list.html', context) # 나중에 홈 html로 바꿀 예정
 
 # 댓글 계층 구조로 만들기
 def get_comment_tree(comments):
@@ -43,7 +59,7 @@ def detail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     comments = Comment.objects.filter(question=question).order_by('create_date')
     comment_tree, comment_id_list = get_comment_tree(comments)
-    context = {'question': question, 'comment_tree': comment_tree, 'comment_id_list': comment_id_list}
+    context = {'question': question, 'comment_tree': comment_tree, 'comment_id_list': comment_id_list, 'user': request.user }
     
     # 중복 방지를 위해 쿠키 설정
     session_cookie = request.COOKIES.get('sessionid') # 로그인할 때 생기는 sessionid 쿠키 받아오기
@@ -65,4 +81,4 @@ def detail(request, question_id):
         question.save() # 데이터베이스 변경 사항 저장
         return response
 
-    return render(request, 'cmapp/question_detail.html', context)
+    return render(request, 'html/Question/view.html', context)
