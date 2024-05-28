@@ -9,8 +9,8 @@
 .signup-container {
     display: flex;
     flex-direction: column;
-    width: 300px;
-    margin-top: 40px;
+    width: 400px;
+    margin: 50px 0;
 }
 
 .logo-img {
@@ -24,4 +24,81 @@
     text-align: center;
     font-size: 30px;
     font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.signupNickname,
+.signupId,
+.signupPassword,
+.signupPasswordCheck,
+.signupEmail {
+    margin-bottom: 10px;
+}
+
+input {
+    width: 77%;
+    height: 40px;
+    padding: 10px;
+    margin: 7px 0px;
+    font-size: 15px;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+.signup-password,
+.signup-password-check,
+.signup-email {
+    width: 100%;
+}
+
+input:focus {
+    border: 1px solid black;
+    outline: none;
+}
+
+.NicknameExistenceChecker,
+.IdExistenceChecker {
+    float: right;
+    margin: 7px 0;
+    height: 40px;
+    font-size: 15px;
+}
+
+.signupBtn {
+    margin-top: 20px;
+    height: 50px;
+    font-size: 20px;
+    text-align: center;
+}
+
+.NicknameExistenceChecker,
+.IdExistenceChecker,
+.signupBtn {
+    padding: 10px;
+    border: 1px solid rgb(232, 44, 34);
+    border-radius: 5px;
+    background-color: rgb(232, 44, 34);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.NicknameExistenceAlert,
+.NicknameCheckerAlert,
+.IdExistenceAlert,
+.IdCheckerAlert,
+.PasswordCheckValidator,
+.EmailExistenceAlert,
+.EmailValidator {
+    color: red;
+    margin-bottom: 5px;
+}
+
+.PasswordValidator li {
+    color: gray;
+}
+
+i {
+    margin-left: 3px;
+    margin-right: 7px;
 }

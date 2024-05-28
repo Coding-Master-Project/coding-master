@@ -9,26 +9,82 @@
 
     <link rel="stylesheet" href="/css/common.css">
     <link rel="stylesheet" href="/css/Login/signup.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
     <div class="signup">
-        <form class="signup-container" action="" method="post">
+        <form class="signup-container" action="" method="get">
             <div class="logo-img">
                 코딩 마스터
             </div>
             <div class="signup-top">회원가입</div>
-            <div class="signupNickname">닉네임</div>
-            <input type="text" class="signup-nickname">
-            <div class="signupId">아이디</div>
-            <input type="text" class="signup-id">
-            <div class="signupPassword">비밀번호</div>
-            <input type="password" class="signup-password">
-            <div class="signupPasswordCheck">비밀번호 확인</div>
-            <input type="password" class="signup-password-check">
-            <button type="submit" class="signupBtn">가입하기</button>
+
+            <div class="signupNickname">
+                <div>닉네임</div>
+                <input type="text" class="signup-nickname" name="nickname">
+                <div class="NicknameExistenceChecker">중복확인</div>
+                <div class="NicknameExistenceAlert" style="display: none;">
+                    <i class="fa-solid fa-xmark"></i>이미 존재하는 닉네임입니다.
+                </div>
+                <div class="NicknameCheckerAlert" style="display: none;">
+                    <i class="fa-solid fa-xmark"></i>닉네임 중복 확인해주세요.
+                </div>
+            </div>
+
+            <div class="signupId">
+                <div>아이디</div>
+                <input type="text" class="signup-id" name="id">
+                <div class="IdExistenceChecker">중복확인</div>
+                <div class="IdExistenceAlert" style="display: none;">
+                    <i class="fa-solid fa-xmark"></i>이미 존재하는 아이디입니다.
+                </div>
+                <div class="IdCheckerAlert" style="display: none;">
+                    <i class="fa-solid fa-xmark"></i>아이디 중복 확인해주세요.
+                </div>
+            </div>
+
+            <div class="signupPassword">
+                <div>비밀번호</div>
+                <input type="password" class="signup-password" name="password">
+                <ul class="PasswordValidator">
+                    <li class="condition1">
+                        <i class="fa-solid fa-check"></i>영문/숫자/특수문자 각각 한 개 이상 포함
+                    </li>
+                    <li class="condition2">
+                        <i class="fa-solid fa-check"></i>8자 이상 30자 이하 입력 (공백 제외)
+                    </li>
+                    <li class="condition3">
+                        <i class="fa-solid fa-check"></i>연속 3자 이상 동일한 문자/숫자 제외
+                    </li>
+                </ul>
+            </div>
+
+            <div class="signupPasswordCheck">
+                <div>비밀번호 확인</div>
+                <input type="password" class="signup-password-check" name="passwordCheck">
+                <div class="PasswordCheckValidator" style="display: none;">
+                    <i class="fa-solid fa-xmark"></i>비밀번호가 일치하지 않습니다.
+                </div>
+            </div>
+
+            <div class="signupEmail">
+                <div>이메일</div>
+                <input tyle="text" class="signup-email" name="email">
+                <div class="EmailExistenceAlert" style="display: none;">
+                    <i class="fa-solid fa-xmark"></i>이미 가입된 이메일입니다.
+                </div>
+                <div class="EmailValidator" style="display: none;">
+                    <i class="fa-solid fa-xmark"></i>유효하지 않은 이메일입니다.
+                </div>
+            </div>
+            <div class="signupBtn">가입하기</div>
         </form>
     </div>
+
+    <script src="/js/signup.js"></script>
 </body>
 
 </html>
