@@ -1,0 +1,76 @@
+.find-id,
+.find-password {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.find-container {
+    display: flex;
+    flex-direction: column;
+    width: 330px;
+    margin: 50px 0;
+}
+
+.logo-img {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.find-title {
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.nicknameInput,
+.emailInput {
+    margin-bottom: 10px;
+}
+
+input {
+    width: 310px;
+    height: 20px;
+    padding: 10px;
+    margin: 7px 0px;
+    font-size: 15px;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+.nicknameInput:focus,
+.emailInput:focus {
+    border: 1px solid black;
+    outline: none;
+}
+
+.findBtn {
+    margin-top: 20px;
+    height: 50px;
+    width: 100%;
+    font-size: 20px;
+    text-align: center;
+    padding: 10px;
+    border: 1px solid rgb(232, 44, 34);
+    border-radius: 5px;
+    background-color: rgb(232, 44, 34);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.nicknameAlert,
+.emailAlert,
+.emailAlert_Validator {
+    color: red;
+    margin-bottom: 5px;
+}
+
+i {
+    margin-left: 3px;
+    margin-right: 7px;
+}

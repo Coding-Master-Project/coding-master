@@ -1,0 +1,242 @@
+{% extends 'html/base.html' %}
+{% load cmapp_filter %}
+{% load static %}
+
+<!-- title -->
+{% block title %}<title>질문 리스트</title>{% endblock %}
+
+<!-- custom css -->
+{% block css %}<link rel="stylesheet" href="{% static '/css/Question/list.css' %}">{% endblock %}
+
+<!-- body content -->
+{% block content %}
+
+<!-- top 배경이미지 -->
+<div class="top-background">
+    <h1 class="top-background-text">질문</h1>
+</div>
+
+<!-- 질문 list 영역 -->
+<main class="question-list">
+    <!-- 언어 별 nav -->
+    <div class="question-language-nav">
+        <ul class="languageList">
+            <li class="view-all">
+                <a href="{% url 'cmapp:index' 0 %}"><i class="fa-solid fa-house" style="color: rgb(183, 84, 79);"></i>전체</a>
+            </li>
+            {% for planguage in planguage_list %}
+            <li>
+                <a href="{% url 'cmapp:index' planguage.id %}"><i class="fa-regular fa-folder" style="color: rgb(183, 84, 79);"></i>{{ planguage.content }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- 질문 top -->
+    <div class="question-list-top">
+        <!-- 질문 총 개수 -->
+        <div class="question-list-sum">
+            <p>총 {{ question_count }} 건</p>
+        </div>
+        <!-- 질문 관련 검색 영역 -->
+        <!-- ## form 에서 div로 바뀜 -->
+        <div class="question-search-container">
+            <select name="search-key" class="searchKey" id="search_type">
+                <option value="search-title">제목</option>
+                <option value="search-content">내용</option>
+                <option value="search-t+c">제목+내용</option>
+            </select>
+            <div class="question-searchBox">
+                <input type="text" id="search_kw" class="question-search-input" value="{{ kw|default_if_none:'' }}">
+                <button class="searchBtn" id="btn_search"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 질문 list 테이블 형식으로 보여줌 -->
+    <table class="question-list-table">
+        <thead>
+            <tr class="table-header">
+                <th class="questionLanguage">언어</th>
+                <th class="questionSubject">제목</th>
+                <th class="questionWriter">작성자</th>
+                <th class="questionDate">작성일</th>
+                <th class="quesetionAnswerCount">답변수</th>
+                <th class="questionCount">조회수</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% if question_list %}
+        {% for question in question_list %}
+            <tr class="questionBtn clickable" data-url="{% url 'cmapp:detail' question.id %}">
+                <td class="questionLanguage">{{ question.planguage }}</td>
+                <td class="questionSubject">{{ question.subject }}</td>
+                <td class="questionWriter">{{ question.author.username }}</td>
+                <td class="questionDate">{{ question.create_date }}</td>
+                <td class="questionAnswerCount">{{ question.answer_set.count }}</td>
+                <td class="questionCount">{{ question.views }}</td>
+            </tr>
+            {% endfor %}
+            {% else %} 
+            <!-- 질문이 없는 경우 -->
+            <tr>
+                <td colspan="5">질문이 없습니다.</td>
+            </tr>
+        {% endif %}
+        </tbody>
+    </table>
+
+    <!-- 질문 글쓰기 버튼 -->
+    <!-- 누르면 글쓰기 페이지로 넘어감 -->
+    <div class="question-create-btn">
+        <a href="{% url 'cmapp:question_create' %}">글쓰기</a>
+    </div>
+
+    <!-- 질문 pag -->
+    <!-- 페이징처리 시작 -->
+    <div class="questionPag">
+        <!-- 처음페이지 -->
+        {% if question_list.number != 1 %}
+            <!-- 버튼 활성화 -->
+            <div id="question-list-backward">
+                <a class="page-link" data-page="1" href="javascript:void(0)"><i class="fa-solid fa-backward"></i></a>
+            </div>
+        {% else %}
+            <!-- 버튼 비활성화(더 이상 이동할 수 있는 페이지 x) -->
+            <div id="question-list-backward-disabled"> <!-- ## id에 -disabled 붙은 건 비활성화 상태라는 뜻임, 따로 css 안 만들거면 disabled 빼버리면 됨 -->
+                <a class="page-link" tabindex="-1" aria-disabled="true" href="javascript:void(0)"><i class="fa-solid fa-backward"></i></a>
+            </div>
+        {% endif %}
+
+        <!-- 이전페이지 -->
+        {% if question_list.has_previous %}
+            <div id="question-list-left-10">
+                <a class="page-link" data-page="{{ question_list.number|sub:10 }}" href="javascript:void(0)"><i class="fa-solid fa-caret-left"></i></a>
+            </div>
+        {% else %}
+            <div id="question-list-left-10-disabled">
+                <a class="page-link" tabindex="-1" aria-disabled="true" href="javascript:void(0)"><i class="fa-solid fa-caret-left"></i></a>
+            </div>
+        {% endif %}
+
+        <!-- 페이지리스트 -->
+        {% for page_number in question_list.paginator.page_range %}
+            {% if page_number > question_list.number|sub:1|div:10|mul:10 and page_number <= question_list.number|sub:1|div:10|add:1|mul:10 %}
+                {% if page_number == question_list.number %}
+                    <div class="question-list-count" aria-current="page">
+                        <a class="page-link" data-page="{{ page_number }}" href="javascript:void(0)">{{ page_number }}</a>
+                    </div>
+                {% else %}
+                    <div class="question-list-count-disbled">
+                        <a class="page-link" data-page="{{ page_number }}" href="javascript:void(0)">{{ page_number }}</a>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+
+        <!-- 다음페이지 -->
+        {% if question_list.has_next %}
+            <div id="question-list-right-10">
+                <a class="page-link" data-page="{{ question_list.number|sub:1|div:10|mul:10|add:11 }}" href="javascript:void(0)"><i class="fa-solid fa-caret-right"></i></a>
+            </div>
+        {% else %}
+            <div id="question-list-right-10-disabled">
+                <a class="page-link" tabindex="-1" aria-disabled="true" href="javascript:void(0)"><i class="fa-solid fa-caret-right"></i></a>
+            </div>
+        {% endif %}
+
+        <!-- 끝페이지 -->
+        {% if question_list.number != question_list.paginator.count|div:10|add:1 %}
+            <div id="question-list-forward">
+                <a class="page-link" data-page="{{ question_list.paginator.count|div:10|add:1 }}" href="javascript:void(0)"><i class="fa-solid fa-forward"></i></a>
+            </div>
+        {% else %}
+            <div id="question-list-forward-disabled">
+                <a class="page-link" tabindex="-1" aria-disabled="true" href="javascript:void(0)"><i class="fa-solid fa-forward"></i></a>
+            </div>
+        {% endif %}
+    </div>
+    <!-- 페이징처리 끝 -->
+
+    <!-- 질문 검색 get form(화면에 보이지 않음) -->
+    <form id="searchForm" method="get" action="{% url 'cmapp:index' selected_planguage_id %}">
+        <input type="hidden" id="kw" name="kw" value="{{ kw|default_if_none:'' }}">
+        <input type="hidden" id="page" name="page" value="{{ page }}">
+        <input type="hidden" id="type" name="type" value="{{ type }}">
+    </form>
+
+</main>
+
+{% endblock %}
+
+<!-- js -->
+{% block script %}
+<script type='text/javascript'>
+    // initializeLoginModal
+    // ## jquery로 파일 불러오는 부분 django include로 바꿈
+    // 밑에 initializeLoginModal은 필요한 거 같아서, html이 다 로드되면 실행되도록 함
+    document.addEventListener('DOMContentLoaded', (event) => {
+        initializeLoginModal();
+    });
+
+    // 페이지 불러오기
+    const page_elements = document.getElementsByClassName("page-link");
+    Array.from(page_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            document.getElementById('page').value = this.dataset.page;
+            document.getElementById('searchForm').submit();
+        });
+    });
+    
+    // 검색 -> 검색 버튼 폼 제출
+    const btn_search = document.getElementById("btn_search");
+    btn_search.addEventListener('click', function() {
+        document.getElementById('kw').value = document.getElementById('search_kw').value;
+        document.getElementById('page').value = 1; //검색버튼을 클릭할 경우 1페이지부터 조회한다.
+        document.getElementById('type').value = document.getElementById('search_type').value;
+        console.log(document.getElementById('type').value)
+        document.getElementById('searchForm').submit();
+    });
+
+    // 질문 언어 nav 마우스 대면 모양 변함
+    const listItems = document.querySelectorAll('.languageList li');
+
+    listItems.forEach(item => {
+        if (item.id !== 'view-all') {
+            item.addEventListener('mouseover', function () {
+                const icon = this.querySelector('i');
+                icon.classList.remove('fa-folder');
+                icon.classList.add('fa-folder-open');
+            });
+
+            item.addEventListener('mouseout', function () {
+                const icon = this.querySelector('i');
+                icon.classList.remove('fa-folder-open');
+                icon.classList.add('fa-folder');
+            });
+        }
+    })
+
+    // 질문 list 테이블 이벤트
+    document.addEventListener('DOMContentLoaded', function () {
+        const rows = document.querySelectorAll('.question-list-table tr.clickable');
+
+        rows.forEach(row => {
+            // 질문 list에 마우스 가져다대면 배경색 변함
+            row.addEventListener('mouseover', function () {
+                this.style.backgroundColor = '#f1f1f1';
+            });
+
+            row.addEventListener('mouseout', function () {
+                this.style.backgroundColor = '';
+            });
+
+            // 질문 클릭하면 해당 질문 페이지로 이동
+            row.addEventListener('click', function () {
+                console.log(this);
+                window.location.href = this.dataset.url;
+            });
+        });
+    });
+</script>
+{% endblock %}

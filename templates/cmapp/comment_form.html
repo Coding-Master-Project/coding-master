@@ -1,0 +1,15 @@
+<form action="${form_url}" method="post" class="comment-input" id="comment_create_${comment_id}">
+    {% csrf_token %}
+    {% if form.prefix == 'comment'%}
+    {% include "form_errors.html" %}
+    {% endif %}
+    <div id="answer-comment-writer" class="commentWriter">${username}</div>
+    <div class="mb-3">
+        <div
+        {% if not user.is_authenticated %} disabled {% endif %}
+        name="comment-content" id="comment-content" class="commentText" rows="5" contenteditable="true"
+        placeholder="댓글을 입력하세요."></div>
+    </div>
+    <input type="submit" value="등록" class="commentCreateBtn">
+    <button onclick="form.remove();"class="btn btn-danger">x</button>
+</form>
