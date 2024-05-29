@@ -15,6 +15,7 @@ def comment_create(request, question_id, answer_id, comment_id):
     question = get_object_or_404(Question, pk=question_id)
     if request.method == "POST":
         form = CommentForm(request.POST)
+        print(form.errors)
         if form.is_valid():
             comment = form.save(commit=False) #임시 저장
             comment.author = request.user

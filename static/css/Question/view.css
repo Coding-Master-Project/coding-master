@@ -1,6 +1,6 @@
 /* top 배경 이미지 */
 .top-background {
-    background-image: url('/media/img/top-background-1.jpg');
+    background-image: url('/static/img/top-background-1.jpg');
 }
 
 /* 질문 영역*/
@@ -147,6 +147,7 @@
 }
 
 .commentText {
+    overflow: hidden;
     border: none;
     outline: none;
     resize: none;
