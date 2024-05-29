@@ -100,15 +100,19 @@
     <div class="commentBox" id="question-commentBox" style="display: none;">
         <span>댓글</span>
         <!-- 댓글 작성 영역 -->
-        <div class="comment-input">
+        <form action="{% url 'cmapp:comment_create' question.id 0 0 %}" method="post" class="comment-input">
+            {% csrf_token %}
+            {% if form.prefix == 'comment'%}
+            {% include "form_errors.html" %}
+            {% endif %}
             <div id="question-comment-writer" class="commentWriter">{{ user.username }}</div>
-            <!-- 댓글 작성 시작 전에 css로 placeholder 보이게 함 -->
-            <!-- 댓글 작성 시작하면 placeholder 안 보이고 changeButtonColor 함수가 실행되어 등록 색깔 바뀜 -->
-            <div id="question-comment-input" class="commentText" contenteditable="true" placeholder="댓글을 입력하세요.">
-            </div>
-            <!-- 등록 버튼 누르면 댓글 list 맨 밑에 추가됨 -->
-            <button id="question-comment-create-btn" class="commentCreateBtn">등록</button>
-        </div>
+            <textarea
+                {% if not user.is_authenticated %} disabled {% endif %}
+                name="comment-content" id="comment-content" class="commentText"
+                placeholder="댓글을 입력하세요." onkeyup="autoResize(this)" onkeydown="autoResize(this)"
+                rows="2"></textarea>
+            <input type="submit" value="등록" class="commentCreateBtn">
+        </form>
         <!-- 댓글 목록 -->
         <div class="comment-list">
             {% for comment_id, comment_data in comment_tree.items %}
@@ -133,7 +137,7 @@
         <!-- 답변 -->
         <div class="answerView">
             <!-- 답변 번호 -->
-            <div class="answerCount" id="answer-{{ answer.id }}">답변 {{ answer.id }}</div>
+            <div class="answerCount" id="answer-{{ answer.id }}">답변 {{ forloop.counter }}</div>
             <!-- 답변 정보 (작성자, 날짜) -->
             <div class="answerMeta" id="answer-{{ answer.id }}-meta">
                 <div class="writer-profile-img">
@@ -152,12 +156,12 @@
                     class="recommend">
                         <i class="fa-regular fa-heart" style="color: rgb(183, 84, 79);"></i
                     ></a> 
-                    좋아요 {{ question.voter.count }}
+                    좋아요 {{ answer.voter.count }}
                 </div>
 
                 <!-- 댓글 버튼 -->
                 <div id="comment_create_btn_{{ answer.id|add:10000 }}" class="commentBtn" data-form-url="{% url 'cmapp:comment_create' question.id answer.id 0 %}" data-comment-id="{{ answer.id|add:10000 }}" data-username="{{ user.username }}">
-                    <i class="fa-regular fa-comment" style="color: rgb(95, 93, 93)"></i> 댓글 {{ question.comment_set.count }}
+                    <i class="fa-regular fa-comment" style="color: rgb(95, 93, 93)"></i> 댓글 {{ answer.comment_set.count }}
                 </div>
             </div>
         </div>
@@ -167,20 +171,18 @@
         <div class="commentBox" id="answer-1-commentBox" style="display: none;"> 
             <span id="comment_create_part_{{ answer.id|add:10000 }}">댓글</span>
             <!-- 댓글 작성 영역 -->
-            <form action="{% url 'cmapp:comment_create' question.id answer.id 0 %}" method="post" class="comment-input" id="comment_create_{{ answer.id|add:10000 }}">
+            <form action="{% url 'cmapp:comment_create' question.id answer.id 0 %}" method="post" class="comment-input" id="comment_top_create_{{ answer.id|add:10000 }}">
                 {% csrf_token %}
                 {% if form.prefix == 'comment'%}
                 {% include "form_errors.html" %}
                 {% endif %}
                 <div id="answer-comment-writer" class="commentWriter">{{ user.username }}</div>
-                <div class="mb-3">
-                    <div
+                <input
                     {% if not user.is_authenticated %} disabled {% endif %}
-                    name="comment-content" id="comment-content" class="commentText" rows="5" contenteditable="true"
-                    placeholder="댓글을 입력하세요."></div>
-                </div>
+                    name="comment-content" id="comment-content-{{ answer.id|add:10000 }}" class="commentText"
+                    placeholder="댓글을 입력하세요.">
+                </input>
                 <input type="submit" value="등록" class="commentCreateBtn">
-                {% comment %} <button onclick="form.remove();"class="btn btn-danger">x</button> {% endcomment %}
             </form>
 
             <!-- 현재 답변 댓글 목록 -->
@@ -256,12 +258,9 @@
                 {% include "form_errors.html" %}
                 {% endif %}
                 <div id="answer-comment-writer" class="commentWriter">${username}</div>
-                <div class="mb-3">
-                    <div
-                    {% if not user.is_authenticated %} disabled {% endif %}
-                    name="comment-content" id="comment-content" class="commentText" rows="5" contenteditable="true"
-                    placeholder="댓글을 입력하세요."></div>
-                </div>
+                <textarea
+                    {% if not user.is_authenticated %} disabled {% endif %} name="comment-content" id="comment-content-${comment_id}" class="commentText" placeholder="댓글을 입력하세요." onkeyup="autoResize(this)" onkeydown="autoResize(this)"
+                    rows="2"></textarea>
                 <input type="submit" value="등록" class="commentCreateBtn">
             </form>
             `;
@@ -272,11 +271,15 @@
 
             var formElement = formContainer.querySelector('form');
 
-            // part 영역 아래에 폼 추가
+            // part 영역(댓글과) 아래에 폼 추가
             var part = document.getElementById('comment-content-' + comment_id);
             node = part.parentNode.insertBefore(formElement, part.nextSibling);
-            console.log(node);
         }
+    }
+
+    function autoResize(textarea) {
+        textarea.style.height = '1px';
+        textarea.style.height = (14 + textarea.scrollHeight) + 'px';
     }
 </script>
 {% endblock %}
