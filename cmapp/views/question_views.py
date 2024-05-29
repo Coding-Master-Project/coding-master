@@ -21,7 +21,7 @@ def question_create(request):
         form = QuestionForm()
     
     context = {'form': form}
-    return render(request, 'cmapp/question_form.html', context)
+    return render(request, 'html/Question/write.html', context)
 
 #질문 수정
 @login_required(login_url='common:login')

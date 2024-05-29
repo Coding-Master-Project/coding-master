@@ -47,6 +47,11 @@
 <!-- 자바스크립트 -->
 <!-- Bootstrap JS -->
 <script src="{% static 'bootstrap.min.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        initializeLoginModal();
+    });
+</script>
 
 <!-- 삽입할 자바스크립트 Start -->
 {% block script %}
