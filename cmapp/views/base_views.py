@@ -14,24 +14,16 @@ def index(request):
         if type == 'search-title': #제목 검색
             question_list = question_list.filter(
                 Q(subject__icontains=kw) 
-            ).distinct()
+            )
         elif type == 'search-content': #내용 검색
             question_list = question_list.filter(
                 Q(content__icontains=kw) 
-            ).distinct()
+            )
         elif type == 'search-t+c': #제목+내용 검색
             question_list = question_list.filter(
                 Q(subject__icontains=kw) | #제목
                 Q(content__icontains=kw) #내용
-            ).distinct()
-
-        # question_list = question_list.filter(
-        #     Q(subject__icontains=kw) | #제목 검색
-        #     Q(content__icontains=kw) | #내용 검색
-        #     Q(answer__content__icontains=kw) | #답변 내용 검색
-        #     Q(author__username__icontains=kw) | #질문 글쓴이 검색
-        #     Q(answer__author__username__icontains=kw) #답변 글쓴이 검색
-        # ).distinct()
+            ).distinct() #distinct는 중복 처리
 
     paginator = Paginator(question_list, 10) #페이지 당 10개씩 보여주기
     page_obj = paginator.get_page(page)
@@ -65,7 +57,7 @@ def detail(request, question_id):
     session_cookie = request.COOKIES.get('sessionid') # 로그인할 때 생기는 sessionid 쿠키 받아오기
     print(session_cookie)
     cookie_name = F'question_views:{session_cookie}' # 쿠키 이름 설정, f-string 문자열 포맷팅 이용 
-    response = render(request, 'cmapp/question_detail.html', context)
+    response = render(request, 'html/Question/view.html', context)
 
     if request.COOKIES.get(cookie_name) is not None: # 사용자가 글을 1개라도 조회했을 때
         cookies = request.COOKIES.get(cookie_name) # 현재 클라이언트의 쿠키 얻어오기
