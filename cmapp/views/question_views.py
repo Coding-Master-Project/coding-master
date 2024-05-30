@@ -18,7 +18,7 @@ def question_create(request):
             question.author = request.user
             question.create_date = timezone.now()
             question.save()
-            return redirect('cmapp:index')
+            return redirect('cmapp:list', 0)
     else:
         form = QuestionForm()
     
@@ -42,7 +42,7 @@ def question_modify(request, question_id):
     else:
         form = QuestionForm(instance=question)
     context = {'form': form}
-    return render(request, 'cmapp/question_form.html', context)
+    return render(request, 'html/Question/write.html', context)
 
 #질문 삭제
 @login_required(login_url='common:login')
@@ -52,7 +52,7 @@ def question_delete(request, question_id):
         messages.error(request, '삭제권한이 없습니다')
         return redirect('cmapp:detail', question_id=question.id)
     question.delete()
-    return redirect('cmapp:index')
+    return redirect('cmapp:list', 0)
 
 #질문 추천
 @login_required(login_url='common:login')
