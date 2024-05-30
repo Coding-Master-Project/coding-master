@@ -4,11 +4,13 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
 from cmapp.forms import QuestionForm
-from cmapp.models import Question
+from cmapp.models import Question, PLanguage
 
 #질문 등록
 @login_required(login_url='common:login')
 def question_create(request):
+    planguage_list = PLanguage.objects.all()
+
     if request.method == 'POST':
         form = QuestionForm(request.POST, request.FILES) # 파일(이미지) 정보는 request.FILES 방식으로 받기 때문에 추가
         if form.is_valid():
@@ -16,11 +18,11 @@ def question_create(request):
             question.author = request.user
             question.create_date = timezone.now()
             question.save()
-            return redirect('cmapp:index')
+            return redirect('cmapp:list', 0)
     else:
         form = QuestionForm()
     
-    context = {'form': form}
+    context = {'form': form, 'planguage_list': planguage_list}
     return render(request, 'html/Question/write.html', context)
 
 #질문 수정
@@ -40,7 +42,7 @@ def question_modify(request, question_id):
     else:
         form = QuestionForm(instance=question)
     context = {'form': form}
-    return render(request, 'cmapp/question_form.html', context)
+    return render(request, 'html/Question/write.html', context)
 
 #질문 삭제
 @login_required(login_url='common:login')
@@ -50,7 +52,7 @@ def question_delete(request, question_id):
         messages.error(request, '삭제권한이 없습니다')
         return redirect('cmapp:detail', question_id=question.id)
     question.delete()
-    return redirect('cmapp:index')
+    return redirect('cmapp:list', 0)
 
 #질문 추천
 @login_required(login_url='common:login')

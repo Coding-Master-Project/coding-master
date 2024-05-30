@@ -4,8 +4,12 @@ from django.db.models import Q
 
 from cmapp.models import Question, Comment, PLanguage
 
-#질문 목록(메인)
-def index(request, planguage_id):
+#홈(메인 index)
+def index(request):
+    return render(request, 'html/Home/home.html')
+
+#질문 목록
+def list(request, planguage_id):
     print(planguage_id)
     page = request.GET.get('page', '1') #페이지
     kw = request.GET.get('kw', '') #검색어
