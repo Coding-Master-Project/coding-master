@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% load cmapp_filter %}
+{% block content %}
+<div class="container my-3">
+    <!-- message 표시 -->
+    {% if messages %}
+    <div class="alert alert-danger my-3" role="alert">
+    {%for message in messages %}
+        <strong>{{ message.tags }}</strong>
+        <ul><li>{{ message.message }}</li></ul>
+    {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- 질문 -->
+    <h2 class="border-bottom py-2">{{ information.subject }}</h2>
+    <div class="card my-3">
+        <div class="card-body">
+            <div class="card-text">{{ information.content|mark }}</div>
+            {% if information.imgs %}
+            <img class="card-img-bottom" src="{{ information.imgs.url }}" alt="Card image cap">
+            {% endif %}
+            <div class="d-flex justify-content-end">
+                {% if information.modify_date %}
+                <div class="badge bg-light text-dark p-2 text-start mx-3">
+                    <div class="mb-2">수정 일시</div>
+                    <div>{{ information.modify_date }}</div>
+                </div>
+                {% endif %}
+                <div class="badge bg-light text-dark p-2 text-start">
+                    <div class="mb-2">{{ information.author.username }}</div>
+                    <div class="mb-2">{{ information.create_date }}</div>
+                    <div>{{ information.views }}명이 이 글을 보았습니다.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 질문 추천/수정/삭제 -->
+    <div class="my-3">
+        <a href="javascript:void(0)" data-uri="{% url 'cmapp:information_vote' information.id %}" class="recommend btn btn0sm btn-outline-secondary">추천
+            <span class="badge rounded-pill bg-success">{{ information.voter.count }}</span>
+        </a>
+        {% if request.user == question.author %}
+        <a href="{% url 'cmapp:information_modify' information.id %}" class="btn btn-sm btn-outline-secondary">수정</a>
+        <a href="javascript:void(0)" class="delete btn btn-sm btn-outline-secondary" data-uri="{% url 'cmapp:information_delete' information.id %}">삭제</a>
+        {% endif %}
+    </div>
+
+    <!-- 댓글 -->
+    <h5 class="border-bottom my-3 py-2">{{ information.comment_set.count }}개의 댓글이 있습니다.</h5>
+    {% for comment_id, comment_data in comment_tree.items %}
+    {% if comment_data.c.answer_id == None and comment_id in comment_id_list  %}
+        {% include 'cmapp/comment.html' with comment_tree=comment_tree comment_data=comment_data comment=comment_data.c information_id=information.id answer_id=0 %}
+    {% endif %}
+    {% endfor %}
+
+    <!-- 댓글 등록 -->
+    <form action="{% url 'cmapp:comment_create' information.id 0 0 %}" method="post" class="my-3">
+        {% csrf_token %}
+        {% if form.prefix == 'comment' %}
+        {% include "form_errors.html" %}
+        {% endif %}
+
+        <div class="mb-3">
+            <label for="comment-content" class="form-label">댓글내용</label>
+            <textarea 
+            {% if not user.is_authenticated %} disabled {% endif %}
+            name="comment-content" id="comment-content" class="form-control" rows="5"></textarea>
+        </div>
+        <input type="submit" value="댓글등록" class="btn btn-primary">
+    </form>
+
+    <!-- 답변 -->
+    <h5 class="border-bottom my-3 py-2">{{ information.answer_set.count }}개의 답변이 있습니다.</h5>
+    {% for answer in information.answer_set.all %}
+    <a id="answer_{{ answer.id }}"></a>
+    <div class="card my-3">
+        <div class="card-body">
+            <div class="card-text">{{ answer.content|mark }}</div>
+            <div class="d-flex justify-content-end">
+                {% if answer.modify_date %}
+                <div class="badge bg-light text-dark p-2 text-start mx-3">
+                    <div class="mb-2">수정 일시</div>
+                    <div>{{ answer.modify_date }}</div>
+                </div>
+                {% endif %}
+                <div class="badge bg-light text-dark p-2 text-start">
+                    <div class="mb-2">{{ answer.author.username }}</div>
+                    <div>{{ answer.create_date }}</div>
+                </div>
+            </div>
+
+            <!-- 답변 추천/수정/삭제 -->
+            <div class="my-3">
+                <a href="javascript:void(0)" data-uri="{% url 'cmapp:answer_vote' answer.id  %}"
+               class="recommend btn btn-sm btn-outline-secondary">추천
+                    <span class="badge rounded-pill bg-success">{{answer.voter.count}}</span>
+                </a>
+                {% if request.user == answer.author %}
+                <a href="{% url 'cmapp:answer_modify' answer.id  %}" 
+                class="btn btn-sm btn-outline-secondary">수정</a>
+                <a href="#" class="delete btn btn-sm btn-outline-secondary "
+               data-uri="{% url 'cmapp:answer_delete' answer.id  %}">삭제</a>
+                {% endif %}
+            </div>
+
+            <!-- 댓글 달기 버튼 -->
+            <button onclick="show_comment_create('{% url 'cmapp:comment_create' question.id answer.id 0 %}', {{ answer.id|add:10000 }})" class="btn btn-primary" id = "comment_create_btn_{{ answer.id|add:10000 }}">댓글 달기</button>
+
+            <!-- 답변의 댓글 -->
+            <div class="border-bottom my-3 py-2">{{ answer.comment_set.count }}개의 댓글이 있습니다.</div>
+            {% for comment_id, comment_data in comment_tree.items %}
+            <!-- 현재 답변의 댓글만 -->
+            {% if comment_data.c.answer_id == answer.id and comment_id in comment_id_list %}
+                {% include 'cmapp/comment.html' with comment_tree=comment_tree comment_data=comment_data comment=comment_data.c information_id=information.id answer_id=answer.id %}
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+
+    <!-- 답변 등록 -->
+    <form action="{% url 'cmapp:answer_create' information.id %}" method="post" class="my-3">
+    {% csrf_token %}
+
+    <!-- prefix로 form 구분, 아래 폼 필드 name과 id, for 등을 다 (prefix)-(기존), ex. answer-content 식으로 바꿔줘야 에러 안 남!!! -->
+    {% if form.prefix == 'answer' %} 
+    {% include "form_errors.html" %}
+    {% endif %}
+    
+    <div class="mb-3">
+        <label for="answer-content" class="form-label">답변내용</label>
+        <textarea 
+        {% if not user.is_authenticated %} disabled {% endif %}
+        name="answer-content" id="answer-content" class="form-control" rows="15"></textarea>
+    </div>
+    <input type="submit" value="답변등록" class="btn btn-primary">
+    </form>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type='text/javascript'>
+const delete_elements = document.getElementsByClassName("delete");
+Array.from(delete_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("정말로 삭제하시겠습니까?")) {
+            location.href = this.dataset.uri;
+        };
+    });
+});
+
+
+const recommend_elements = document.getElementsByClassName("recommend");
+Array.from(recommend_elements).forEach(function(element) {
+    element.addEventListener('click', function() {
+        if(confirm("정말로 추천하시겠습니까?")) {
+            location.href = this.dataset.uri;
+        };
+    });
+});
+
+// 댓글 달기 버튼 -> 댓글 등록 부분 보여주기
+function show_comment_create(form_url, comment_id) {
+    // 기존에 열려 있는 모든 폼을 닫기
+    var openForms = document.querySelectorAll('form[id^="comment_create_"]');
+    openForms.forEach(function(form) {
+        form.remove();
+    });
+
+    // 폼 HTML을 문자열로 작성
+    var formHtml = `
+        <form action="${form_url}" method="post" class="my-3" id="comment_create_${comment_id}">
+            {% csrf_token %}
+            {% if form.prefix == 'comment'%}
+            {% include "form_errors.html" %}
+            {% endif %}
+            <div class="mb-3">
+                <label for="comment-content" class="form-label">댓글내용</label>
+                <textarea 
+                {% if not user.is_authenticated %} disabled {% endif %}
+                name="comment-content" id="comment-content" class="form-control" rows="5"></textarea>
+            </div>
+            <input type="submit" value="댓글등록" class="btn btn-primary">
+            <button onclick="form.remove();"class="btn btn-danger">x</button>
+        </form>
+    `;
+
+    // 새로운 div 요소를 생성하고 HTML을 삽입
+    var formContainer = document.createElement('div');
+    formContainer.innerHTML = formHtml;
+
+    var formElement = formContainer.querySelector('form');
+    
+    // 버튼 아래에 폼 추가
+    var button = document.getElementById('comment_create_btn_' + comment_id);
+    node = button.parentNode.insertBefore(formElement, button.nextSibling);
+    console.log(node);
+}
+
+</script>
+{% endblock %}
