@@ -35,10 +35,18 @@
                 </li>
             </ul>
         </nav>
-        <!-- 로그인 버튼 -->
-        <div class="login-btn">
-            로그인
-        </div>
+        <!-- 로그인 버튼 / 로그아웃 버튼 -->
+        {% if user.is_authenticated %}
+            <a class="nav-link" href="{% url 'common:logout' %}">
+                {{ user.username }}
+                {% if user.is_superuser %}
+                <span style="color: gold;">(관리자)</span>
+                {% endif %}
+                (로그아웃)
+            </a>
+        {% else %}
+            <a class="login-btn">로그인</a>
+        {% endif %}
     </header>
 
     <!-- 스크롤이 내려갔을때 .active 클래스를 addClass 함 -->

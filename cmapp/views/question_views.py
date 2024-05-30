@@ -29,6 +29,7 @@ def question_create(request):
 @login_required(login_url='common:login')
 def question_modify(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
+    planguage_list = PLanguage.objects.all()
     if request.user != question.author:
         messages.error(request, '수정권한이 없습니다')
         return redirect('cmapp:question_detail', question_id=question.id)
@@ -41,7 +42,8 @@ def question_modify(request, question_id):
             return redirect('cmapp:question_detail', question_id=question.id)
     else:
         form = QuestionForm(instance=question)
-    context = {'form': form}
+        selected_planguage_id = question.planguage.id
+    context = {'form': form, 'planguage_list': planguage_list, 'selected_planguage_id': selected_planguage_id}
     return render(request, 'html/Question/write.html', context)
 
 #질문 삭제
@@ -58,8 +60,8 @@ def question_delete(request, question_id):
 @login_required(login_url='common:login')
 def question_vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
-    if request.user == question.author:
-        messages.error(request, '본인이 작성한 글은 추천할수 없습니다')
+    if request.user in question.voter.all():
+        question.voter.remove(request.user)
     else:
         if request.user in question.voter.all():
             question.voter.remove(request.user)

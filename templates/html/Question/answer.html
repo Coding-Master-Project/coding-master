@@ -1,97 +1,65 @@
-<!DOCTYPE html>
-<html lang="ko">
+{% extends 'html/base.html' %}
+{% load cmapp_filter %}
+{% load static %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>답변 작성</title>
+{% block title %}<title>답변 작성</title>{% endblock %}
 
-    <link rel="stylesheet" href="/css/common.css">
-    <link rel="stylesheet" href="/css/Login/login.css">
-    <link rel="stylesheet" href="/css/top-background.css">
-    <link rel="stylesheet" href="/css/Question/answer.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% block css %}<link rel="stylesheet" href="{% static '/css/Question/answer.css' %}">{% endblock %}
 
-    <script src="/js/jquery-3.7.1.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $(".headers").load("/html/header.html");
-            $(".footers").load("/html/footer.html");
-            $(".login").load("/html/Login/login.html", function () {
-                initializeLoginModal();
-            });
-        });
-    </script>
-</head>
+{% block content %}
+<!-- top 배경이미지 -->
+<div class="top-background">
+    <h1 class="top-background-text">질문</h1>
+</div>
 
-<body>
-    <div class="headers"></div>
-
-    <div class="login"></div>
-
-    <div class="top-background">
-        <h1 class="top-background-text">질문</h1>
+<main class="question-write">
+    <div class="answer-left">
+        <div class="questionView">
+            <!-- 질문 제목 영역 -->
+            <div class="question-view-top">
+                <!-- 해당 언어 -->
+                <div class="questionLanguage">
+                    <p>[{{ question.planguage }}]</p>
+                </div>
+                <!-- 질문 제목 -->
+                <div class="questionSubject">
+                    <p>{{ question.subject }}</p>
+                </div>
+            </div>
+            <!-- 질문 내용 -->
+            <div class="question-view-content">
+                {% if question.imgs %}
+                    <img id="question-img-1" src="{{ question.imgs.url }}"> <!-- ## 이미지 나중에 배열로 바뀔 거라, 여기 for문으로 바뀌고, id 뒤에 몇번째 이미지인지 번호가 붙을 거임 -->
+                {% endif %}
+                <br />
+                {{ question.content|mark }}
+            </div>
+        </div>
     </div>
-
-    <main class="question-write">
-        <div class="answer-left">
-            <div class="questionView">
-                <!-- 질문 제목 영역 -->
-                <div class="question-view-top">
-                    <!-- 해당 언어 -->
-                    <div class="questionLanguage">
-                        <p>[C]</p>
-                    </div>
-                    <!-- 질문 제목 -->
-                    <div class="questionSubject">
-                        <p>우리학교 YB 온다!!!</p>
-                    </div>
-                </div>
-                <!-- 질문 내용 -->
-                <div class="question-view-content">
-                    <img
-                        src="https://search.pstatic.net/common/?src=http%3A%2F%2Fimgnews.naver.net%2Fimage%2F022%2F2024%2F05%2F19%2F20240519504326_20240519114403587.jpg&type=sc960_832">
-                    <br />
-                    안녕하세요. 자료구조 조교 채현우입니다.
-
-                    과제 3의 성적이 게시되었습니다.
-
-                    성적 확인은 집현 캠퍼스 성적부를 통해 가능합니다.
-
-                    이의 신청은 이메일(hyunwoo0081@gmail.com)로 해주시거나,
-
-                    005분반인 학생분들은 오늘(5/16 목) 또는 다음주 화요일(5/21) 수업 시간에 직접 질문 주셔도 됩니다.
-
-                    이의 신청은 다음 주 화요일(5/21)까지 받겠습니다.
-
-                    감사합니다.
-
-                </div>
-            </div>
+    <div class="answer-right">
+        <div class="write-top">
+            <span>답변</span>작성
         </div>
-        <div class="answer-right">
-            <div class="write-top">
-                <span>답변</span>작성
+        <form class="writeForm" id="question-write-container" action="{% url 'cmapp:answer_create' question.id %}" method="post">
+        {% csrf_token %}
+
+        <!-- prefix로 form 구분, 아래 폼 필드 name과 id, for 등을 다 (prefix)-(기존), ex. answer-content 식으로 바꿔줘야 에러 안 남!!! -->
+        {% if form.prefix == 'answer' %} 
+        {% include "form_errors.html" %}
+        {% endif %}
+
+            <div class="writeForm-content">
+                <textarea {% if not user.is_authenticated %} disabled {% endif %} name="answer-content" id="question-content-input" class="writeContent-input" placeholder="내용을 입력하세요"></textarea>
             </div>
-            <form class="writeForm" id="question-write-container" action="" method="post">
-                <div class="writeForm-content">
-                    <textarea id="question-content-input" class="writeContent-input" placeholder="내용을 입력하세요"></textarea>
+            <div class="write-bottom">
+                <div id="question-write-img" class="imgBtn">
+                    <i class="fa-solid fa-image"></i>
+                    <label for="imgs">이미지 첨부</label>
+                    <input type="file" name="imgs" id="imgs">
                 </div>
-                <div class="write-bottom">
-                    <div id="question-write-img" class="imgBtn">
-                        <i class="fa-solid fa-image"></i>이미지 첨부
-                    </div>
-                    <div id="question-write-submit" class="writeBtn">등록</div>
-                </div>
-            </form>
-        </div>
-    </main>
-    <div class="footers"></div>
-
-    <script src="/js/login-modal.js"></script>
-</body>
-
-</html>
+                <input type="submit" value="등록" id="question-write-submit" class="writeBtn">
+            </div>
+        </form>
+    </div>
+</main>
+{% endblock %}
