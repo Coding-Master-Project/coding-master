@@ -23,17 +23,16 @@ def index(request, planguage_id):
         if type == 'search-title': #제목 검색
             question_list = question_list.filter(
                 Q(subject__icontains=kw) 
-            ).distinct()
+            )
         elif type == 'search-content': #내용 검색
             question_list = question_list.filter(
                 Q(content__icontains=kw) 
-            ).distinct()
+            )
         elif type == 'search-t+c': #제목+내용 검색
             question_list = question_list.filter(
                 Q(subject__icontains=kw) | #제목
                 Q(content__icontains=kw) #내용
-            ).distinct()
-
+            ).distinct() #distinct는 중복 처리
 
     paginator = Paginator(question_list, 10) #페이지 당 10개씩 보여주기
     page_obj = paginator.get_page(page)
@@ -91,4 +90,3 @@ def detail(request, question_id):
         return response
 
     return render(request, 'html/Question/view.html', context)
-
