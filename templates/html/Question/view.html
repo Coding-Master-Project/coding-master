@@ -100,7 +100,7 @@
     <div class="commentBox" id="question-commentBox" style="display: none;">
         <span>댓글</span>
         <!-- 댓글 작성 영역 -->
-        <form action="{% url 'cmapp:comment_create' question.id 0 0 %}" method="post" class="comment-input">
+        <form action="{% url 'cmapp:comment_create1' question.id 0 0 %}" method="post" class="comment-input">
             {% csrf_token %}
             {% if form.prefix == 'comment'%}
             {% include "form_errors.html" %}
@@ -160,7 +160,7 @@
                 </div>
 
                 <!-- 댓글 버튼 -->
-                <div id="comment_create_btn_{{ answer.id|add:10000 }}" class="commentBtn" data-form-url="{% url 'cmapp:comment_create' question.id answer.id 0 %}" data-comment-id="{{ answer.id|add:10000 }}" data-username="{{ user.username }}">
+                <div id="comment_create_btn_{{ answer.id|add:10000 }}" class="commentBtn" data-form-url="{% url 'cmapp:comment_create1' question.id answer.id 0 %}" data-comment-id="{{ answer.id|add:10000 }}" data-username="{{ user.username }}">
                     <i class="fa-regular fa-comment" style="color: rgb(95, 93, 93)"></i> 댓글 {{ answer.comment_set.count }}
                 </div>
             </div>
@@ -171,7 +171,7 @@
         <div class="commentBox" id="answer-1-commentBox" style="display: none;"> 
             <span id="comment_create_part_{{ answer.id|add:10000 }}">댓글</span>
             <!-- 댓글 작성 영역 -->
-            <form action="{% url 'cmapp:comment_create' question.id answer.id 0 %}" method="post" class="comment-input" id="comment_top_create_{{ answer.id|add:10000 }}">
+            <form action="{% url 'cmapp:comment_create1' question.id answer.id 0 %}" method="post" class="comment-input" id="comment_top_create_{{ answer.id|add:10000 }}">
                 {% csrf_token %}
                 {% if form.prefix == 'comment'%}
                 {% include "form_errors.html" %}

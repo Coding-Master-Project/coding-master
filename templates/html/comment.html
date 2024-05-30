@@ -10,7 +10,6 @@
             <div class="commentDate">{{ comment.create_date }}</div>
 
             <!-- 답글 쓰기 버튼 -->
-            <button onclick="show_comment_create('{% url 'cmapp:comment_create' question_id answer_id comment.id %}', {{ comment.id }}, '{{ username }}')" class="commentReplyBtn" id = "comment_create_part_{{ comment.id }}">답글 쓰기</button>
         </div>
     </div>
 </div>

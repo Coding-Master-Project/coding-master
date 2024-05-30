@@ -1,232 +1,236 @@
-<!DOCTYPE html>
-<html lang="ko">
+{% extends 'html/base.html' %}
+{% load cmapp_filter %}
+{% load static %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>질문 게시판</title>
+<!-- title -->
+{% block title %}<title>질문 리스트</title>{% endblock %}
 
-    <link rel="stylesheet" href="/css/common.css">
-    <link rel="stylesheet" href="/css/Login/login.css">
-    <link rel="stylesheet" href="/css/top-background.css">
-    <link rel="stylesheet" href="/css/Information/list.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+<!-- custom css -->
+{% block css %}<link rel="stylesheet" href="{% static '/css/Information/list.css' %}">{% endblock %}
 
-    <script src="/js/jquery-3.7.1.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $(".headers").load("/html/header.html");
-            $(".footers").load("/html/footer.html");
-            $(".login").load("/html/Login/login.html", function () {
-                initializeLoginModal();
-            });
-        });
-    </script>
-</head>
+<!-- body content -->
+{% block content %}
 
-<body>
-    <!-- 헤더 -->
-    <div class="headers"></div>
+<!-- top 배경이미지 -->
+<div class="top-background">
+    <h1 class="top-background-text">질문</h1>
+</div>
 
-    <div class="login"></div>
-
-    <!-- top 배경이미지 -->
-    <div class="top-background">
-        <h1 class="top-background-text">정보</h1>
+<!-- 질문 list 영역 -->
+<main class="information-list">
+    <!-- 언어 별 nav -->
+    <div class="information-language-nav">
+        <ul class="languageList">
+            <li class="view-all">
+                <a href="{% url 'cmapp:info_list' 0 %}"><i class="fa-solid fa-house" style="color: rgb(183, 84, 79);"></i>전체</a>
+            </li>
+            {% for planguage in planguage_list %}
+            <li>
+                <a href="{% url 'cmapp:info_list' planguage.id %}"><i class="fa-regular fa-folder" style="color: rgb(183, 84, 79);"></i>{{ planguage.content }}</a>
+            </li>
+            {% endfor %}
+        </ul>
     </div>
 
-    <!-- 정보 list 영역 -->
-    <main class="information-list">
-        <!-- 언어 별 nav -->
-        <div class="information-language-nav">
-            <ul class="languageList">
-                <li class="view-all">
-                    <a href="/"><i class="fa-solid fa-house" style="color: rgb(183, 84, 79);"></i>전체</a>
-                </li>
-                <li class="c">
-                    <a href="/"><i class="fa-regular fa-folder" style="color: rgb(183, 84, 79);"></i>C</a>
-                </li>
-                <li class="c++">
-                    <a href="/"><i class="fa-regular fa-folder" style="color: rgb(183, 84, 79);"></i>C++</a>
-                </li>
-                <li class="c#">
-                    <a href="/"><i class="fa-regular fa-folder" style="color: rgb(183, 84, 79);"></i>C#</a>
-                </li>
-                <li class="python">
-                    <a href="/"><i class="fa-regular fa-folder" style="color: rgb(183, 84, 79);"></i>Python</a>
-                </li>
-                <li class="java">
-                    <a href="/"><i class="fa-regular fa-folder" style="color: rgb(183, 84, 79);"></i>Java</a>
-                </li>
-                <li class="js">
-                    <a href="/"><i class="fa-regular fa-folder" style="color: rgb(183, 84, 79);"></i>Javascript</a>
-                </li>
-                <li class="html">
-                    <a href="/"><i class="fa-regular fa-folder" style="color: rgb(183, 84, 79);"></i>Html</a>
-                </li>
-                <li class="css">
-                    <a href="/"><i class="fa-regular fa-folder" style="color: rgb(183, 84, 79);"></i>Css</a>
-                </li>
-                <li class="others">
-                    <a href="/"><i class="fa-regular fa-folder" style="color: rgb(183, 84, 79);"></i>기타</a>
-                </li>
-            </ul>
+    <!-- 질문 top -->
+    <div class="information-list-top">
+        <!-- 질문 총 개수 -->
+        <div class="information-list-sum">
+            <p>총 {{ information_count }} 건</p>
         </div>
-        <!-- 정보 top -->
-        <div class="information-list-top">
-            <!-- 정보 총 개수 -->
-            <!-- !! span은 장고로 바뀌는 부분 -->
-            <div class="information-list-sum">
-                <p>총 <span>5</span> 건</p>
+        <!-- 질문 관련 검색 영역 -->
+        <!-- ## form 에서 div로 바뀜 -->
+        <div class="information-search-container">
+            <select name="search-key" class="searchKey" id="search_type">
+                <option value="search-title">제목</option>
+                <option value="search-content">내용</option>
+                <option value="search-t+c">제목+내용</option>
+            </select>
+            <div class="information-searchBox">
+                <input type="text" id="search_kw" class="information-search-input" value="{{ kw|default_if_none:'' }}">
+                <button class="searchBtn" id="btn_search"><i class="fa-solid fa-magnifying-glass"></i></button>
             </div>
-            <!-- 정보 관련 검색 영역 -->
-            <form class="information-search-container" action="" method="get">
-                <!-- 정보 분류 (제목/내용/제목+내용) -->
-                <select name="search-key" class="searchKey">
-                    <option value="search-title">제목</option>
-                    <option value="search-content">내용</option>
-                    <option value="search-t+c">제목+내용</option>
-                </select>
-                <!-- 정보 검색 -->
-                <div class="information-searchBox">
-                    <input class="information-search-input" type="text">
-                    <button class="searchBtn" type="submit">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </button>
-                </div>
-            </form>
         </div>
-        <!-- 정보 list 테이블 형식으로 보여줌 -->
-        <table class="information-list-table">
+    </div>
+
+    <!-- 질문 list 테이블 형식으로 보여줌 -->
+    <table class="information-list-table">
+        <thead>
             <tr class="table-header">
                 <th class="informationLanguage">언어</th>
                 <th class="informationSubject">제목</th>
                 <th class="informationWriter">작성자</th>
                 <th class="informationDate">작성일</th>
+                <th class="informationAnswerCount">답변수</th>
                 <th class="informationCount">조회수</th>
             </tr>
-            <tr class="informationBtn clickable" id="information-5">
-                <td class="informationLanguage">C</td>
-                <td class="informationSubject">토요일까지 확통프 과제있음</td>
-                <td class="informationWriter">수빈</td>
-                <td class="informationDate">16:00</td>
-                <td class="informationCount">345</td>
+        </thead>
+        <tbody>
+        {% if information_list %}
+        {% for information in information_list %}
+            <tr class="informationBtn clickable" data-url="{% url 'cmapp:info_detail' information.id %}">
+                <td class="informationLanguage">{{ information.planguage }}</td>
+                <td class="informationSubject">{{ information.subject }}</td>
+                <td class="informationWriter">{{ information.author.username }}</td>
+                <td class="informationDate">{{ information.create_date }}</td>
+                <td class="informationAnswerCount">{{ information.answer_set.count }}</td>
+                <td class="informationCount">{{ information.views }}</td>
             </tr>
-            <tr class="informationBtn clickable" id="information-4">
-                <td class="informationLanguage">C</td>
-                <td class="informationSubject">일요일까지 자구 과제있음</td>
-                <td class="informationWriter">수빈</td>
-                <td class="informationDate">10:00</td>
-                <td class="informationCount">345</td>
+            {% endfor %}
+            {% else %} 
+            <!-- 질문이 없는 경우 -->
+            <tr>
+                <td colspan="5">질문이 없습니다.</td>
             </tr>
-            <tr class="informationBtn clickable" id="information-3">
-                <td class="informationLanguage">C</td>
-                <td class="informationSubject">웹프 과제 또 나옴</td>
-                <td class="informationWriter">수빈</td>
-                <td class="informationDate">2024-05-22</td>
-                <td class="informationCount">345</td>
-            </tr>
-            <tr class="informationBtn clickable" id="information-2">
-                <td class="informationLanguage">C</td>
-                <td class="informationSubject">난 휴학할거야!!!!</td>
-                <td class="informationWriter">수빈</td>
-                <td class="informationDate">2024-05-22</td>
-                <td class="informationCount">345</td>
-            </tr>
-            <tr class="informationBtn clickable" id="information-1">
-                <td class="informationLanguage">C</td>
-                <td class="informationSubject">담주 축제다</td>
-                <td class="informationWriter">수빈</td>
-                <td class="informationDate">2024-05-21</td>
-                <td class="informationCount">345</td>
-            </tr>
-        </table>
-        <!-- 정보 글쓰기 버튼 -->
-        <!-- 누르면 글쓰기 페이지로 넘어감 -->
-        <div class="information-create-btn">
-            <a href="/html/Information/write.html">글쓰기</a>
-        </div>
-        <!-- 질문 pag -->
-        <!-- !! 이부분 장고로 가능하다고 들었음 -->
-        <!-- !! 혹시 디자인으로 내가 해야할 것 있으면 알려줘 -->
-        <!-- !! 현재는 디자인만 보이고 관련 이벤트는 없음 -->
-        <div class="informationPag">
+        {% endif %}
+        </tbody>
+    </table>
+
+    <!-- 질문 글쓰기 버튼 -->
+    <!-- 누르면 글쓰기 페이지로 넘어감 -->
+    <div class="information-create-btn">
+        <a href="{% url 'cmapp:information_create' %}">글쓰기</a>
+    </div>
+
+    <!-- 질문 pag -->
+    <!-- 페이징처리 시작 -->
+    <div class="informationPag">
+        <!-- 처음페이지 -->
+        {% if information_list.number != 1 %}
+            <!-- 버튼 활성화 -->
             <div id="information-list-backward">
-                <i class="fa-solid fa-backward"></i>
+                <a class="page-link" data-page="1" href="javascript:void(0)"><i class="fa-solid fa-backward"></i></a>
             </div>
+        {% else %}
+            <!-- 버튼 비활성화(더 이상 이동할 수 있는 페이지 x) -->
+            <div id="information-list-backward-disabled"> <!-- ## id에 -disabled 붙은 건 비활성화 상태라는 뜻임, 따로 css 안 만들거면 disabled 빼버리면 됨 -->
+                <a class="page-link" tabindex="-1" aria-disabled="true" href="javascript:void(0)"><i class="fa-solid fa-backward"></i></a>
+            </div>
+        {% endif %}
+
+        <!-- 이전페이지 -->
+        {% if information_list.has_previous %}
             <div id="information-list-left-10">
-                <i class="fa-solid fa-caret-left"></i>
+                <a class="page-link" data-page="{{ information_list.number|sub:10 }}" href="javascript:void(0)"><i class="fa-solid fa-caret-left"></i></a>
             </div>
-            <div class="information-list-count">1</div>
-            <div class="information-list-count">2</div>
-            <div class="information-list-count">3</div>
-            <div class="information-list-count">4</div>
-            <div class="information-list-count">5</div>
-            <div class="information-list-count">6</div>
-            <div class="information-list-count">7</div>
-            <div class="information-list-count">8</div>
-            <div class="information-list-count">9</div>
-            <div class="information-list-count">10</div>
+        {% else %}
+            <div id="information-list-left-10-disabled">
+                <a class="page-link" tabindex="-1" aria-disabled="true" href="javascript:void(0)"><i class="fa-solid fa-caret-left"></i></a>
+            </div>
+        {% endif %}
+
+        <!-- 페이지리스트 -->
+        {% for page_number in information_list.paginator.page_range %}
+            {% if page_number > information_list.number|sub:1|div:10|mul:10 and page_number <= information_list.number|sub:1|div:10|add:1|mul:10 %}
+                {% if page_number == information_list.number %}
+                    <div class="information-list-count" aria-current="page">
+                        <a class="page-link" data-page="{{ page_number }}" href="javascript:void(0)">{{ page_number }}</a>
+                    </div>
+                {% else %}
+                    <div class="information-list-count-disbled">
+                        <a class="page-link" data-page="{{ page_number }}" href="javascript:void(0)">{{ page_number }}</a>
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+
+        <!-- 다음페이지 -->
+        {% if information_list.has_next %}
             <div id="information-list-right-10">
-                <i class="fa-solid fa-caret-right"></i>
+                <a class="page-link" data-page="{{ information_list.number|sub:1|div:10|mul:10|add:11 }}" href="javascript:void(0)"><i class="fa-solid fa-caret-right"></i></a>
             </div>
+        {% else %}
+            <div id="information-list-right-10-disabled">
+                <a class="page-link" tabindex="-1" aria-disabled="true" href="javascript:void(0)"><i class="fa-solid fa-caret-right"></i></a>
+            </div>
+        {% endif %}
+
+        <!-- 끝페이지 -->
+        {% if information_list.number != information_list.paginator.count|div:10|add:1 %}
             <div id="information-list-forward">
-                <i class="fa-solid fa-forward"></i>
+                <a class="page-link" data-page="{{ information_list.paginator.count|div:10|add:1 }}" href="javascript:void(0)"><i class="fa-solid fa-forward"></i></a>
             </div>
-        </div>
-    </main>
+        {% else %}
+            <div id="information-list-forward-disabled">
+                <a class="page-link" tabindex="-1" aria-disabled="true" href="javascript:void(0)"><i class="fa-solid fa-forward"></i></a>
+            </div>
+        {% endif %}
+    </div>
+    <!-- 페이징처리 끝 -->
 
-    <!-- 바닥글 -->
-    <div class="footers"></div>
+    <!-- 질문 검색 get form(화면에 보이지 않음) -->
+    <form id="searchForm" method="get" action="{% url 'cmapp:info_list' selected_planguage_id %}">
+        <input type="hidden" id="kw" name="kw" value="{{ kw|default_if_none:'' }}">
+        <input type="hidden" id="page" name="page" value="{{ page }}">
+        <input type="hidden" id="type" name="type" value="{{ type }}">
+    </form>
 
-    <script src="/js/login-modal.js"></script>
-    <script>
-        // 질문 언어 nav 마우스 대면 모양 변함
-        const listItems = document.querySelectorAll('.languageList li');
+</main>
 
-        listItems.forEach(item => {
-            if (item.id !== 'view-all') {
-                item.addEventListener('mouseover', function () {
-                    const icon = this.querySelector('i');
-                    icon.classList.remove('fa-folder');
-                    icon.classList.add('fa-folder-open');
-                });
+{% endblock %}
 
-                item.addEventListener('mouseout', function () {
-                    const icon = this.querySelector('i');
-                    icon.classList.remove('fa-folder-open');
-                    icon.classList.add('fa-folder');
-                });
-            }
-        })
+<!-- js -->
+{% block script %}
+<script type='text/javascript'>
 
-        // 질문 list 테이블 이벤트
-        document.addEventListener('DOMContentLoaded', function () {
-            const rows = document.querySelectorAll('.information-list-table tr.clickable');
+    // 페이지 불러오기
+    const page_elements = document.getElementsByClassName("page-link");
+    Array.from(page_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            document.getElementById('page').value = this.dataset.page;
+            document.getElementById('searchForm').submit();
+        });
+    });
+    
+    // 검색 -> 검색 버튼 폼 제출
+    const btn_search = document.getElementById("btn_search");
+    btn_search.addEventListener('click', function() {
+        document.getElementById('kw').value = document.getElementById('search_kw').value;
+        document.getElementById('page').value = 1; //검색버튼을 클릭할 경우 1페이지부터 조회한다.
+        document.getElementById('type').value = document.getElementById('search_type').value;
+        console.log(document.getElementById('type').value)
+        document.getElementById('searchForm').submit();
+    });
 
-            rows.forEach(row => {
-                // 질문 list에 마우스 가져다대면 배경색 변함
-                row.addEventListener('mouseover', function () {
-                    this.style.backgroundColor = '#f1f1f1';
-                });
+    // 질문 언어 nav 마우스 대면 모양 변함
+    const listItems = document.querySelectorAll('.languageList li');
 
-                row.addEventListener('mouseout', function () {
-                    this.style.backgroundColor = '';
-                });
+    listItems.forEach(item => {
+        if (item.id !== 'view-all') {
+            item.addEventListener('mouseover', function () {
+                const icon = this.querySelector('i');
+                icon.classList.remove('fa-folder');
+                icon.classList.add('fa-folder-open');
+            });
 
-                // 질문 클릭하면 해당 질문 페이지로 이동
-                // !! 일단은 전부 view.html로 이동하게 했음
-                // !! 장고로 이동하게 하고 아래 지워주세용
-                row.addEventListener('click', function () {
-                    const url = 'view.html'
-                    window.location.href = url;
-                });
+            item.addEventListener('mouseout', function () {
+                const icon = this.querySelector('i');
+                icon.classList.remove('fa-folder-open');
+                icon.classList.add('fa-folder');
+            });
+        }
+    })
+
+    // 질문 list 테이블 이벤트
+    document.addEventListener('DOMContentLoaded', function () {
+        const rows = document.querySelectorAll('.information-list-table tr.clickable');
+
+        rows.forEach(row => {
+            // 질문 list에 마우스 가져다대면 배경색 변함
+            row.addEventListener('mouseover', function () {
+                this.style.backgroundColor = '#f1f1f1';
+            });
+
+            row.addEventListener('mouseout', function () {
+                this.style.backgroundColor = '';
+            });
+
+            // 질문 클릭하면 해당 질문 페이지로 이동
+            row.addEventListener('click', function () {
+                console.log(this);
+                window.location.href = this.dataset.url;
             });
         });
-    </script>
-</body>
-
-</html>
+    });
+</script>
+{% endblock %}

@@ -13,16 +13,16 @@
     <header>
         <!-- 로고 이미지 -->
         <div class="logo-img">
-            <a href="{% url 'index' %}">코딩 마스터</a>
+            <a href="{% url 'cmapp:index' 0 %}">코딩 마스터</a>
         </div>
         <!-- nav -->
         <nav>
             <ul class="header-menutop">
                 <li class="question">
-                    <a href="{% url 'index' %}">질문</a> 
+                    <a href="{% url 'cmapp:index' 0 %}">질문</a> 
                 </li>
                 <li class="information">
-                    <a href="/html/Information/list.html">정보</a>
+                    <a href="{% url 'cmapp:info_list' 0 %}">정보</a>
                 </li>
                 <li class="counseling">
                     <a href="/">상담</a>
