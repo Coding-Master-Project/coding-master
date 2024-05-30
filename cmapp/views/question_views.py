@@ -4,11 +4,13 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
 from cmapp.forms import QuestionForm
-from cmapp.models import Question
+from cmapp.models import Question, PLanguage
 
 #질문 등록
 @login_required(login_url='common:login')
 def question_create(request):
+    planguage_list = PLanguage.objects.all()
+
     if request.method == 'POST':
         form = QuestionForm(request.POST, request.FILES) # 파일(이미지) 정보는 request.FILES 방식으로 받기 때문에 추가
         if form.is_valid():
@@ -20,7 +22,7 @@ def question_create(request):
     else:
         form = QuestionForm()
     
-    context = {'form': form}
+    context = {'form': form, 'planguage_list': planguage_list}
     return render(request, 'html/Question/write.html', context)
 
 #질문 수정
