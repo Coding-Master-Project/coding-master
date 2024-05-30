@@ -1,16 +1,16 @@
 from django.urls import path
 
-from .views import base_views,info_list_views,info_views, question_views, answer_views, comment_views
+from .views import question_list_views,info_list_views,info_views, question_views, answer_views, comment_views
 
 app_name = 'cmapp'
 
 urlpatterns = [
     #base_views.py
-    path('question/language/<int:planguage_id>', base_views.index, name='index'), #질문 목록(메인)
-    path('question/<int:question_id>/', base_views.detail, name='detail'), #질문 상세
+    path('question/language/<int:planguage_id>', question_list_views.list, name='question_list'), #질문 목록(메인)
+    path('question/<int:question_id>/', question_list_views.detail, name='question_detail'), #질문 상세
 
     #info_list_views.py
-    path('info/language/<int:planguage_id>', info_list_views.index, name='info_list'),
+    path('info/language/<int:planguage_id>', info_list_views.list, name='info_list'),
     path('info/<int:information_id>/',info_list_views.detail, name='info_detail'),
 
     #question_views.py

@@ -13,13 +13,13 @@
     <header>
         <!-- 로고 이미지 -->
         <div class="logo-img">
-            <a href="{% url 'cmapp:index' 0 %}">코딩 마스터</a>
+            <a href="{% url 'home' %}"><img src="/static/img/logo.png" style="width: 100%; height: 100%;"></a>
         </div>
         <!-- nav -->
         <nav>
             <ul class="header-menutop">
                 <li class="question">
-                    <a href="{% url 'cmapp:index' 0 %}">질문</a> 
+                    <a href="{% url 'cmapp:question_list' 0 %}">질문</a> 
                 </li>
                 <li class="information">
                     <a href="{% url 'cmapp:info_list' 0 %}">정보</a>

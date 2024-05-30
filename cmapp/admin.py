@@ -21,5 +21,4 @@ admin.site.register(Answer, CommentAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(PLanguage, PLanguageAdmin)
 admin.site.register(Information, InformationAdmin)
-
 # Register your models here.

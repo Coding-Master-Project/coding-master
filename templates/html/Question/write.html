@@ -14,32 +14,31 @@
     <div class="write-top">
         <span>질문</span>작성
     </div>
-    <form class="writeForm" id="question-write-container" action="" method="post">
+    <form class="writeForm" id="question-write-container" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% include "form_errors.html" %}
+
         <div class="writeFrom-top">
             <div class="select-container">
-                <select name="write-language" class="selectBox">
+                <select name="planguage" class="selectBox">
                     <option value="language" hidden>언어</option>
-                    <option value="c">C</option>
-                    <option value="c++">C++</option>
-                    <option value="c#">C#</option>
-                    <option value="python">Python</option>
-                    <option value="java">Java</option>
-                    <option value="js">JavaScript</option>
-                    <option value="html">Html</option>
-                    <option value="css">Css</option>
-                    <option value="others">Others</option>
+                    {% for planguage in planguage_list %}
+                    <option value="{{ planguage.id }}">{{ planguage.content }}</option>
+                    {% endfor %}
                 </select>
             </div>
-            <input type="text" id="question-subject-input" class="writeSubject-input" placeholder="제목을 입력하세요">
+            <input type="text" id="question-subject-input" class="writeSubject-input" placeholder="제목을 입력하세요" name="subject" value="{{ form.subject.value|default_if_none:'' }}">
         </div>
         <div class="writeForm-content">
-            <textarea id="question-content-input" class="writeContent-input" placeholder="내용을 입력하세요"></textarea>
+            <textarea id="question-content-input" class="writeContent-input" placeholder="내용을 입력하세요" name="content" rows="10">{{ form.content.value|default_if_none:'' }}</textarea>
         </div>
         <div class="write-bottom">
             <div id="question-write-img" class="imgBtn">
-                <i class="fa-solid fa-image"></i>이미지 첨부
+                <i class="fa-solid fa-image"></i>
+                <label for="imgs">이미지 첨부</label>
+                <input type="file" name="imgs" id="imgs">
             </div>
-            <div id="question-write-submit" class="writeBtn">등록</div>
+            <button type="submit" id="question-write-submit" class="writeBtn">등록</button>
         </div>
     </form>
 </main>

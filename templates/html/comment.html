@@ -2,13 +2,12 @@
  <!-- 댓글이 맨 밑에 추가 -->
  <div id="comment_{{ comment.id }}">
     <!-- 작성자 프로필 img -->
-    <i class="fa-solid fa-hat-wizard" style="color: rgb(183, 84, 79);"></i>
+    <img src="/static/img/profileImg.png" class="profile-img">
     <div class="comment-content" id="comment-content-{{ comment.id }}">
         <div class="commentWriter">{{ comment.author.username }}</div>
         <div class="commentContent">{{ comment.content }}</div>
         <div class="commentBottom">
             <div class="commentDate">{{ comment.create_date }}</div>
-
             <!-- 답글 쓰기 버튼 -->
         </div>
     </div>

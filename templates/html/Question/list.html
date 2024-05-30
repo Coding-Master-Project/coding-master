@@ -22,11 +22,11 @@
     <div class="question-language-nav">
         <ul class="languageList">
             <li class="view-all">
-                <a href="{% url 'cmapp:index' 0 %}"><i class="fa-solid fa-house" style="color: rgb(183, 84, 79);"></i>전체</a>
+                <a href="{% url 'cmapp:question_list' 0 %}"><i class="fa-solid fa-house" style="color: rgb(183, 84, 79);"></i>전체</a>
             </li>
             {% for planguage in planguage_list %}
             <li>
-                <a href="{% url 'cmapp:index' planguage.id %}"><i class="fa-regular fa-folder" style="color: rgb(183, 84, 79);"></i>{{ planguage.content }}</a>
+                <a href="{% url 'cmapp:question_list' planguage.id %}"><i class="fa-regular fa-folder" style="color: rgb(183, 84, 79);"></i>{{ planguage.content }}</a>
             </li>
             {% endfor %}
         </ul>
@@ -68,7 +68,7 @@
         <tbody>
         {% if question_list %}
         {% for question in question_list %}
-            <tr class="questionBtn clickable" data-url="{% url 'cmapp:detail' question.id %}">
+            <tr class="questionBtn clickable" data-url="{% url 'cmapp:question_list' question.id %}">
                 <td class="questionLanguage">{{ question.planguage }}</td>
                 <td class="questionSubject">{{ question.subject }}</td>
                 <td class="questionWriter">{{ question.author.username }}</td>
@@ -159,7 +159,7 @@
     <!-- 페이징처리 끝 -->
 
     <!-- 질문 검색 get form(화면에 보이지 않음) -->
-    <form id="searchForm" method="get" action="{% url 'cmapp:index' selected_planguage_id %}">
+    <form id="searchForm" method="get" action="{% url 'cmapp:question_list' selected_planguage_id %}">
         <input type="hidden" id="kw" name="kw" value="{{ kw|default_if_none:'' }}">
         <input type="hidden" id="page" name="page" value="{{ page }}">
         <input type="hidden" id="type" name="type" value="{{ type }}">

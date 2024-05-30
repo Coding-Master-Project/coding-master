@@ -24,7 +24,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('cmapp/', include('cmapp.urls')),
     path('common/', include('common.urls')),
-    path('', base_views.index, name='index'),
+    path('', base_views.index, name='home'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) # media 경로 추가

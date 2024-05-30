@@ -1,6 +1,6 @@
 /* top 배경 이미지 */
 .top-background {
-    background-image: url('/img/top-background-2.jpg');
+    background-image: url('/static/img/top-background-2.jpg');
 }
 
 /* 정보 리스트 영역 */

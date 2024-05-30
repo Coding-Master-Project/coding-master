@@ -4,11 +4,12 @@ from .models import Question, Answer, Comment, Information
 class QuestionForm(forms.ModelForm):
     class Meta:
         model = Question
-        fields = ['subject', 'content', 'imgs']
+        fields = ['subject', 'content', 'imgs', 'planguage']
         labels = {
             'subject': '제목',
             'content': '내용',
             'imgs': '이미지',
+            'planguage': '언어',
         }
 
 class InfoForm(forms.ModelForm):
