@@ -42,7 +42,7 @@ def answer_modify(request, answer_id):
         form = AnswerForm(instance=answer)
     
     context = {'answer': answer, 'form': form}
-    return render(request, 'cmapp/answer_form.html', context)
+    return render(request, 'html/Question/answer.html', context)
 
 #답변 삭제
 @login_required(login_url='common:login')

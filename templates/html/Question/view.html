@@ -217,7 +217,7 @@
 {% block script %}
 <script type='text/javascript'>
 
-    // 답변 쓰기 버튼
+    {% comment %} // 답변 쓰기 버튼
     document.addEventListener('DOMContentLoaded', function () {
         const createButton = document.querySelector('.createBtn');
         // 답변 쓰기 버튼 클릭하면 답변 쓸 수 있는 페이지로 이동
@@ -228,7 +228,7 @@
                 window.location.href = url;
             });
         }
-    });
+    }); {% endcomment %}
 
     // 질문 삭제 버튼
     const delete_elements = document.getElementsByClassName("delete");
