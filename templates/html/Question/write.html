@@ -1,77 +1,45 @@
-<!DOCTYPE html>
-<html lang="ko">
+{% extends 'html/base.html' %}
+{% load static %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>질문 작성</title>
+{% block title %}<title>질문 작성</title>{% endblock %}
 
-    <link rel="stylesheet" href="/css/common.css">
-    <link rel="stylesheet" href="/css/Login/login.css">
-    <link rel="stylesheet" href="/css/top-background.css">
-    <link rel="stylesheet" href="/css/Question/write.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% block css %}<link rel="stylesheet" href="{% static '/css/Question/write.css' %}">{% endblock %}
 
-    <script src="/js/jquery-3.7.1.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $(".headers").load("/html/header.html");
-            $(".footers").load("/html/footer.html");
-            $(".login").load("/html/Login/login.html", function () {
-                initializeLoginModal();
-            });
-        });
-    </script>
-</head>
+{% block content %}
+<div class="top-background">
+    <h1 class="top-background-text">질문</h1>
+</div>
 
-<body>
-    <div class="headers"></div>
-
-    <div class="login"></div>
-
-    <div class="top-background">
-        <h1 class="top-background-text">질문</h1>
+<main class="question-write">
+    <div class="write-top">
+        <span>질문</span>작성
     </div>
+    <form class="writeForm" id="question-write-container" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% include "form_errors.html" %}
 
-    <main class="question-write">
-        <div class="write-top">
-            <span>질문</span>작성
+        <div class="writeFrom-top">
+            <div class="select-container">
+                <select name="planguage" class="selectBox">
+                    <option value="language" hidden>언어</option>
+                    {% for planguage in planguage_list %}
+                    <option value="{{ planguage.id }}">{{ planguage.content }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <input type="text" id="question-subject-input" class="writeSubject-input" placeholder="제목을 입력하세요" name="subject" value="{{ form.subject.value|default_if_none:'' }}">
         </div>
-        <form class="writeForm" id="question-write-container" action="" method="post">
-            <div class="writeFrom-top">
-                <div class="select-container">
-                    <select name="write-language" class="selectBox">
-                        <option value="language" hidden>언어</option>
-                        <option value="c">C</option>
-                        <option value="c++">C++</option>
-                        <option value="c#">C#</option>
-                        <option value="python">Python</option>
-                        <option value="java">Java</option>
-                        <option value="js">JavaScript</option>
-                        <option value="html">Html</option>
-                        <option value="css">Css</option>
-                        <option value="others">Others</option>
-                    </select>
-                </div>
-                <input type="text" id="question-subject-input" class="writeSubject-input" placeholder="제목을 입력하세요">
+        <div class="writeForm-content">
+            <textarea id="question-content-input" class="writeContent-input" placeholder="내용을 입력하세요" name="content" rows="10">{{ form.content.value|default_if_none:'' }}</textarea>
+        </div>
+        <div class="write-bottom">
+            <div id="question-write-img" class="imgBtn">
+                <i class="fa-solid fa-image"></i>
+                <label for="imgs">이미지 첨부</label>
+                <input type="file" name="imgs" id="imgs">
             </div>
-            <div class="writeForm-content">
-                <textarea id="question-content-input" class="writeContent-input" placeholder="내용을 입력하세요"></textarea>
-            </div>
-            <div class="write-bottom">
-                <div id="question-write-img" class="imgBtn">
-                    <i class="fa-solid fa-image"></i>이미지 첨부
-                </div>
-                <div id="question-write-submit" class="writeBtn">등록</div>
-            </div>
-        </form>
-    </main>
-    <div class="footers"></div>
-
-    <script src="/js/login-modal.js"></script>
-</body>
-
-</html>
+            <button type="submit" id="question-write-submit" class="writeBtn">등록</button>
+        </div>
+    </form>
+</main>
+{% endblock %}

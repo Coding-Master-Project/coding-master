@@ -1,5 +1,5 @@
 .top-background {
-    background-image: url('/img/top-background-1.jpg');
+    background-image: url('/static/img/top-background-1.jpg');
 }
 
 .question-write {
@@ -95,6 +95,10 @@
     border-radius: 7px;
     color: white;
     font-size: 17px;
+    border: none;
+    /* ## div button으로 바꾸니까 경계선 생겨서 없앰 */
+    cursor: pointer;
+    /* ## 클릭 손 모양 추가 */
 }
 
 .imgBtn {

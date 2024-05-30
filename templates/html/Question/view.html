@@ -287,18 +287,5 @@
         textarea.style.height = '1px';
         textarea.style.height = (14 + textarea.scrollHeight) + 'px';
     }
-
-    document.addEventListener('input', function (event) {
-        if (event.target.matches('.commentText')) {
-            var button = event.target.closest('form').querySelector('.commentCreateBtn');
-            if (event.target.value.trim() !== '') {
-                button.style.background = 'rgb(183, 84, 79)';
-                button.style.color = 'white';
-            } else {
-                button.style.background = 'white';
-                button.style.color = 'rgb(106, 106, 106)';
-            }
-        }
-    });
 </script>
 {% endblock %}
