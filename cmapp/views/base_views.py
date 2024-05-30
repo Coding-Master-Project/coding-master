@@ -71,7 +71,7 @@ def detail(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     comments = Comment.objects.filter(question=question).order_by('create_date')
     comment_tree, comment_id_list = get_comment_tree(comments)
-    context = {'question': question, 'comment_tree': comment_tree, 'comment_id_list': comment_id_list, 'user': request.user }
+    context = {'question': question, 'comment_tree': comment_tree, 'comment_id_list': comment_id_list, 'user': request.user}
     
     # 중복 방지를 위해 쿠키 설정
     session_cookie = request.COOKIES.get('sessionid') # 로그인할 때 생기는 sessionid 쿠키 받아오기

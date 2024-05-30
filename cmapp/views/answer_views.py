@@ -59,8 +59,8 @@ def answer_delete(request, answer_id):
 @login_required(login_url='common:login')
 def answer_vote(request, answer_id):
     answer = get_object_or_404(Answer, pk=answer_id)
-    if request.user == answer.author:
-        messages.error(request, '본인이 작성한 글은 추천할수 없습니다')
+    if request.user in answer.voter.all():
+        answer.voter.remove(request.user)
     else:
         answer.voter.add(request.user)
     return redirect('cmapp:detail', question_id=answer.question.id)

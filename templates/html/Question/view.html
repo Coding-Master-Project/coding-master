@@ -77,10 +77,20 @@
         <div class="question-view-bottom">
             <!-- 좋아요 -->
             <div id="question-good-btn" class="likeBtn">
-                <a href="javascript:void(0)" data-uri="{% url 'cmapp:question_vote' question.id %}"
-                class="recommend">
-                    <i class="fa-regular fa-heart" style="color: rgb(183, 84, 79);"></i
-                ></a> 
+                <a href="javascript:void(0)" data-uri="{% url 'cmapp:question_vote' question.id %}" class="recommend"
+                {% if user == question.author %}
+                data-impossible="1"
+                {% else %}
+                data-impossible="0"
+                {% endif %}
+                >
+                    <i style="color: rgb(183, 84, 79);"
+                    {% if question in user.voter_question.all %}
+                        class="fa-solid fa-heart"
+                    {% else %}
+                        class="fa-regular fa-heart"
+                    {% endif %}></i>
+                </a>
                 좋아요 {{ question.voter.count }}
             </div>
             <!-- 스크랩 -->
@@ -153,9 +163,19 @@
                 <!-- 좋아요 -->
                 <div id="answer-1-good-btn" class="likeBtn">
                     <a href="javascript:void(0)" data-uri="{% url 'cmapp:answer_vote' answer.id %}"
-                    class="recommend">
-                        <i class="fa-regular fa-heart" style="color: rgb(183, 84, 79);"></i
-                    ></a> 
+                    class="recommend"
+                    {% if user == answer.author %}
+                    data-impossible="1"
+                    {% else %}
+                    data-impossible="0"
+                    {% endif %}
+                    >
+                        <i style="color: rgb(183, 84, 79);"
+                        {% if answer in user.voter_answer.all %}
+                            class="fa-solid fa-heart"
+                        {% else %}
+                            class="fa-regular fa-heart"
+                        {% endif %}></i></a> 
                     좋아요 {{ answer.voter.count }}
                 </div>
 
@@ -227,13 +247,17 @@
         });
     });
 
-    // 질문 추천 버튼
+    // 추천 버튼
     const recommend_elements = document.getElementsByClassName("recommend");
     Array.from(recommend_elements).forEach(function(element) {
         element.addEventListener('click', function() {
-            if(confirm("정말로 추천하시겠습니까?")) {
+            console.log(this.dataset.impossible);
+            if (this.dataset.impossible == "1") {
+                alert('본인이 작성한 글은 추천할 수 없습니다');
+            }
+            else {
                 location.href = this.dataset.uri;
-            };
+            }
         });
     });
 
