@@ -22,11 +22,11 @@
     <div class="question-language-nav">
         <ul class="languageList">
             <li class="view-all">
-                <a href="/"><i class="fa-solid fa-house" style="color: rgb(183, 84, 79);"></i>전체</a>
+                <a href="{% url 'cmapp:index' 0 %}"><i class="fa-solid fa-house" style="color: rgb(183, 84, 79);"></i>전체</a>
             </li>
             {% for planguage in planguage_list %}
             <li>
-                <a href="/"><i class="fa-regular fa-folder" style="color: rgb(183, 84, 79);"></i>{{ planguage.content }}</a>
+                <a href="{% url 'cmapp:index' planguage.id %}"><i class="fa-regular fa-folder" style="color: rgb(183, 84, 79);"></i>{{ planguage.content }}</a>
             </li>
             {% endfor %}
         </ul>
@@ -159,7 +159,7 @@
     <!-- 페이징처리 끝 -->
 
     <!-- 질문 검색 get form(화면에 보이지 않음) -->
-    <form id="searchForm" method="get" action="{% url 'index' %}">
+    <form id="searchForm" method="get" action="{% url 'cmapp:index' selected_planguage_id %}">
         <input type="hidden" id="kw" name="kw" value="{{ kw|default_if_none:'' }}">
         <input type="hidden" id="page" name="page" value="{{ page }}">
         <input type="hidden" id="type" name="type" value="{{ type }}">

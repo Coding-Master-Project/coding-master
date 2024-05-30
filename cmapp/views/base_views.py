@@ -5,11 +5,20 @@ from django.db.models import Q
 from cmapp.models import Question, Comment, PLanguage
 
 #질문 목록(메인)
-def index(request):
+def index(request, planguage_id):
+    print(planguage_id)
     page = request.GET.get('page', '1') #페이지
     kw = request.GET.get('kw', '') #검색어
     type = request.GET.get('type', 'search-title') #검색 타입
-    question_list = Question.objects.order_by('-create_date')
+
+    if planguage_id == 0 :
+        question_list = Question.objects.order_by('-create_date')
+    else :
+        planguage = PLanguage.objects.filter(id=planguage_id).first()
+
+        if planguage:
+            question_list = Question.objects.filter(planguage=planguage).order_by('-create_date')
+
     if kw:
         if type == 'search-title': #제목 검색
             question_list = question_list.filter(
@@ -28,7 +37,14 @@ def index(request):
     paginator = Paginator(question_list, 10) #페이지 당 10개씩 보여주기
     page_obj = paginator.get_page(page)
     planguage_list = PLanguage.objects.all()
-    context = {'question_list': page_obj, 'page': page, 'kw': kw, 'type': type, 'question_count': question_list.count, 'planguage_list': planguage_list}
+    context = {'question_list': page_obj,
+                'page': page,
+                'kw': kw,
+                'type': type,
+                'question_count': question_list.count,
+                'planguage_list': planguage_list,
+                'selected_planguage_id': planguage_id }
+    
     return render(request, 'html/Question/list.html', context) # 나중에 홈 html로 바꿀 예정
 
 # 댓글 계층 구조로 만들기
