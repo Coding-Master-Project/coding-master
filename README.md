@@ -16,5 +16,8 @@ python manage.py runserver
 ```
 서버 실행한 뒤, localhost:8000으로 접속
 
+<<<<<<< HEAD
+=======
 media 폴더 만들고, 안에 img 폴더 만든 다음에 헤더 이미지 저장
 
+>>>>>>> origin/main
