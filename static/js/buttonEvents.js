@@ -54,17 +54,4 @@ $(document).ready(function () {
             $(this).parent().parent().next('.commentBox').slideUp();
         });
     });
-
-    const commentContent = document.querySelector('.commentText');
-    commentContent.addEventListener('input', function () {
-        const submitButton = document.querySelector('.commentCreateBtn');
-        if (commentContent.value) {
-            submitButton.style.background = 'rgb(183, 84, 79)';
-            submitButton.style.color = 'white';
-        }
-        else {
-            submitButton.style.background = 'white';
-            submitButton.style.color = 'rgb(106, 106, 106)';
-        }
-    });
 });

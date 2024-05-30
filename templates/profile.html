@@ -1,19 +1,7 @@
-<!DOCTYPE html>
-<html lang="ko">
+{% extends 'html/base.html' %}
+{% load cmapp_filter %}
+{% load static %}
 
-<head>
+{% block title %}<title></title>{% endblock %}
 
-</head>
-
-<body>
-    <textarea id="question-comment-input" class="commentText" onkeyup="autoResize(this)" onkeydown="autoResize(this)"
-        rows="2" placeholder="댓글을 입력하세요."></textarea>
-    <script>
-        function autoResize(textarea) {
-            textarea.style.height = '1px';
-            textarea.style.height = (10 + textarea.scrollHeight) + 'px';
-        }
-    </script>
-</body>
-
-</html>
+{% block content %}

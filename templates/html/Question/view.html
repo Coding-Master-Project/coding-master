@@ -4,7 +4,8 @@
 
 {% block title %}<title>질문 보기</title>{% endblock %}
 
-{% block css %}<link rel="stylesheet" href="{% static '/css/Question/view.css' %}">{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="{% static '/css/Question/view.css' %}">{% endblock %}
 
 {% block head_script %}
 <script src="{% static '/js/buttonEvents.js' %}"></script>
@@ -14,188 +15,193 @@
 
 <!-- top 배경이미지 -->
 <div class="top-background">
-    <h1 class="top-background-text">질문</h1>
+    <h1 class="top-category">질문</h1>
 </div>
 
 <!-- error message 표시(자기 추천 x 등의 에러 메시지) -->
 {% if messages %}
 <div class="alert alert-danger my-3" role="alert">
-{%for message in messages %}
+    {%for message in messages %}
     <strong>{{ message.tags }}</strong>
-    <ul><li>{{ message.message }}</li></ul>
-{% endfor %}
+    <ul>
+        <li>{{ message.message }}</li>
+    </ul>
+    {% endfor %}
 </div>
 {% endif %}
 
-<!-- 질문 영역 (질문 + 댓글) -->
-<div class="question-view">
-    <!-- 질문만 -->
-    <div class="questionView">
-        <!-- 질문 제목 영역 -->
-        <div class="question-view-top">
-            <!-- 해당 언어 -->
-            <div class="questionLanguage">
-                <p>[{{ question.planguage }}]</p>
-            </div>
-            <!-- 질문 제목 -->
-            <div class="questionSubject">
-                <p>{{ question.subject }}</p>
-            </div>
-        </div>
-        <!-- 질문 수정/삭제 -->
-        <div class="question-top-btn">
-            {% if request.user == question.author %}
-            <a href="{% url 'cmapp:question_modify' question.id %}" class="modifyBtn" id="question-modify-btn">수정</a>
-            <a href="javascript:void(0)" class="deleteBtn" id="question-delete-btn" data-uri="{% url 'cmapp:question_delete' question.id %}">삭제</a>
-            {% endif %}
-        </div>
-        <!-- 질문 정보 (작성자, 날짜, 조회수) -->
-        <div class="question-view-meta">
-            <div class="writer-profile-img">
-                <i class="fa-solid fa-hat-wizard" style="color: rgb(183, 84, 79);"></i>
-            </div>
-            <div class="questionWriter">{{ question.author.username }}</div>
-            <div class="questionDate">{{ question.create_date }}</div>
-            <div class="questionCount">조회수 {{ question.views }}</div>
-        </div>
-        <!-- 질문 내용 -->
-        <div class="question-view-content">
-            {% if question.imgs %}
-                <img id="question-img-1" src="{{ question.imgs.url }}"> <!-- ## 이미지 나중에 배열로 바뀔 거라, 여기 for문으로 바뀌고, id 뒤에 몇번째 이미지인지 번호가 붙을 거임 -->
-            {% endif %}
-            <br/>
-            {{ question.content|mark }}
-        </div>
-
-        <!-- 답변 쓰기 버튼 -->
-        <!-- !! 버튼 누르면 답변 쓰는 화면으로 이동 -->
-        <div class="question-answer-create-btn">
-            <i class="fa-solid fa-pen"></i> 답변 쓰기
-        </div>
-
-        <!-- 좋아요, 스크랩, 댓글 버튼 -->
-        <div class="question-view-bottom">
-            <!-- 좋아요 -->
-            <div id="question-good-btn" class="likeBtn">
-                <a href="javascript:void(0)" data-uri="{% url 'cmapp:question_vote' question.id %}"
-                class="recommend">
-                    <i class="fa-regular fa-heart" style="color: rgb(183, 84, 79);"></i
-                ></a> 
-                좋아요 {{ question.voter.count }}
-            </div>
-            <!-- 스크랩 -->
-            <!-- 스크랩 누르면 자신의 스크랩 목록에 해당 질문 페이지 추가됨 -->
-            <!-- ## 언니가 수정할 거임 -->
-            <div id="question-scrap-btn" class="scrapBtn">
-                <i class="fa-regular fa-star" style="color: rgb(232, 232, 20);"></i> 스크랩
-            </div>
-            <!-- 댓글 -->
-            <div id="question-comment-btn" class="commentBtn">
-                <i class="fa-regular fa-comment" style="color: rgb(95, 93, 93)"></i> 댓글 {{ question.comment_set.count }}
-            </div>
-        </div>
-    </div>
-
-    <!-- 질문 댓글 (댓글 버튼 눌러야 보임) -->
-    <div class="commentBox" id="question-commentBox" style="display: none;">
-        <span>댓글</span>
-        <!-- 댓글 작성 영역 -->
-        <form action="{% url 'cmapp:comment_create' question.id 0 0 %}" method="post" class="comment-input">
-            {% csrf_token %}
-            {% if form.prefix == 'comment'%}
-            {% include "form_errors.html" %}
-            {% endif %}
-            <div id="question-comment-writer" class="commentWriter">{{ user.username }}</div>
-            <textarea
-                {% if not user.is_authenticated %} disabled {% endif %}
-                name="comment-content" id="comment-content" class="commentText"
-                placeholder="댓글을 입력하세요." onkeyup="autoResize(this)" onkeydown="autoResize(this)"
-                rows="2"></textarea>
-            <input type="submit" value="등록" class="commentCreateBtn">
-        </form>
-        <!-- 댓글 목록 -->
-        <div class="comment-list">
-            {% for comment_id, comment_data in comment_tree.items %}
-            {% if comment_data.c.answer_id == None and comment_id in comment_id_list  %}
-                {% include 'html/comment.html' with comment_tree=comment_tree comment_data=comment_data comment=comment_data.c question_id=question.id answer_id=0 username=user.username %}
-            {% endif %}
-            {% endfor %}
-        </div>
-    </div>
-</div>
-
-<!-- 답변 영역 -->
-<div class="question-answer-view">
-    <!-- ## 답변 개수 {{ question.answer_set.count }} <- 이게 변수 -->
-    <h5 class="border-bottom my-3 py-2">답변 수 {{ question.answer_set.count }}</h5>
-    <br/>
-    <!-- 답변 목록 -->
-    {% for answer in question.answer_set.all %}
-    <a id="answer_{{ answer.id }}"></a>
-    <!-- 답변 & 답변 댓글 -->
-    <div class="questionAnswer" id="question-answer-{{ answer.id }}">
-        <!-- 답변 -->
-        <div class="answerView">
-            <!-- 답변 번호 -->
-            <div class="answerCount" id="answer-{{ answer.id }}">답변 {{ forloop.counter }}</div>
-            <!-- 답변 정보 (작성자, 날짜) -->
-            <div class="answerMeta" id="answer-{{ answer.id }}-meta">
-                <div class="writer-profile-img">
-                    <i class="fa-solid fa-hat-wizard" style="color: rgb(183, 84, 79);"></i>
+<!-- 질문 영역 (질문 + 댓글 + 답변) -->
+<div class="View">
+    <!-- 질문과 답변 관리 -->
+    <div class="Question">
+        <!-- 질문만 -->
+        <div class="question-container">
+            <!-- 질문 제목 영역 -->
+            <div class="title">
+                <!-- 해당 언어 -->
+                <div class="Language">
+                    <p>[{{ question.planguage }}]</p>
                 </div>
-                <div class="answerWriter">{{ answer.author.username }}</div>
-                <div class="answerDate">{{ answer.create_date }}</div>
+                <!-- 질문 제목 -->
+                <div class="Subject">
+                    <p>{{ question.subject }}</p>
+                </div>
             </div>
-            <!-- 답변 내용 -->
-            <div class="answerContent">{{ answer.content|mark }}</div>
-            <!-- 좋아요, 댓글 버튼 -->
-            <div class="answer-bottom">
+            <!-- 질문 수정/삭제 -->
+            <div class="postEditor">
+                {% if request.user == question.author %}
+                <a href="{% url 'cmapp:question_modify' question.id %}" class="modifyBtn"
+                    id="question-modify-btn">수정</a>
+                <a href="javascript:void(0)" class="deleteBtn" id="question-delete-btn"
+                    data-uri="{% url 'cmapp:question_delete' question.id %}">삭제</a>
+                {% endif %}
+            </div>
+            <!-- 질문 정보 (작성자, 날짜, 조회수) -->
+            <div class="meta">
+                <img src="/static/img/profileImg.png" class="profile-img">
+                <div class="postDetails">
+                    <div class="Writer">{{ question.author.username }}</div>
+                    <div>
+                        <div class="Date">{{ question.create_date }}</div>
+                        <div class="Count">조회수 <span>{{ question.views }}</span></div>
+                    </div>
+                </div>
+            </div>
+            <!-- 질문 내용 -->
+            <div class="content">
+                {% if question.imgs %}
+                <img id="question-img-1" src="{{ question.imgs.url }}">
+                <!-- ## 이미지 나중에 배열로 바뀔 거라, 여기 for문으로 바뀌고, id 뒤에 몇번째 이미지인지 번호가 붙을 거임 -->
+                {% endif %}
+                <!-- <br /> -->
+                {{ question.content|mark }}
+            </div>
+
+            <!-- 답변 쓰기 버튼 -->
+            <!-- 버튼 누르면 답변 쓰는 컨테이너 생성 -->
+            <div class="createBtn">
+                <i class="fa-solid fa-pen"></i> 답변 쓰기
+            </div>
+
+            <!-- 좋아요, 스크랩, 댓글 버튼 -->
+            <div class="postInteractions">
                 <!-- 좋아요 -->
-                <div id="answer-1-good-btn" class="likeBtn">
-                    <a href="javascript:void(0)" data-uri="{% url 'cmapp:answer_vote' answer.id %}"
-                    class="recommend">
-                        <i class="fa-regular fa-heart" style="color: rgb(183, 84, 79);"></i
-                    ></a> 
-                    좋아요 {{ answer.voter.count }}
+                <div id="question-good-btn" class="likeBtn">
+                    <a href="javascript:void(0)" data-uri="{% url 'cmapp:question_vote' question.id %}"
+                        class="recommend">
+                        <i class="fa-regular fa-heart" style="color: rgb(183, 84, 79);"></i></a>
+                    좋아요 {{ question.voter.count }}
                 </div>
-
-                <!-- 댓글 버튼 -->
-                <div id="comment_create_btn_{{ answer.id|add:10000 }}" class="commentBtn" data-form-url="{% url 'cmapp:comment_create' question.id answer.id 0 %}" data-comment-id="{{ answer.id|add:10000 }}" data-username="{{ user.username }}">
-                    <i class="fa-regular fa-comment" style="color: rgb(95, 93, 93)"></i> 댓글 {{ answer.comment_set.count }}
+                <!-- 스크랩 -->
+                <!-- 스크랩 누르면 자신의 스크랩 목록에 해당 질문 페이지 추가됨 -->
+                <div id="question-scrap-btn" class="scrapBtn">
+                    <i class="fa-regular fa-star" style="color: rgb(232, 232, 20);"></i> 스크랩
+                </div>
+                <!-- 댓글 -->
+                <div id="question-comment-btn" class="commentBtn">
+                    <i class="fa-regular fa-comment" style="color: rgb(95, 93, 93)"></i> 댓글 {{question.comment_set.count }}
                 </div>
             </div>
         </div>
 
-        <!-- 답변 댓글 (댓글 버튼 눌러야 보임) -->
-        <!-- 현재로는 질문 댓글과 유사한 레이아웃을 갖음 -->
-        <div class="commentBox" id="answer-1-commentBox" style="display: none;"> 
-            <span id="comment_create_part_{{ answer.id|add:10000 }}">댓글</span>
+        <!-- 질문 댓글 (댓글 버튼 눌러야 보임) -->
+        <div class="commentBox" id="question-commentBox" style="display: none;">
+            <span>댓글</span>
             <!-- 댓글 작성 영역 -->
-            <form action="{% url 'cmapp:comment_create' question.id answer.id 0 %}" method="post" class="comment-input" id="comment_top_create_{{ answer.id|add:10000 }}">
+            <form action="{% url 'cmapp:comment_create' question.id 0 0 %}" method="post" class="comment-input">
                 {% csrf_token %}
                 {% if form.prefix == 'comment'%}
                 {% include "form_errors.html" %}
                 {% endif %}
-                <div id="answer-comment-writer" class="commentWriter">{{ user.username }}</div>
-                <input
-                    {% if not user.is_authenticated %} disabled {% endif %}
-                    name="comment-content" id="comment-content-{{ answer.id|add:10000 }}" class="commentText"
-                    placeholder="댓글을 입력하세요.">
-                </input>
+                <div id="question-comment-writer" class="commentWriter">{{ user.username }}</div>
+                <textarea {% if not user.is_authenticated %} disabled {% endif %} name="comment-content"
+                    id="comment-content" class="commentText" placeholder="댓글을 입력하세요." onkeyup="autoResize(this)"
+                    onkeydown="autoResize(this)" rows="2"></textarea>
                 <input type="submit" value="등록" class="commentCreateBtn">
             </form>
-
-            <!-- 현재 답변 댓글 목록 -->
+            <!-- 댓글 목록 -->
             <div class="comment-list">
-            {% for comment_id, comment_data in comment_tree.items %}
-            {% if comment_data.c.answer_id == answer.id and comment_id in comment_id_list %}
-                {% include 'html/comment.html' with comment_tree=comment_tree comment_data=comment_data comment=comment_data.c question_id=question.id answer_id=answer.id username=user.username %}
-            {% endif %}
-            {% endfor %}
+                {% for comment_id, comment_data in comment_tree.items %}
+                {% if comment_data.c.answer_id == None and comment_id in comment_id_list %}
+                {% include 'html/comment.html' with comment_tree=comment_tree comment_data=comment_data comment=comment_data.c question_id=question.id answer_id=0 username=user.username %}
+                {% endif %}
+                {% endfor %}
             </div>
         </div>
     </div>
-    {% endfor %}
+
+    <!-- 답변 영역 -->
+    <div class="Answer">
+        <!-- ## 답변 개수 {{ question.answer_set.count }} <- 이게 변수 -->
+        <div class="border-bottom my-3 py-2">답변 수 {{ question.answer_set.count }}</div>
+        <br />
+        <!-- 답변 목록 -->
+        {% for answer in question.answer_set.all %}
+        <a id="answer_{{ answer.id }}"></a>
+        <!-- 답변 & 답변 댓글 -->
+        <div class="answer-container" id="question-answer-{{ answer.id }}">
+            <!-- 답변 -->
+            <div class="answerView">
+                <!-- 답변 번호 -->
+                <div class="answerCount" id="answer-{{ answer.id }}">답변 {{ forloop.counter }}</div>
+                <!-- 답변 정보 (작성자, 날짜) -->
+                <div class="answerMeta" id="answer-{{ answer.id }}-meta">
+                    <div class="writer-profile-img">
+                        <img src="/static/img/profileImg.png" class="profile-img">
+                    </div>
+                    <div class="answerWriter">{{ answer.author.username }}</div>
+                    <div class="answerDate">{{ answer.create_date }}</div>
+                </div>
+                <!-- 답변 내용 -->
+                <div class="answerContent">{{ answer.content|mark }}</div>
+                <!-- 좋아요, 댓글 버튼 -->
+                <div class="answer-bottom">
+                    <!-- 좋아요 -->
+                    <div id="answer-1-good-btn" class="likeBtn">
+                        <a href="javascript:void(0)" data-uri="{% url 'cmapp:answer_vote' answer.id %}"
+                            class="recommend">
+                            <i class="fa-regular fa-heart" style="color: rgb(183, 84, 79);"></i></a>
+                        좋아요 {{ answer.voter.count }}
+                    </div>
+
+                    <!-- 댓글 버튼 -->
+                    <div id="comment_create_btn_{{ answer.id|add:10000 }}" class="commentBtn"
+                        data-form-url="{% url 'cmapp:comment_create' question.id answer.id 0 %}"
+                        data-comment-id="{{ answer.id|add:10000 }}" data-username="{{ user.username }}">
+                        <i class="fa-regular fa-comment" style="color: rgb(95, 93, 93)"></i> 댓글 {{answer.comment_set.count }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- 답변 댓글 (댓글 버튼 눌러야 보임) -->
+            <!-- 현재로는 질문 댓글과 유사한 레이아웃을 갖음 -->
+            <div class="commentBox" id="answer-1-commentBox" style="display: none;">
+                <span id="comment_create_part_{{ answer.id|add:10000 }}">댓글</span>
+                <!-- 댓글 작성 영역 -->
+                <form action="{% url 'cmapp:comment_create' question.id answer.id 0 %}" method="post"
+                    class="comment-input" id="comment_top_create_{{ answer.id|add:10000 }}">
+                    {% csrf_token %}
+                    {% if form.prefix == 'comment'%}
+                    {% include "form_errors.html" %}
+                    {% endif %}
+                    <div id="answer-comment-writer" class="commentWriter">{{ user.username }}</div>
+                    <input {% if not user.is_authenticated %} disabled {% endif %} name="comment-content"
+                        id="comment-content-{{ answer.id|add:10000 }}" class="commentText" placeholder="댓글을 입력하세요.">
+                    <input type="submit" value="등록" class="commentCreateBtn">
+                </form>
+
+                <!-- 현재 답변 댓글 목록 -->
+                <div class="comment-list">
+                    {% for comment_id, comment_data in comment_tree.items %}
+                    {% if comment_data.c.answer_id == answer.id and comment_id in comment_id_list %}
+                    {% include 'html/comment.html' with comment_tree=comment_tree comment_data=comment_data comment=comment_data.c question_id=question.id answer_id=answer.id username=user.username %}
+                    {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 </div>
 
 {% endblock %}
@@ -219,9 +225,9 @@
 
     // 질문 삭제 버튼
     const delete_elements = document.getElementsByClassName("delete");
-    Array.from(delete_elements).forEach(function(element) {
-        element.addEventListener('click', function() {
-            if(confirm("정말로 삭제하시겠습니까?")) {
+    Array.from(delete_elements).forEach(function (element) {
+        element.addEventListener('click', function () {
+            if (confirm("정말로 삭제하시겠습니까?")) {
                 location.href = this.dataset.uri;
             };
         });
@@ -229,9 +235,9 @@
 
     // 질문 추천 버튼
     const recommend_elements = document.getElementsByClassName("recommend");
-    Array.from(recommend_elements).forEach(function(element) {
-        element.addEventListener('click', function() {
-            if(confirm("정말로 추천하시겠습니까?")) {
+    Array.from(recommend_elements).forEach(function (element) {
+        element.addEventListener('click', function () {
+            if (confirm("정말로 추천하시겠습니까?")) {
                 location.href = this.dataset.uri;
             };
         });
@@ -281,5 +287,18 @@
         textarea.style.height = '1px';
         textarea.style.height = (14 + textarea.scrollHeight) + 'px';
     }
+
+    document.addEventListener('input', function (event) {
+        if (event.target.matches('.commentText')) {
+            var button = event.target.closest('form').querySelector('.commentCreateBtn');
+            if (event.target.value.trim() !== '') {
+                button.style.background = 'rgb(183, 84, 79)';
+                button.style.color = 'white';
+            } else {
+                button.style.background = 'white';
+                button.style.color = 'rgb(106, 106, 106)';
+            }
+        }
+    });
 </script>
 {% endblock %}
