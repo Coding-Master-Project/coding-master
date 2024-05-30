@@ -42,7 +42,8 @@ def question_modify(request, question_id):
             return redirect('cmapp:detail', question_id=question.id)
     else:
         form = QuestionForm(instance=question)
-    context = {'form': form, 'planguage_list': planguage_list}
+        selected_planguage_id = question.planguage.id
+    context = {'form': form, 'planguage_list': planguage_list, 'selected_planguage_id': selected_planguage_id}
     return render(request, 'html/Question/write.html', context)
 
 #질문 삭제

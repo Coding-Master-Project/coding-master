@@ -22,7 +22,7 @@ def answer_create(request, question_id):
         form = AnswerForm()
     
     context = {'question': question, 'form': form}
-    return render(request, 'cmapp/question_detail.html', context)
+    return render(request, 'html/Question/answer.html', context)
 
 #답변 수정
 @login_required(login_url='common:login')

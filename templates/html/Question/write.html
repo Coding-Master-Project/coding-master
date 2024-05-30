@@ -23,7 +23,7 @@
                 <select name="planguage" class="selectBox">
                     <option value="language" hidden>언어</option>
                     {% for planguage in planguage_list %}
-                    <option value="{{ planguage.id }}">{{ planguage.content }}</option>
+                    <option value="{{ planguage.id }}" {% if selected_planguage_id == planguage.id %}selected{% endif %}>{{ planguage.content }}</option>
                     {% endfor %}
                 </select>
             </div>
