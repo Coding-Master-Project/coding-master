@@ -1,0 +1,88 @@
+.profile-container {
+    margin-top: 100px;
+    display: flex;
+}
+
+.profileMeta {
+    width: 25%;
+    padding: 30px;
+    border-right: 1px solid black;
+}
+
+.profile-img {
+    width: 100px;
+    height: auto;
+    margin-left: 10px;
+}
+
+.userName {
+    font-size: 30px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.level {
+    padding: 30px 10px;
+    border-bottom: 1px solid rgb(187, 185, 185);
+    border-top: 1px solid rgb(187, 185, 185);
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+    margin-bottom: 15px;
+
+    span {
+        padding-left: 8px;
+        color: black;
+    }
+}
+
+.levelStick {
+    width: 100%;
+    height: 20px;
+    border: 1px solid rgb(209, 24, 24);
+    border-radius: 30px;
+}
+
+.levelProcess {
+    width: 30%;
+    height: 100%;
+    border: 1px solid rgb(209, 24, 24);
+    border-radius: 30px;
+    background-color: rgb(209, 24, 24);
+}
+
+.Btn {
+    margin-top: 20px;
+    padding: 20px 50px;
+    color: rgb(144, 142, 142);
+    font-size: 20px;
+
+    div {
+        margin-bottom: 20px;
+    }
+}
+
+.Btn img {
+    margin-right: 10px;
+    width: 25px;
+    height: auto;
+    filter: invert(83%) sepia(3%) saturate(120%) hue-rotate(314deg) brightness(91%) contrast(87%);
+}
+
+.postView:hover,
+.commentView:hover,
+.like:hover,
+.scrap:hover {
+    color: rgb(209, 24, 24);
+
+    img {
+        filter: invert(18%) sepia(94%) saturate(2732%) hue-rotate(352deg) brightness(92%) contrast(95%);
+    }
+}
+
+.profileContent {
+    width: 70%;
+}
