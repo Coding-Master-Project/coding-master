@@ -133,7 +133,7 @@
     <!-- 답변 영역 -->
     <div class="Answer">
         <!-- ## 답변 개수 {{ question.answer_set.count }} <- 이게 변수 -->
-        <div class="border-bottom my-3 py-2">답변 수 {{ question.answer_set.count }}</div>
+        <div class="border-bottom my-3 py-2">답변 <span>{{ question.answer_set.count }}</span></div>
         <br />
         <!-- 답변 목록 -->
         {% for answer in question.answer_set.all %}
@@ -145,17 +145,17 @@
                 <!-- 답변 번호 -->
                 <div class="answerCount" id="answer-{{ answer.id }}">답변 {{ forloop.counter }}</div>
                 <!-- 답변 정보 (작성자, 날짜) -->
-                <div class="answerMeta" id="answer-{{ answer.id }}-meta">
-                    <div class="writer-profile-img">
-                        <img src="/static/img/profileImg.png" class="profile-img">
+                <div class="meta" id="answer-{{ answer.id }}-meta">
+                    <img src="/static/img/profileImg.png" class="profile-img">
+                    <div class="postDetails">
+                        <div class="Writer">{{ answer.author.username }}</div>
+                        <div class="Date">{{ answer.create_date }}</div>
                     </div>
-                    <div class="answerWriter">{{ answer.author.username }}</div>
-                    <div class="answerDate">{{ answer.create_date }}</div>
                 </div>
                 <!-- 답변 내용 -->
-                <div class="answerContent">{{ answer.content|mark }}</div>
+                <div class="content">{{ answer.content|mark }}</div>
                 <!-- 좋아요, 댓글 버튼 -->
-                <div class="answer-bottom">
+                <div class="postInteractions">
                     <!-- 좋아요 -->
                     <div id="answer-1-good-btn" class="likeBtn">
                         <a href="javascript:void(0)" data-uri="{% url 'cmapp:answer_vote' answer.id %}"
@@ -211,10 +211,9 @@
 
     // 답변 쓰기 버튼
     document.addEventListener('DOMContentLoaded', function () {
-        const createButton = document.querySelector('.question-answer-create-btn');
+        const createButton = document.querySelector('.createBtn');
         // 답변 쓰기 버튼 클릭하면 답변 쓸 수 있는 페이지로 이동
         // !! 일단은 아래와 같이 js를 이용해서 이동하게 했음
-        // !! 장고로 이동할 수 있다면 아래 지워주세염
         if (createButton) {
             createButton.addEventListener('click', function () {
                 const url = 'answer.html';
