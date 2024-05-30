@@ -60,6 +60,7 @@
     font-size: 18px;
     font-weight: 500;
     margin-bottom: 2px;
+    cursor: pointer;
 }
 
 .Date,
@@ -115,6 +116,7 @@
     }
 }
 
+/* 댓글 작성 */
 .comment-input {
     border: 1px solid gray;
     border-radius: 5px;
@@ -144,15 +146,18 @@
     background-color: white;
 }
 
-.comment-input .commentWriter {
-    font-size: 17px;
-    font-weight: 600;
+.comment-content {
+    display: flex;
+    flex-direction: column;
 }
-
-.comment-content .commentWriter {}
 
 .comment-list {
     margin-top: 10px;
+}
+
+.comment-list .profile-img {
+    float: left;
+    margin-right: 10px;
 }
 
 .comment-list>div {
@@ -165,15 +170,11 @@
     border-top: none;
 }
 
-.comment-content {
-    display: flex;
-    flex-direction: column;
-}
-
 .commentWriter {
     font-size: 15px;
     font-weight: bold;
     margin-bottom: 3px;
+    cursor: pointer;
 }
 
 .commentBottom {
@@ -196,7 +197,12 @@
 
 /* 답변 영역 */
 .border-bottom {
-    margin-top: 10px;
+    margin-top: 30px;
+    font-size: 20px;
+
+    span {
+        font-weight: bold;
+    }
 }
 
 .answer-container {
@@ -208,20 +214,12 @@
     padding: 20px;
 }
 
-@media all and (max-width:1000px) {
-    .View {
-        margin: 80px 0;
-    }
-}
-
 /* 답변 번호 */
 .answerCount {
     margin-bottom: 10px;
     font-size: 20px;
     font-weight: bold;
 }
-
-/*  */
 
 /* 대댓글 영역 */
 .rcs {
@@ -232,4 +230,10 @@
 /* 대댓글 하나 */
 .rcs>div {
     margin-bottom: 10px;
+}
+
+@media all and (max-width:1000px) {
+    .View {
+        margin: 80px 0;
+    }
 }
