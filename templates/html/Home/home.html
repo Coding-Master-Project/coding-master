@@ -36,6 +36,10 @@
             z-index: 1;
         }
 
+        .top-background {
+            z-index: 0 !important;
+        }
+
         .login-modal {
             display: none;
             z-index:2;
@@ -57,8 +61,9 @@
 
         .login-btn,
         .signup-btn,
-        .profile-btn {
-            font-size: 25px;
+        .profile-btn,
+        .logout-btn {
+            font-size: 20px;
             font-weight: 500;
             color: white;
             cursor: pointer;
@@ -118,7 +123,11 @@
             {% if user.is_authenticated %}
             <!-- 프로필 버튼(지금은 로그아웃) -->
             <div class="profile-btn">
-                <a href="{% url 'common:logout' %}">프로필</a>
+                <a href="{% url 'cmapp:profile' %}">프로필</a>
+            </div>
+            <!-- 로그아웃 버튼 -->
+            <div class="logout-btn">
+                <a href="{% url 'common:logout' %}">로그아웃</a>
             </div>
             {% else %}
             <!-- 로그인 버튼 -->

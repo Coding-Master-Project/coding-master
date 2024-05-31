@@ -45,7 +45,7 @@ def list(request, planguage_id):
                 'planguage_list': planguage_list,
                 'selected_planguage_id': planguage_id }
     
-    return render(request, 'html/Question/list.html', context) # 나중에 홈 html로 바꿀 예정
+    return render(request, 'html/Question/list.html', context)
 
 # 댓글 계층 구조로 만들기
 def get_comment_tree(comments):
