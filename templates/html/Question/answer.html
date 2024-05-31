@@ -40,7 +40,7 @@
         <div class="write-top">
             <span>답변</span>작성
         </div>
-        <form class="writeForm" id="question-write-container" action="{% url 'cmapp:answer_create' question.id %}" method="post">
+        <form class="writeForm" id="question-write-container" action="{% url 'cmapp:answer_create1' question.id %}" method="post">
         {% csrf_token %}
 
         <!-- prefix로 form 구분, 아래 폼 필드 name과 id, for 등을 다 (prefix)-(기존), ex. answer-content 식으로 바꿔줘야 에러 안 남!!! -->
