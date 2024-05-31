@@ -78,7 +78,7 @@
             <!-- 답변 쓰기 버튼 -->
             <!-- 버튼 누르면 답변 쓰는 컨테이너 생성 -->
             <div class="createBtn">
-                <a href="{% url 'cmapp:answer_create' question.id %}"><i class="fa-solid fa-pen"></i>답변 쓰기</a>
+                <a href="{% url 'cmapp:answer_create1' question.id %}"><i class="fa-solid fa-pen"></i>답변 쓰기</a>
             </div>
 
             <!-- 좋아요, 스크랩, 댓글 버튼 -->
@@ -122,9 +122,13 @@
                 {% include "form_errors.html" %}
                 {% endif %}
                 <div id="question-comment-writer" class="commentWriter">{{ user.username }}</div>
-                <textarea {% if not user.is_authenticated %} disabled {% endif %} name="comment-content"
-                    id="comment-content" class="commentText" placeholder="댓글을 입력하세요." onkeyup="autoResize(this)"
-                    onkeydown="autoResize(this)" rows="2"></textarea>
+                <textarea 
+                {% if not user.is_authenticated %} 
+                disabled placeholder="로그인이 필요합니다." 
+                {% else %} 
+                placeholder="댓글을 입력하세요." 
+                {% endif %} 
+                name="comment-content" id="comment-content" class="commentText" onkeyup="autoResize(this)" onkeydown="autoResize(this)" rows="2"></textarea>
                 <input type="submit" value="등록" class="commentCreateBtn">
             </form>
             <!-- 댓글 목록 -->
@@ -174,7 +178,7 @@
 
                     <!-- 댓글 버튼 -->
                     <div id="comment_create_btn_{{ answer.id|add:10000 }}" class="commentBtn"
-                        data-form-url="{% url 'cmapp:comment_create' question.id answer.id 0 %}"
+                        data-form-url="{% url 'cmapp:comment_create1' question.id answer.id 0 %}"
                         data-comment-id="{{ answer.id|add:10000 }}" data-username="{{ user.username }}">
                         <i class="fa-regular fa-comment" style="color: rgb(95, 93, 93)"></i> 댓글 {{answer.comment_set.count }}
                     </div>
@@ -193,8 +197,13 @@
                     {% include "form_errors.html" %}
                     {% endif %}
                     <div id="answer-comment-writer" class="commentWriter">{{ user.username }}</div>
-                    <input {% if not user.is_authenticated %} disabled {% endif %} name="comment-content"
-                        id="comment-content-{{ answer.id|add:10000 }}" class="commentText" placeholder="댓글을 입력하세요.">
+                    <textarea 
+                    {% if not user.is_authenticated %} 
+                    disabled placeholder="로그인이 필요합니다." 
+                    {% else %} 
+                    placeholder="댓글을 입력하세요." 
+                    {% endif %}  
+                    name="comment-content" id="comment-content-{{ answer.id|add:10000 }}" class="commentText" onkeyup="autoResize(this)" onkeydown="autoResize(this)" rows="2"></textarea>
                     <input type="submit" value="등록" class="commentCreateBtn">
                 </form>
 
@@ -275,8 +284,12 @@
                 {% endif %}
                 <div id="answer-comment-writer" class="commentWriter">${username}</div>
                 <textarea
-                    {% if not user.is_authenticated %} disabled {% endif %} name="comment-content" id="comment-content-${comment_id}" class="commentText" placeholder="댓글을 입력하세요." onkeyup="autoResize(this)" onkeydown="autoResize(this)"
-                    rows="2"></textarea>
+                {% if not user.is_authenticated %} 
+                disabled placeholder="로그인이 필요합니다." 
+                {% else %} 
+                placeholder="댓글을 입력하세요." 
+                {% endif %}  
+                name="comment-content" id="comment-content-${comment_id}" class="commentText" placeholder="댓글을 입력하세요." onkeyup="autoResize(this)" onkeydown="autoResize(this)" rows="2"></textarea>
                 <input type="submit" value="등록" class="commentCreateBtn">
             </form>
             `;

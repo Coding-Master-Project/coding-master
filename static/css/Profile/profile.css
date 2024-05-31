@@ -4,9 +4,16 @@
 }
 
 .profileMeta {
+    position: fixed;
+    top: 100px;
     width: 25%;
     padding: 30px;
     border-right: 1px solid black;
+}
+
+.profileContent {
+    margin-left: 25%;
+    width: 75%;
 }
 
 .profile-img {
@@ -57,7 +64,7 @@
 .Btn {
     margin-top: 20px;
     padding: 20px 50px;
-    color: rgb(144, 142, 142);
+    color: black;
     font-size: 20px;
 
     div {
@@ -69,13 +76,13 @@
     margin-right: 10px;
     width: 25px;
     height: auto;
-    filter: invert(83%) sepia(3%) saturate(120%) hue-rotate(314deg) brightness(91%) contrast(87%);
 }
 
-.postView:hover,
-.commentView:hover,
-.like:hover,
-.scrap:hover {
+.allViewBtn:hover,
+.postViewBtn:hover,
+.commentViewBtn:hover,
+.likeBtn:hover,
+.scrapBtn:hover {
     color: rgb(209, 24, 24);
 
     img {
@@ -83,6 +90,68 @@
     }
 }
 
-.profileContent {
-    width: 70%;
+.profileContent>div {
+    margin: 20px;
+    padding: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid black;
+
+    span {
+        display: inline-block;
+        font-size: 25px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+}
+
+.intro-text {
+    font-size: 20px;
+    padding: 20px;
+    text-align: center;
+}
+
+.post,
+.comment,
+.like,
+.scrap {
+    padding: 10px;
+    padding-top: 20px;
+    border-bottom: 1px solid gray;
+}
+
+.post:last-child,
+.comment:last-child,
+.like:last-child,
+.scrap:last-child {
+    border-bottom: none;
+}
+
+.post:hover,
+.comment:hover,
+.like:hover,
+.scrap:hover {
+    border-bottom: 2px solid rgb(209, 24, 24);
+}
+
+.meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 17px;
+    color: rgb(60, 60, 60);
+    margin-bottom: 4px;
+}
+
+.title {
+    font-size: 20px;
+    margin-bottom: 8px;
+}
+
+.view-all {
+    text-align: center;
+    font-size: 15px;
+    padding: 10px;
+
+    i {
+        margin-left: 10px;
+    }
 }

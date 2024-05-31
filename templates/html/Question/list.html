@@ -68,7 +68,7 @@
         <tbody>
         {% if question_list %}
         {% for question in question_list %}
-            <tr class="questionBtn clickable" data-url="{% url 'cmapp:question_list' question.id %}">
+            <tr class="questionBtn clickable" data-url="{% url 'cmapp:question_detail' question.id %}">
                 <td class="questionLanguage">{{ question.planguage }}</td>
                 <td class="questionSubject">{{ question.subject }}</td>
                 <td class="questionWriter">{{ question.author.username }}</td>

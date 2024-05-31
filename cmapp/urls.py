@@ -6,6 +6,8 @@ app_name = 'cmapp'
 
 urlpatterns = [
     #base_views.py
+
+    #question_list_views.py
     path('question/language/<int:planguage_id>', question_list_views.list, name='question_list'), #질문 목록(메인)
     path('question/<int:question_id>/', question_list_views.detail, name='question_detail'), #질문 상세
 

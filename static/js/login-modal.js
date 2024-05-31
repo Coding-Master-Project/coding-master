@@ -27,18 +27,18 @@ function initializeLoginModal() {
         }
     }
 
-    signup.addEventListener('click', function () {
-        modal.classList.remove('on');
-        window.location.href = '/html/Login/signup.html';
-    });
+    // signup.addEventListener('click', function () {
+    //     modal.classList.remove('on');
+    //     window.location.href = '/html/Login/signup.html';
+    // });
 
-    findId.addEventListener('click', function () {
-        modal.classList.remove('on');
-        window.location.href = '/html/Login/findId.html';
-    });
+    // findId.addEventListener('click', function () {
+    //     modal.classList.remove('on');
+    //     window.location.href = '/html/Login/findId.html';
+    // });
 
-    findPassword.addEventListener('click', function () {
-        modal.classList.remove('on');
-        window.location.href = '/html/Login/findPassword.html';
-    })
+    // findPassword.addEventListener('click', function () {
+    //     modal.classList.remove('on');
+    //     window.location.href = '/html/Login/findPassword.html';
+    // })
 }

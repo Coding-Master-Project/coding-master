@@ -16,9 +16,8 @@ def list(request, planguage_id):
         question_list = Question.objects.order_by('-create_date')
     else :
         planguage = PLanguage.objects.filter(id=planguage_id).first()
-
-        if planguage:
-            question_list = Question.objects.filter(planguage=planguage).order_by('-create_date')
+        question_list = Question.objects.filter(planguage=planguage).order_by('-create_date')
+            
 
     if kw:
         if type == 'search-title': #제목 검색
