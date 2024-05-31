@@ -16,6 +16,13 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <script src="/js/jquery-3.7.1.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".login").load("/html/Login/login.html", function () {
+                initializeLoginModal();
+            });
+        });
+    </script>
 
     <style>
         header {
@@ -50,7 +57,7 @@
 
         .login-btn,
         .signup-btn {
-            font-size: 25px;
+            font-size: 20px;
             font-weight: 500;
             color: white;
             cursor: pointer;
@@ -75,6 +82,10 @@
         header.active .login-btn,
         header.active .signup-btn {
             color: black;
+        }
+
+        .top-background {
+            z-index: 0 !important;
         }
 
         @media all and (max-width:1230px) {
@@ -126,11 +137,11 @@
     <!-- 클릭하면 해당 페이지로 이동 -->
     <div class="nav-btn">
         <div class="questionBtn">
-            <div><i class="fa-solid fa-layer-group"></i></div>
+            <div><i class="fa-solid fa-question"></i></div>
             <div>질문</div>
         </div>
         <div class="infromationBtn">
-            <div><i class="fa-solid fa-layer-group"></i></div>
+            <div><i class="fa-solid fa-info"></i></div>
             <div>정보</div>
         </div>
         <div class="counselingBtn">
@@ -174,6 +185,7 @@
             }
         });
     </script>
+    <script src="/js/buttonEvents.js"></script>
 </body>
 
 </html>
