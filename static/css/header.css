@@ -35,7 +35,8 @@ header {
     padding: 20px 10px;
 }
 
-.login-btn {
+.login-btn,
+.profile-btn {
     font-size: 25px;
     font-weight: 500;
     color: white;

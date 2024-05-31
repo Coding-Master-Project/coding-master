@@ -3,15 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const nicknameCheckButton = document.querySelector('.NicknameExistenceChecker');
     const nicknameAlert_e = document.querySelector('.NicknameExistenceAlert');
     const nicknameAlert_c = document.querySelector('.NicknameCheckerAlert');
-    const nicknameInput = document.querySelector('.signup-nickname');
     let nicknameClickCount = 0;
-
-    // 아이디
-    const idCheckButton = document.querySelector('.IdExistenceChecker');
-    const idAlert_e = document.querySelector('.IdExistenceAlert');
-    const idAlert_c = document.querySelector('.IdCheckerAlert');
-    const idInput = document.querySelector('.signup-id');
-    let idClickCount = 0;
 
     // 비밀번호
     const passwordInput = document.querySelector('.signup-password');
@@ -45,8 +37,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // 닉네임 중복확인 버튼 클릭 이벤트
     nicknameCheckButton.addEventListener('click', validateNickname);
 
-    // 아이디 중복확인 버튼 클릭 이벤트
-    idCheckButton.addEventListener('click', validateId);
+    // // 아이디 중복확인 버튼 클릭 이벤트
+    // idCheckButton.addEventListener('click', validateId);
 
     // 비밀번호 조건 이벤트
     passwordInput.addEventListener('input', function () {
@@ -69,12 +61,6 @@ document.addEventListener('DOMContentLoaded', function () {
         // 닉네임
         if (!nicknameInput.value || nicknameInput.style.border != '2px solid green') {
             nicknameInput.focus();
-            return;
-        }
-
-        // 아이디
-        if (!idInput.value || idInput.style.border != '2px solid green') {
-            idInput.focus();
             return;
         }
 
@@ -104,33 +90,8 @@ document.addEventListener('DOMContentLoaded', function () {
     // 함수
     // 닉네임 중복 확인 버튼 클릭 함수
     function validateNickname() {
-        nicknameClickCount++;
-
-        if (nicknameClickCount === 1) {
-            nicknameAlert_e.style.display = 'block';
-        } else if (nicknameClickCount === 2) {
-            nicknameInput.style.border = '2px solid green';
-            nicknameAlert_e.style.display = 'none';
-        } else {
-            nicknameInput.style.border = '1px solid gray';
-            nicknameClickCount = 0;
-        }
-    }
-
-    // 아이디 중복 확인 버튼 클릭 함수
-    function validateId() {
-        idClickCount++;
-
-        if (idClickCount == 1)
-            idAlert_e.style.display = 'block';
-        else if (idClickCount == 2) {
-            idInput.style.border = '2px solid green';
-            idAlert_e.style.display = 'none';
-        }
-        else {
-            idInput.style.border = '1px solid gray';
-            idClickCount = 0;
-        }
+        document.getElementById('name').value = document.getElementById('s_username').value;
+        document.getElementById('usernameCheckForm').submit();
     }
 
     // 비밀번호 조건 확인 함수
@@ -197,10 +158,15 @@ document.addEventListener('DOMContentLoaded', function () {
             flag2 = 0;
             flag3 = 0;
         }
-        if (flag1 == 1 && flag2 == 1 && flag3 == 1)
+        if (flag1 == 1 && flag2 == 1 && flag3 == 1) {
             passwordInput.style.border = '2px solid green';
+            passwordInput.dataset.valid = "2";
+            document.getElementById('pw_valid').value = "2";
+        }
         else {
             passwordInput.style.border = '';
+            passwordInput.dataset.valid = "1";
+            document.getElementById('pw_valid').value = "1";
         }
     }
 
@@ -225,12 +191,10 @@ document.addEventListener('DOMContentLoaded', function () {
         const emailPattern = /^[A-Za-z0-9_\.\-]+@[A-Za-z0-9\-]+\.[A-za-z0-9\-]+/.test(email);
 
         if (!emailPattern && email.length > 0) {
-            emailAlert_e.style.display = 'block';
             emailAlert_v.style.display = 'block';
             emailInput.style.border = '';
         }
         else {
-            emailAlert_e.style.display = 'none';
             emailAlert_v.style.display = 'none';
             emailInput.style.border = '2px solid green';
             if (email.length == 0)

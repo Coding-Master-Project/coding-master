@@ -122,9 +122,13 @@
                 {% include "form_errors.html" %}
                 {% endif %}
                 <div id="question-comment-writer" class="commentWriter">{{ user.username }}</div>
-                <textarea {% if not user.is_authenticated %} disabled {% endif %} name="comment-content"
-                    id="comment-content" class="commentText" placeholder="댓글을 입력하세요." onkeyup="autoResize(this)"
-                    onkeydown="autoResize(this)" rows="2"></textarea>
+                <textarea 
+                {% if not user.is_authenticated %} 
+                disabled placeholder="로그인이 필요합니다." 
+                {% else %} 
+                placeholder="댓글을 입력하세요." 
+                {% endif %} 
+                name="comment-content" id="comment-content" class="commentText" onkeyup="autoResize(this)" onkeydown="autoResize(this)" rows="2"></textarea>
                 <input type="submit" value="등록" class="commentCreateBtn">
             </form>
             <!-- 댓글 목록 -->
@@ -193,8 +197,13 @@
                     {% include "form_errors.html" %}
                     {% endif %}
                     <div id="answer-comment-writer" class="commentWriter">{{ user.username }}</div>
-                    <input {% if not user.is_authenticated %} disabled {% endif %} name="comment-content"
-                        id="comment-content-{{ answer.id|add:10000 }}" class="commentText" placeholder="댓글을 입력하세요.">
+                    <textarea 
+                    {% if not user.is_authenticated %} 
+                    disabled placeholder="로그인이 필요합니다." 
+                    {% else %} 
+                    placeholder="댓글을 입력하세요." 
+                    {% endif %}  
+                    name="comment-content" id="comment-content-{{ answer.id|add:10000 }}" class="commentText" onkeyup="autoResize(this)" onkeydown="autoResize(this)" rows="2"></textarea>
                     <input type="submit" value="등록" class="commentCreateBtn">
                 </form>
 
@@ -275,8 +284,12 @@
                 {% endif %}
                 <div id="answer-comment-writer" class="commentWriter">${username}</div>
                 <textarea
-                    {% if not user.is_authenticated %} disabled {% endif %} name="comment-content" id="comment-content-${comment_id}" class="commentText" placeholder="댓글을 입력하세요." onkeyup="autoResize(this)" onkeydown="autoResize(this)"
-                    rows="2"></textarea>
+                {% if not user.is_authenticated %} 
+                disabled placeholder="로그인이 필요합니다." 
+                {% else %} 
+                placeholder="댓글을 입력하세요." 
+                {% endif %}  
+                name="comment-content" id="comment-content-${comment_id}" class="commentText" placeholder="댓글을 입력하세요." onkeyup="autoResize(this)" onkeydown="autoResize(this)" rows="2"></textarea>
                 <input type="submit" value="등록" class="commentCreateBtn">
             </form>
             `;
