@@ -1,172 +1,203 @@
-<!DOCTYPE html>
-<html lang="ko">
+{% extends 'html/base.html' %}
+{% load cmapp_filter %}
+{% load static %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>정보 보기</title>
+{% block title %}<title>정보글 보기</title>{% endblock %}
 
-    <link rel="stylesheet" href="/css/common.css">
-    <link rel="stylesheet" href="/css/Login/login.css">
-    <link rel="stylesheet" href="/css/top-background.css">
-    <link rel="stylesheet" href="/css/Information/view.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
-        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
+{% block css %}<link rel="stylesheet" href="{% static '/css/Information/view.css' %}">{% endblock %}
 
-    <script src="/js/jquery-3.7.1.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $(".headers").load("/html/header.html");
-            $(".footers").load("/html/footer.html");
-            $(".login").load("/html/Login/login.html", function () {
-                initializeLoginModal();
-            });
-        });
-    </script>
-</head>
+{% block head_script %}
+<script src="{% static '/js/buttonEvents.js' %}"></script>
+{% endblock %}
 
-<body>
-    <!-- 헤더 -->
-    <div class="headers"></div>
+{% block content %}
 
-    <div class="login"></div>
+<!-- top 배경이미지 -->
+<div class="top-background">
+    <h1 class="top-background-text">질문</h1>
+</div>
 
-    <!-- top 배경이미지 -->
-    <div class="top-background">
-        <h1 class="top-category">정보</h1>
-    </div>
+<!-- error message 표시(자기 추천 x 등의 에러 메시지) -->
+{% if messages %}
+<div class="alert alert-danger my-3" role="alert">
+{%for message in messages %}
+    <strong>{{ message.tags }}</strong>
+    <ul><li>{{ message.message }}</li></ul>
+{% endfor %}
+</div>
+{% endif %}
 
-    <!-- 정보 영역 (질문 + 댓글) -->
+<!-- 질문 영역 (질문 + 댓글) -->
+<div class="information-view">
+    <!-- 질문만 -->
     <div class="informationView">
-        <!-- 정보만 -->
-        <div class="information-container">
-            <!-- 정보 제목 영역 -->
-            <div class="title">
-                <!-- 해당 언어 -->
-                <div class="Language">
-                    <p>[C]</p>
-                </div>
-                <!-- 정보 제목 -->
-                <div class="Subject">
-                    <p>토요일까지 확통프 과제있다!!</p>
-                </div>
+        <!-- 질문 제목 영역 -->
+        <div class="information-view-top">
+            <!-- 해당 언어 -->
+            <div class="informationLanguage">
+                <p>[{{ information.planguage }}]</p>
             </div>
-            <!-- 본인 계정의 글이라면 나타남 -->
-            <!-- !! 이와 관련된 것은 장고에서 하는 것으로 알아서 일단 패스 혹시 제가 필요하다면 불러주세요 -->
-            <div class="information-top-btn">
-                <div id="information-modify-btn" class="modifyBtn">
-                    <a href="/Question/modify.html">수정</a>
-                </div>
-                <div id="information-delete-btn" class="deleteBtn">
-                    <span>삭제</span>
-                </div>
-            </div>
-            <!-- 정보 meta (작성자, 날짜, 조회수) -->
-            <div class="information-view-meta">
-                <div class="writer-profile-img">
-                    <i class="fa-solid fa-hat-wizard" style="color: rgb(183, 84, 79);"></i>
-                </div>
-                <div class="informationWriter">수빈</div>
-                <div class="informationDate">2024-05-14 09:00</div>
-                <div class="informationCount">조회수 236</div>
-            </div>
-            <!-- 정보 내용 -->
-            <div class="information-view-content">
-                <p>안녕하세요. 자료구조 조교 채현우입니다.
-
-                    과제 3의 성적이 게시되었습니다.
-
-                    성적 확인은 집현 캠퍼스 성적부를 통해 가능합니다.
-
-                    이의 신청은 이메일(hyunwoo0081@gmail.com)로 해주시거나,
-
-                    005분반인 학생분들은 오늘(5/16 목) 또는 다음주 화요일(5/21) 수업 시간에 직접 질문 주셔도 됩니다.
-
-                    이의 신청은 다음 주 화요일(5/21)까지 받겠습니다.
-
-                    감사합니다.
-                </p>
-            </div>
-            <!-- 좋아요, 스크랩, 댓글 버튼 -->
-            <div class="information-view-bottom">
-                <!-- span : 좋아요 개수 -->
-                <!-- 좋아요 누르면 span에 있는 숫자 +1 / 다시 누르면 span에 있는 숫자 -1 -->
-                <div id="information-good-btn" class="likeBtn">
-                    <i class="fa-regular fa-heart" style="color: rgb(183, 84, 79);"></i> 좋아요 <span>345</span>
-                </div>
-                <!-- 스크랩 누르면 자신의 스크랩 목록에 해당 질문 페이지 추가됨 -->
-                <div id="information-scrap-btn" class="scrapBtn">
-                    <i class="fa-regular fa-star" style="color: rgb(232, 232, 20);"></i> 스크랩
-                </div>
-                <!-- 정보에서 댓글은 버튼이 아닌 댓글 개수를 알리기만 할뿐 -->
-                <div id="information-comment-btn" class="comment-notBtn">
-                    <i class="fa-regular fa-comment" style="color: rgb(95, 93, 93)"></i> 댓글 <span>3</span>
-                </div>
+            <!-- 질문 제목 -->
+            <div class="informationSubject">
+                <p>{{ information.subject }}</p>
             </div>
         </div>
-
-        <!-- 정보 댓글 (그냥 보임) -->
-        <div class="commentBox" id="information-commentBox">
-            <span>댓글</span>
-            <!-- 댓글 작성 영역 -->
-            <div class="comment-input">
-                <div id="information-comment-writer" class="commentWriter">수빈</div>
-                <!-- 댓글 작성 시작 전에 css로 placeholder 보이게 함 -->
-                <!-- 댓글 작성 시작하면 placeholder 안 보이고 changeButtonColor 함수가 실행되어 등록 색깔 바뀜 -->
-                <div id="information-comment-input" class="commentText" contenteditable="true" placeholder="댓글을 입력하세요.">
-                </div>
-                <!-- 등록 버튼 누르면 댓글 list 맨 밑에 추가됨 -->
-                <button id="information-comment-create-btn" class="commentCreateBtn">등록</button>
+        <!-- 질문 수정/삭제 -->
+        <div class="information-top-btn">
+            {% if request.user == information.author %}
+            <a href="{% url 'cmapp:information_modify' information.id %}" class="modifyBtn" id="information-modify-btn">수정</a>
+            <a href="javascript:void(0)" class="deleteBtn" id="information-delete-btn" data-uri="{% url 'cmapp:information_delete' information.id %}">삭제</a>
+            {% endif %}
+        </div>
+        <!-- 질문 정보 (작성자, 날짜, 조회수) -->
+        <div class="information-view-meta">
+            <div class="writer-profile-img">
+                <i class="fa-solid fa-hat-wizard" style="color: rgb(183, 84, 79);"></i>
             </div>
-            <!-- 댓글 목록 -->
-            <div class="comment-list">
-                <!-- 댓글이 맨 밑에 추가 -->
-                <div id="information-comment-1">
-                    <!-- 작성자 img -->
-                    <i class="fa-solid fa-hat-wizard" style="color: rgb(183, 84, 79);"></i>
-                    <div class="comment-content" id="information-comment-content-1">
-                        <div class="commentWriter">수빈</div>
-                        <div class="commentContent">졸려요졸려요졸려요졸려요졸려요졸려요졸려요졸려요졸려요졸려요</div>
-                        <div class="commentBottom">
-                            <div class="commentDate">2024-05-21 09:15</div>
-                            <!-- 답글쓰기를 누르면 밑에 답글쓸 수 있는 영역 만들어짐 -->
-                            <div class="commentReplyBtn">답글쓰기</div>
-                        </div>
-                    </div>
-                </div>
-                <div id="information-comment-2">
-                    <i class="fa-solid fa-hat-wizard" style="color: rgb(183, 84, 79);"></i>
-                    <div class="comment-content" id="information-comment-content-2">
-                        <div class="commentWriter">예랑</div>
-                        <div class="commentContent">놀러가자<br>출튀 ㄱㄱ</div>
-                        <div class="commentBottom">
-                            <div class="commentDate">2024-05-21 09:30</div>
-                            <div class="commentReplyBtn">답글쓰기</div>
-                        </div>
-                    </div>
-                </div>
-                <div id="information-comment-3">
-                    <i class="fa-solid fa-hat-wizard" style="color: rgb(183, 84, 79);"></i>
-                    <div class="comment-content" id="information-comment-content-3">
-                        <div class="commentWriter">천재윤진만세..?</div>
-                        <div class="commentContent">언니가 밥 쏜다</div>
-                        <div class="commentBottom">
-                            <div class="commentDate">2024-05-21 09:55</div>
-                            <div class="commentReplyBtn">답글쓰기</div>
-                        </div>
-                    </div>
-                </div>
+            <div class="informationWriter">{{ information.author.username }}</div>
+            <div class="informationDate">{{ information.create_date }}</div>
+            <div class="informationCount">조회수 {{ information.views }}</div>
+        </div>
+        <!-- 질문 내용 -->
+        <div class="information-view-content">
+            {% if information.imgs %}
+                <img id="information-img-1" src="{{ information.imgs.url }}"> <!-- ## 이미지 나중에 배열로 바뀔 거라, 여기 for문으로 바뀌고, id 뒤에 몇번째 이미지인지 번호가 붙을 거임 -->
+            {% endif %}
+            <br/>
+            {{ information.content|mark }}
+        </div>
+
+
+        <!-- 좋아요, 스크랩, 댓글 버튼 -->
+        <div class="information-view-bottom">
+            <!-- 좋아요 -->
+            <div id="information-good-btn" class="likeBtn">
+                <a href="javascript:void(0)" data-uri="{% url 'cmapp:information_vote' information.id %}"
+                class="recommend">
+                    <i class="fa-regular fa-heart" style="color: rgb(183, 84, 79);"></i
+                ></a> 
+                좋아요 {{ information.voter.count }}
+            </div>
+            <!-- 스크랩 -->
+            <!-- 스크랩 누르면 자신의 스크랩 목록에 해당 질문 페이지 추가됨 -->
+            <!-- ## 언니가 수정할 거임 -->
+            <div id="information-scrap-btn" class="scrapBtn">
+                <i class="fa-regular fa-star" style="color: rgb(232, 232, 20);"></i> 스크랩
+            </div>
+            <!-- 댓글 -->
+            <div id="information-comment-btn" class="commentBtn">
+                <i class="fa-regular fa-comment" style="color: rgb(95, 93, 93)"></i> 댓글 {{ information.comment_set.count }}
             </div>
         </div>
     </div>
 
-    <!-- 바닥글 -->
-    <div class="footers"></div>
+    <!-- 질문 댓글 (댓글 버튼 눌러야 보임) -->
+    <div class="commentBox" id="information-commentBox" style="display: none;">
+        <span>댓글</span>
+        <!-- 댓글 작성 영역 -->
+        <form action="{% url 'cmapp:comment_create2' information.id 0 %}" method="post" class="comment-input">
+            {% csrf_token %}
+            {% if form.prefix == 'comment'%}
+            {% include "form_errors.html" %}
+            {% endif %}
+            <div id="information-comment-writer" class="commentWriter">{{ user.username }}</div>
+            <textarea
+                {% if not user.is_authenticated %} disabled {% endif %}
+                name="comment-content" id="comment-content" class="commentText"
+                placeholder="댓글을 입력하세요." onkeyup="autoResize(this)" onkeydown="autoResize(this)"
+                rows="2"></textarea>
+            <input type="submit" value="등록" class="commentCreateBtn">
+        </form>
+        <!-- 댓글 목록 -->
+        <div class="comment-list">
+            {% for comment_id, comment_data in comment_tree.items %}
+            {% if comment_data.c.answer_id == None and comment_id in comment_id_list  %}
+                {% include 'html/comment.html' with comment_tree=comment_tree comment_data=comment_data comment=comment_data.c information_id=information.id answer_id=0 username=user.username %}
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script type='text/javascript'>
 
-    <script src="/js/buttonEvents.js"></script>
-    <script src="/js/login-modal.js"></script>
-</body>
+    // 질문 삭제 버튼
+    const delete_elements = document.getElementsByClassName("delete");
+    Array.from(delete_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            if(confirm("정말로 삭제하시겠습니까?")) {
+                location.href = this.dataset.uri;
+            };
+        });
+    });
 
-</html>
+    // 질문 추천 버튼
+    const recommend_elements = document.getElementsByClassName("recommend");
+    Array.from(recommend_elements).forEach(function(element) {
+        element.addEventListener('click', function() {
+            if(confirm("정말로 추천하시겠습니까?")) {
+                location.href = this.dataset.uri;
+            };
+        });
+    });
+
+    // 댓글 등록 부분 보여주기
+    function show_comment_create(form_url, comment_id, username) {
+        var form = document.getElementById('comment_create_' + comment_id);
+        if (form) { // 답글 쓰기 버튼 한 번 더 누르면 댓글 등록 부분 닫기
+            form.remove();
+        }
+        else {
+            // 기존에 열려 있는 모든 폼을 닫기
+            var openForms = document.querySelectorAll('form[id^="comment_create_"]');
+            openForms.forEach(function (form) {
+                form.remove();
+            });
+
+            // 폼 HTML을 문자열로 작성
+            var formHtml = `
+            <form action="${form_url}" method="post" class="comment-input" id="comment_create_${comment_id}">
+                {% csrf_token %}
+                {% if form.prefix == 'comment'%}
+                {% include "form_errors.html" %}
+                {% endif %}
+                <div id="answer-comment-writer" class="commentWriter">${username}</div>
+                <textarea
+                    {% if not user.is_authenticated %} disabled {% endif %} name="comment-content" id="comment-content-${comment_id}" class="commentText" placeholder="댓글을 입력하세요." onkeyup="autoResize(this)" onkeydown="autoResize(this)"
+                    rows="2"></textarea>
+                <input type="submit" value="등록" class="commentCreateBtn">
+            </form>
+            `;
+
+            // 새로운 div 요소를 생성하고 HTML을 삽입
+            var formContainer = document.createElement('div');
+            formContainer.innerHTML = formHtml;
+
+            var formElement = formContainer.querySelector('form');
+
+            // part 영역(댓글과) 아래에 폼 추가
+            var part = document.getElementById('comment-content-' + comment_id);
+            node = part.parentNode.insertBefore(formElement, part.nextSibling);
+        }
+    }
+
+    function autoResize(textarea) {
+        textarea.style.height = '1px';
+        textarea.style.height = (14 + textarea.scrollHeight) + 'px';
+    }
+
+    document.addEventListener('input', function (event) {
+        if (event.target.matches('.commentText')) {
+            var button = event.target.closest('form').querySelector('.commentCreateBtn');
+            if (event.target.value.trim() !== '') {
+                button.style.background = 'rgb(183, 84, 79)';
+                button.style.color = 'white';
+            } else {
+                button.style.background = 'white';
+                button.style.color = 'rgb(106, 106, 106)';
+            }
+        }
+    });    
+</script>
+{% endblock %}

@@ -214,12 +214,20 @@
     padding: 20px;
 }
 
+@media all and (max-width:1000px) {
+    .View {
+        margin: 80px 0;
+    }
+}
+
 /* 답변 번호 */
 .answerCount {
     margin-bottom: 10px;
     font-size: 20px;
     font-weight: bold;
 }
+
+/*  */
 
 /* 대댓글 영역 */
 .rcs {
@@ -230,10 +238,4 @@
 /* 대댓글 하나 */
 .rcs>div {
     margin-bottom: 10px;
-}
-
-@media all and (max-width:1000px) {
-    .View {
-        margin: 80px 0;
-    }
 }
