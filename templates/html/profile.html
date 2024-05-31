@@ -29,10 +29,10 @@
         <nav>
             <ul class="header-menutop">
                 <li class="question">
-                    <a href="{% url 'home' %}">질문</a>
+                    <a href="{% url 'question_list' %}">질문</a>
                 </li>
                 <li class="information">
-                    <a href="/html/Information/list.html">정보</a>
+                    <a href="{% url '' %}">정보</a>
                 </li>
                 <li class="counseling">
                     <a href="/">상담</a>
@@ -73,12 +73,9 @@
             </div>
             <div class="Btn">
                 <div class="allViewBtn"><img src="/static/img/gat.png">전체</div>
-                <div class="postViewBtn"><img src="/static/img/gat.png">게시글 <span>[{{ user.author_question.count }} + {{
-                        user.author_information.count }}]</span></div>
-                <div class="commentViewBtn"><img src="/static/img/gat.png">댓글단 글 <span>[{{ user.author_comment.count }}
-                        + {{ user.author_information.count }}]</span></div>
-                <div class="likeBtn"><img src="/static/img/gat.png">좋아요한 글 <span>[{{ user.voter_question.count }} + {{
-                        user.voter_information.count }}]</span></div>
+                <div class="postViewBtn"><img src="/static/img/gat.png">게시글 <span>[{{ user.author_question.count }} + {{user.author_information.count }}]</span></div>
+                <div class="commentViewBtn"><img src="/static/img/gat.png">댓글단 글 <span>[{{ user.author_comment.count }} + {{ user.author_information.count }}]</span></div>
+                <div class="likeBtn"><img src="/static/img/gat.png">좋아요한 글 <span>[{{ user.voter_question.count }} + {{ user.voter_information.count }}]</span></div>
                 <div class="scrapBtn"><img src="/static/img/gat.png">스크랩 <span>[10]</span></div>
             </div>
         </div>
@@ -183,11 +180,9 @@
                 <div class="view-all">전체 보기<i class="fa-solid fa-arrow-right"></i></div>
             </div>
         </div>
+    </div>    
 
-        <!-- 바닥글 -->
-        <div class="footers">{% include "html/footer.html" %}</div>
-
-        <script src="/static/js/profileEvents.js"></script>
+    <script src="/static/js/profileEvents.js"></script>
 </body>
 
 </html>
