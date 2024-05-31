@@ -153,11 +153,11 @@
     <!-- 클릭하면 해당 페이지로 이동 -->
     <div class="nav-btn">
         <div class="questionBtn">
-            <div><i class="fa-solid fa-layer-group"></i></div>
+            <div><a href="{% url 'cmapp:question_list' 0 %}"><i class="fa-solid fa-layer-group"></i></a></div>
             <div>질문</div>
         </div>
         <div class="infromationBtn">
-            <div><i class="fa-solid fa-layer-group"></i></div>
+            <div><a href="{% url 'cmapp:info_list' 0 %}"><i class="fa-solid fa-layer-group"></i></a></div>
             <div>정보</div>
         </div>
         <div class="counselingBtn">
