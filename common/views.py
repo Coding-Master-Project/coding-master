@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 def logout_view(request):
     logout(request)
-    return redirect('index')
+    return redirect('home')
 
 def signup(request):
     username_value = request.GET.get('name', '')
@@ -30,7 +30,7 @@ def signup(request):
                 raw_password = form.cleaned_data.get('password1')
                 user = authenticate(username=username, password=raw_password) #사용자 인증
                 login(request, user) #로그인
-                return redirect('index')
+                return redirect('home')
     else:
         if username_value: #중복 확인 누른 경우
             valid = 2
