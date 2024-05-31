@@ -50,10 +50,8 @@
             <!-- 질문 수정/삭제 -->
             <div class="postEditor">
                 {% if request.user == question.author %}
-                <a href="{% url 'cmapp:question_modify' question.id %}" class="modifyBtn"
-                    id="question-modify-btn">수정</a>
-                <a href="javascript:void(0)" class="deleteBtn" id="question-delete-btn"
-                    data-uri="{% url 'cmapp:question_delete' question.id %}">삭제</a>
+                <a href="{% url 'cmapp:question_modify' question.id %}" class="modifyBtn" id="question-modify-btn">수정</a>
+                <a href="javascript:void(0)" class="deleteBtn" id="question-delete-btn" data-uri="{% url 'cmapp:question_delete' question.id %}">삭제</a>
                 {% endif %}
             </div>
             <!-- 질문 정보 (작성자, 날짜, 조회수) -->
@@ -80,16 +78,26 @@
             <!-- 답변 쓰기 버튼 -->
             <!-- 버튼 누르면 답변 쓰는 컨테이너 생성 -->
             <div class="createBtn">
-                <i class="fa-solid fa-pen"></i> 답변 쓰기
+                <a href="{% url 'cmapp:answer_create1' question.id %}"><i class="fa-solid fa-pen"></i>답변 쓰기</a>
             </div>
 
             <!-- 좋아요, 스크랩, 댓글 버튼 -->
             <div class="postInteractions">
                 <!-- 좋아요 -->
                 <div id="question-good-btn" class="likeBtn">
-                    <a href="javascript:void(0)" data-uri="{% url 'cmapp:question_vote' question.id %}"
-                        class="recommend">
-                        <i class="fa-regular fa-heart" style="color: rgb(183, 84, 79);"></i></a>
+                    <a href="javascript:void(0)" data-uri="{% url 'cmapp:question_vote' question.id %}" class="recommend"
+                    {% if user == question.author %}
+                        data-impossible="1"
+                    {% else %}
+                        data-impossible="0"
+                    {% endif %}>
+                        <i style="color: rgb(183, 84, 79);"
+                        {% if question in user.voter_question.all %}
+                            class="fa-solid fa-heart"
+                        {% else %}
+                            class="fa-regular fa-heart"
+                        {% endif %}></i>
+                    </a>
                     좋아요 {{ question.voter.count }}
                 </div>
                 <!-- 스크랩 -->
@@ -108,15 +116,19 @@
         <div class="commentBox" id="question-commentBox" style="display: none;">
             <span>댓글</span>
             <!-- 댓글 작성 영역 -->
-            <form action="{% url 'cmapp:comment_create' question.id 0 0 %}" method="post" class="comment-input">
+            <form action="{% url 'cmapp:comment_create1' question.id 0 0 %}" method="post" class="comment-input">
                 {% csrf_token %}
                 {% if form.prefix == 'comment'%}
                 {% include "form_errors.html" %}
                 {% endif %}
                 <div id="question-comment-writer" class="commentWriter">{{ user.username }}</div>
-                <textarea {% if not user.is_authenticated %} disabled {% endif %} name="comment-content"
-                    id="comment-content" class="commentText" placeholder="댓글을 입력하세요." onkeyup="autoResize(this)"
-                    onkeydown="autoResize(this)" rows="2"></textarea>
+                <textarea 
+                {% if not user.is_authenticated %} 
+                disabled placeholder="로그인이 필요합니다." 
+                {% else %} 
+                placeholder="댓글을 입력하세요." 
+                {% endif %} 
+                name="comment-content" id="comment-content" class="commentText" onkeyup="autoResize(this)" onkeydown="autoResize(this)" rows="2"></textarea>
                 <input type="submit" value="등록" class="commentCreateBtn">
             </form>
             <!-- 댓글 목록 -->
@@ -166,7 +178,7 @@
 
                     <!-- 댓글 버튼 -->
                     <div id="comment_create_btn_{{ answer.id|add:10000 }}" class="commentBtn"
-                        data-form-url="{% url 'cmapp:comment_create' question.id answer.id 0 %}"
+                        data-form-url="{% url 'cmapp:comment_create1' question.id answer.id 0 %}"
                         data-comment-id="{{ answer.id|add:10000 }}" data-username="{{ user.username }}">
                         <i class="fa-regular fa-comment" style="color: rgb(95, 93, 93)"></i> 댓글 {{answer.comment_set.count }}
                     </div>
@@ -178,15 +190,20 @@
             <div class="commentBox" id="answer-1-commentBox" style="display: none;">
                 <span id="comment_create_part_{{ answer.id|add:10000 }}">댓글</span>
                 <!-- 댓글 작성 영역 -->
-                <form action="{% url 'cmapp:comment_create' question.id answer.id 0 %}" method="post"
+                <form action="{% url 'cmapp:comment_create1' question.id answer.id 0 %}" method="post"
                     class="comment-input" id="comment_top_create_{{ answer.id|add:10000 }}">
                     {% csrf_token %}
                     {% if form.prefix == 'comment'%}
                     {% include "form_errors.html" %}
                     {% endif %}
                     <div id="answer-comment-writer" class="commentWriter">{{ user.username }}</div>
-                    <input {% if not user.is_authenticated %} disabled {% endif %} name="comment-content"
-                        id="comment-content-{{ answer.id|add:10000 }}" class="commentText" placeholder="댓글을 입력하세요.">
+                    <textarea 
+                    {% if not user.is_authenticated %} 
+                    disabled placeholder="로그인이 필요합니다." 
+                    {% else %} 
+                    placeholder="댓글을 입력하세요." 
+                    {% endif %}  
+                    name="comment-content" id="comment-content-{{ answer.id|add:10000 }}" class="commentText" onkeyup="autoResize(this)" onkeydown="autoResize(this)" rows="2"></textarea>
                     <input type="submit" value="등록" class="commentCreateBtn">
                 </form>
 
@@ -209,7 +226,7 @@
 {% block script %}
 <script type='text/javascript'>
 
-    // 답변 쓰기 버튼
+    {% comment %} // 답변 쓰기 버튼
     document.addEventListener('DOMContentLoaded', function () {
         const createButton = document.querySelector('.createBtn');
         // 답변 쓰기 버튼 클릭하면 답변 쓸 수 있는 페이지로 이동
@@ -220,7 +237,7 @@
                 window.location.href = url;
             });
         }
-    });
+    }); {% endcomment %}
 
     // 질문 삭제 버튼
     const delete_elements = document.getElementsByClassName("delete");
@@ -236,9 +253,12 @@
     const recommend_elements = document.getElementsByClassName("recommend");
     Array.from(recommend_elements).forEach(function (element) {
         element.addEventListener('click', function () {
-            if (confirm("정말로 추천하시겠습니까?")) {
+            if (this.dataset.impossible == "1") {
+                alert('본인이 작성한 글은 추천할 수 없습니다');
+            }
+            else {
                 location.href = this.dataset.uri;
-            };
+            }
         });
     });
 
@@ -264,8 +284,12 @@
                 {% endif %}
                 <div id="answer-comment-writer" class="commentWriter">${username}</div>
                 <textarea
-                    {% if not user.is_authenticated %} disabled {% endif %} name="comment-content" id="comment-content-${comment_id}" class="commentText" placeholder="댓글을 입력하세요." onkeyup="autoResize(this)" onkeydown="autoResize(this)"
-                    rows="2"></textarea>
+                {% if not user.is_authenticated %} 
+                disabled placeholder="로그인이 필요합니다." 
+                {% else %} 
+                placeholder="댓글을 입력하세요." 
+                {% endif %}  
+                name="comment-content" id="comment-content-${comment_id}" class="commentText" placeholder="댓글을 입력하세요." onkeyup="autoResize(this)" onkeydown="autoResize(this)" rows="2"></textarea>
                 <input type="submit" value="등록" class="commentCreateBtn">
             </form>
             `;
@@ -288,3 +312,8 @@
     }
 </script>
 {% endblock %}
+
+
+
+
+

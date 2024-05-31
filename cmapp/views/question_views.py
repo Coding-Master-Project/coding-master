@@ -18,7 +18,7 @@ def question_create(request):
             question.author = request.user
             question.create_date = timezone.now()
             question.save()
-            return redirect('cmapp:list', 0)
+            return redirect('cmapp:question_list', 0)
     else:
         form = QuestionForm()
     
@@ -29,19 +29,21 @@ def question_create(request):
 @login_required(login_url='common:login')
 def question_modify(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
+    planguage_list = PLanguage.objects.all()
     if request.user != question.author:
         messages.error(request, '수정권한이 없습니다')
-        return redirect('cmapp:detail', question_id=question.id)
+        return redirect('cmapp:question_detail', question_id=question.id)
     if request.method == "POST":
         form = QuestionForm(request.POST, request.FILES, instance=question)
         if form.is_valid():
             question = form.save(commit=False)
             question.modify_date = timezone.now()  # 수정일시 저장
             question.save()
-            return redirect('cmapp:detail', question_id=question.id)
+            return redirect('cmapp:question_detail', question_id=question.id)
     else:
         form = QuestionForm(instance=question)
-    context = {'form': form}
+        selected_planguage_id = question.planguage.id
+    context = {'form': form, 'planguage_list': planguage_list, 'selected_planguage_id': selected_planguage_id}
     return render(request, 'html/Question/write.html', context)
 
 #질문 삭제
@@ -50,19 +52,19 @@ def question_delete(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     if request.user != question.author:
         messages.error(request, '삭제권한이 없습니다')
-        return redirect('cmapp:detail', question_id=question.id)
+        return redirect('cmapp:question_detail', question_id=question.id)
     question.delete()
-    return redirect('cmapp:list', 0)
+    return redirect('cmapp:question_list', 0)
 
 #질문 추천
 @login_required(login_url='common:login')
 def question_vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
-    if request.user == question.author:
-        messages.error(request, '본인이 작성한 글은 추천할수 없습니다')
+    if request.user in question.voter.all():
+        question.voter.remove(request.user)
     else:
         if request.user in question.voter.all():
             question.voter.remove(request.user)
         else:
             question.voter.add(request.user)
-    return redirect('cmapp:detail', question_id=question.id)
+    return redirect('cmapp:question_detail', question_id=question.id)

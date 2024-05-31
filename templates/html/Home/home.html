@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -7,22 +8,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>홈</title>
 
-    <link rel="stylesheet" href="/static/css/common.css">
-    <link rel="stylesheet" href="/static/css/Login/login.css">
-    <link rel="stylesheet" href="/static/css/top-background.css">
-    <link rel="stylesheet" href="/static/css/home.css">
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
+    <link rel="stylesheet" href="{% static 'css/Login/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/top-background.css' %}">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <script src="/js/jquery-3.7.1.min.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $(".login").load("/html/Login/login.html", function () {
-                initializeLoginModal();
-            });
-        });
-    </script>
 
     <style>
         header {
@@ -41,6 +35,15 @@
             z-index: 1;
         }
 
+        .top-background {
+            z-index: 0 !important;
+        }
+
+        .login-modal {
+            display: none;
+            z-index: 2;
+        }
+
         .logo-img {
             width: auto;
             height: 80px;
@@ -57,7 +60,7 @@
 
         .login-btn,
         .signup-btn {
-            font-size: 20px;
+            font-size: 25px;
             font-weight: 500;
             color: white;
             cursor: pointer;
@@ -109,21 +112,34 @@
 </head>
 
 <body>
+    <div class="login">{% include "html/Login/login.html" %}</div>
+
     <!-- 헤더 -->
     <header id="home-header">
         <!-- 로고 이미지 -->
         <div class="logo-img">
-            <a href="{% url 'index' %}"><img src="/static/img/logo.png" style="width: 100%; height: 100%;"></a>
+            <a href="{% url 'home' %}"><img src="/static/img/logo.png" style="width: 100%; height: 100%;"></a>
         </div>
         <div class="btn">
+            {% if user.is_authenticated %}
+            <!-- 프로필 버튼(지금은 로그아웃) -->
+            <div class="profile-btn">
+                <a href="{% url 'cmapp:profile' %}">프로필</a>
+            </div>
+            <!-- 로그아웃 버튼 -->
+            <div class="logout-btn">
+                <a href="{% url 'common:logout' %}">로그아웃</a>
+            </div>
+            {% else %}
             <!-- 로그인 버튼 -->
             <div class="login-btn">
                 로그인
             </div>
             <!-- 회원가입 버튼 -->
             <div class="signup-btn">
-                회원가입
+                <a href="{% url 'common:signup' %}"> 회원가입</a>
             </div>
+            {% endif %}
         </div>
     </header>
 
@@ -137,23 +153,23 @@
     <!-- 클릭하면 해당 페이지로 이동 -->
     <div class="nav-btn">
         <div class="questionBtn">
-            <div><i class="fa-solid fa-question"></i></div>
+            <div><i class="fa-solid fa-layer-group"></i></div>
             <div>질문</div>
         </div>
         <div class="infromationBtn">
-            <div><i class="fa-solid fa-info"></i></div>
+            <div><i class="fa-solid fa-layer-group"></i></div>
             <div>정보</div>
         </div>
         <div class="counselingBtn">
-            <div><i class="fa-solid fa-layer-group"></i></div>
+            <div><a href="/"><i class="fa-solid fa-layer-group"></i></a></div>
             <div>상담</div>
         </div>
         <div class="studyBtn">
-            <div><i class="fa-solid fa-layer-group"></i></div>
+            <div><a href="/"><i class="fa-solid fa-layer-group"></i></a></div>
             <div>스터디</div>
         </div>
         <div class="contestBtn">
-            <div><i class="fa-solid fa-layer-group"></i></div>
+            <div><a href="/"><i class="fa-solid fa-layer-group"></i></a></div>
             <div>공모전/대회</div>
         </div>
     </div>
@@ -173,7 +189,13 @@
     </div>
 
     <!-- 바닥글 -->
-    <div class="footers"></div>
+    <div class="footers">{% include "html/footer.html" %}</div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            initializeLoginModal();
+        });
+    </script>
 
     <script type="text/javascript">
         window.addEventListener('scroll', function () {

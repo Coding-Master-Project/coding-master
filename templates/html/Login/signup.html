@@ -5,6 +5,10 @@
 
 {% block css %}<link rel="stylesheet" href="{% static '/css/Login/signup.css' %}">{% endblock %}
 
+{% block head_script %}
+<script src="{% static '/js/signup.js' %}"></script>
+{% endblock %}
+
 {% block content %}
 <div class="signup">
     <form class="signup-container" action="{% url 'common:signup' %}" method="post">
@@ -18,31 +22,34 @@
 
         <div class="signupNickname">
             <div><label for="username">닉네임</label></div>
-            <input type="text" class="signup-nickname" name="username" value="{{ form.username.value|default_if_none:'' }}">
-            <div class="NicknameExistenceChecker">중복확인</div>
-            <div class="NicknameExistenceAlert" style="display: none;">
+            <input type="text" class="signup-nickname" name="username" id="s_username" value="{{ form.username.value|default_if_none:'' }}"
+            {% if valid == 2 %}
+            style="border: 2px solid green;"
+            {% else %}
+            style="border: 1px solid gray;"
+            {% endif %}
+            >
+            <div class="NicknameExistenceChecker" id="username_check_btn" data-valid="{{ valid }}">중복확인</div>
+            {% if valid == 1 %}
+            <div class="NicknameExistenceAlert">
                 <i class="fa-solid fa-xmark"></i>이미 존재하는 닉네임입니다.
             </div>
-            <div class="NicknameCheckerAlert" style="display: none;">
+            {% endif %}
+            {% if valid == 3 %}
+            <div class="NicknameCheckerAlert">
                 <i class="fa-solid fa-xmark"></i>닉네임 중복 확인해주세요.
             </div>
-        </div>
-
-        <div class="signupId">
-            <div>아이디</div>
-            <input type="text" class="signup-id" name="id">
-            <div class="IdExistenceChecker">중복확인</div>
-            <div class="IdExistenceAlert" style="display: none;">
-                <i class="fa-solid fa-xmark"></i>이미 존재하는 아이디입니다.
-            </div>
-            <div class="IdCheckerAlert" style="display: none;">
-                <i class="fa-solid fa-xmark"></i>아이디 중복 확인해주세요.
-            </div>
+            {% endif %}
         </div>
 
         <div class="signupPassword">
-            <div>비밀번호</div>
-            <input type="password" class="signup-password" name="password">
+            <div><label for="password1">비밀번호</label></div>
+            <input type="password" class="signup-password" name="password1" id="password1" value="{{ form.password1.value|default_if_none:'' }}" 
+            {% if pw_valid == "2" %}
+            style="border: 2px solid green;"
+            {% else %}
+            style="border: 1px solid gray;"
+            {% endif %}>
             <ul class="PasswordValidator">
                 <li class="condition1">
                     <i class="fa-solid fa-check"></i>영문/숫자/특수문자 각각 한 개 이상 포함
@@ -57,28 +64,40 @@
         </div>
 
         <div class="signupPasswordCheck">
-            <div>비밀번호 확인</div>
-            <input type="password" class="signup-password-check" name="passwordCheck">
+            <div><label for="password2">비밀번호 확인</label></div>
+            <input type="password" class="signup-password-check" name="password2" id="password2"
+            value="{{ form.password2.value|default_if_none:'' }}"
+            {% if pw_valid == "2" %}
+            style="border: 2px solid green;"
+            {% else %}
+            style="border: 1px solid gray;"
+            {% endif %}>
             <div class="PasswordCheckValidator" style="display: none;">
                 <i class="fa-solid fa-xmark"></i>비밀번호가 일치하지 않습니다.
             </div>
         </div>
 
         <div class="signupEmail">
-            <div>이메일</div>
-            <input tyle="text" class="signup-email" name="email">
-            <div class="EmailExistenceAlert" style="display: none;">
+            <div><label for="email">이메일</label></div>
+            <input tyle="text" class="signup-email" name="email" id="email"
+            value="{{ form.email.value|default_if_none:'' }}">
+            {% if email_valid == 1 %}
+            <div class="EmailExistenceAlert">
                 <i class="fa-solid fa-xmark"></i>이미 가입된 이메일입니다.
             </div>
+            {% endif %}
             <div class="EmailValidator" style="display: none;">
                 <i class="fa-solid fa-xmark"></i>유효하지 않은 이메일입니다.
             </div>
         </div>
-        <div class="signupBtn">가입하기</div>
+        
+        <input type="hidden" id="pw_valid" name="pw_valid" value="{{ pw_valid }}">
+
+        <button type="submit" class="signupBtn">가입하기</button>
     </form>
 </div>
-{% endblock %}
 
-{% block script %}
-<script src="{% static '/js/signup.js' %}"></script>
+<form id="usernameCheckForm" method="get" action="{% url 'common:signup' %}">
+    <input type="hidden" id="name" name="name" value="{{ name|default_if_none:'' }}">
+</form>
 {% endblock %}
