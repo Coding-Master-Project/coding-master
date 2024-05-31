@@ -23,6 +23,9 @@ class Question(models.Model):
     
     def __str__(self):
         return self.subject
+    
+    def get_model_name(self):
+        return self.__class__.__name__
 
 class Information(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author_information')
@@ -37,6 +40,9 @@ class Information(models.Model):
     
     def __str__(self):
         return self.subject
+    
+    def get_model_name(self):
+        return self.__class__.__name__
 
 class Answer(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author_answer')
@@ -46,6 +52,9 @@ class Answer(models.Model):
     modify_date = models.DateTimeField(null=True, blank=True)
     voter = models.ManyToManyField(User, related_name='voter_answer') #추천인
 
+    def get_model_name(self):
+        return self.__class__.__name__
+
 class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='author_comment')
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
@@ -54,3 +63,6 @@ class Comment(models.Model):
     parent_comment = models.ForeignKey('self', on_delete=models.CASCADE, null=True, related_name='recomment')
     content = models.TextField(max_length=200)
     create_date = models.DateTimeField()
+
+    def get_model_name(self):
+        return self.__class__.__name__

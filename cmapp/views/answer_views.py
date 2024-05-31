@@ -17,7 +17,7 @@ def answer_create(request, question_id):
             answer.create_date = timezone.now()
             answer.question = question
             answer.save()
-            return redirect('{}#answer_{}'.format(resolve_url('cmapp:detail', question_id=question.id), answer.id))
+            return redirect('{}#answer_{}'.format(resolve_url('cmapp:question_detail', question_id=question.id), answer.id))
     else:
         form = AnswerForm()
     
@@ -30,14 +30,14 @@ def answer_modify(request, answer_id):
     answer = get_object_or_404(Answer, pk=answer_id)
     if request.user != answer.author:
         messages.error(request, '수정권한이 없습니다')
-        return redirect('cmapp:detail', question_id=answer.question.id)
+        return redirect('cmapp:question_detail', question_id=answer.question.id)
     if request.method == "POST":
         form = AnswerForm(request.POST, instance=answer)
         if form.is_valid():
             answer = form.save(commit=False)
             answer.modify_date = timezone.now()
             answer.save()
-            return redirect('{}#answer_{}'.format(resolve_url('cmapp:detail', question_id=answer.question.id), answer.id))
+            return redirect('{}#answer_{}'.format(resolve_url('cmapp:question_detail', question_id=answer.question.id), answer.id))
     else:
         form = AnswerForm(instance=answer)
     
@@ -53,7 +53,7 @@ def answer_delete(request, answer_id):
     else:
         answer.delete()
     
-    return redirect('{}#answer_{}'.format(resolve_url('cmapp:detail', question_id=answer.question.id), answer.id))
+    return redirect('{}#answer_{}'.format(resolve_url('cmapp:question_detail', question_id=answer.question.id), answer.id))
 
 #답변 추천
 @login_required(login_url='common:login')
@@ -63,4 +63,4 @@ def answer_vote(request, answer_id):
         answer.voter.remove(request.user)
     else:
         answer.voter.add(request.user)
-    return redirect('cmapp:detail', question_id=answer.question.id)
+    return redirect('cmapp:question_detail', question_id=answer.question.id)

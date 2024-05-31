@@ -26,8 +26,8 @@ def comment_create(request, question_id, answer_id, comment_id):
             if (answer_id != not_answer_id): # 답변에 달린 댓글이면
                 comment.answer_id = answer_id
             comment.save()
-            return redirect('{}#comment_{}'.format(resolve_url('cmapp:detail', question_id=question.id), comment.id))
+            return redirect('{}#comment_{}'.format(resolve_url('cmapp:question_detail', question_id=question.id), comment.id))
     else:
         form = CommentForm()
 
-    return redirect('cmapp:detail', question_id=question.id)
+    return redirect('cmapp:question_detail', question_id=question.id)
