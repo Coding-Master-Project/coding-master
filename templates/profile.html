@@ -8,59 +8,12 @@
     <title>프로필</title>
 
     <link rel="stylesheet" href="/static/css/common.css">
+    <link rel="stylesheet" href="/static/css/header_noActive.css">
     <link rel="stylesheet" href="/static/css/Login/login.css">
     <link rel="stylesheet" href="/static/css/Profile/profile.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <style>
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            height: 90px;
-            padding: 10px 100px;
-
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            background-color: transparent;
-            transition: background-color 0.3s, color 0.3s;
-
-            border-bottom: 1px solid rgb(187, 185, 185);
-        }
-
-        .logo-img {
-            width: auto;
-            height: 75px;
-        }
-
-        .header-menutop {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            gap: 50px;
-        }
-
-        .header-menutop li {
-            font-size: 25px;
-            font-weight: 500;
-            padding: 20px 10px;
-        }
-
-        .login-btn {
-            font-size: 25px;
-            font-weight: 500;
-            color: black;
-            cursor: pointer;
-        }
-
-        header a {
-            color: black;
-        }
-    </style>
 
     <script src="/js/jquery-3.7.1.min.js"></script>
     <script type="text/javascript">
@@ -131,19 +84,117 @@
                 </div>
             </div>
             <div class="Btn">
-                <div class="postView"><img src="/static/img/gat.png">게시글 <span>[3]</span></div>
-                <div class="commentView"><img src="/static/img/gat.png">댓글단 글 <span>[0]</span></div>
-                <div class="like"><img src="/static/img/gat.png">좋아요한 글 <span>[5]</span></div>
-                <div class="scrap"><img src="/static/img/gat.png">스크랩 <span>[10]</span></div>
+                <div class="allViewBtn"><img src="/static/img/gat.png">전체</div>
+                <div class="postViewBtn"><img src="/static/img/gat.png">게시글 <span>[3]</span></div>
+                <div class="commentViewBtn"><img src="/static/img/gat.png">댓글단 글 <span>[0]</span></div>
+                <div class="likeBtn"><img src="/static/img/gat.png">좋아요한 글 <span>[5]</span></div>
+                <div class="scrapBtn"><img src="/static/img/gat.png">스크랩 <span>[10]</span></div>
             </div>
         </div>
         <div class="profileContent">
+            <div class="introView">
+                <span>소개</span>
+                <div class="intro-text">
+                    <div class="self-intro-empty" style="display: none;">소개글을 작성해주세요.</div>
+                    <div class="other-intro-empty" style="display: none;">소개글이 비어있습니다.</div>
+                    <div class="self-intro-filled">안녕하세요. 컴퓨터공학과 23학번입니다. 지금 졸립니다.<br />안녕하세요. 컴퓨터공학과 23학번입니다. 지금 졸립니다.
+                    </div>
+                </div>
+            </div>
+            <div class="postView">
+                <span>게시글</span>
+                <div class="post-list">
+                    <div class="post" id="post-1">
+                        <div class="meta">
+                            <div class="category">질문</div>
+                            <div class="date">24.05.31</div>
+                        </div>
+                        <div class="title">안녕</div>
+                    </div>
+                    <div class="post" id="post-2">
+                        <div class="meta">
+                            <div class="category">정보</div>
+                            <div class="date">24.05.31</div>
+                        </div>
+                        <div class="title">안녕 오늘은 학술제 마감날</div>
+                    </div>
+                    <div class="post" id="post-3">
+                        <div class="meta">
+                            <div class="category">정보</div>
+                            <div class="date">24.05.31</div>
+                        </div>
+                        <div class="title">안녕 오늘은 학술제 마감날</div>
+                    </div>
+                </div>
+                <div class="view-all">전체 보기<i class="fa-solid fa-arrow-right"></i></div>
+            </div>
+            <div class="commentView">
+                <span>댓글단 글</span>
+                <div class="comment-list">
+                    <div class="comment" id="comment-1">
+                        <div class="meta">
+                            <div class="category">질문</div>
+                            <div class="date">24.05.31</div>
+                        </div>
+                        <div class="title">안녕</div>
+                    </div>
+                    <div class="comment" id="comment-2">
+                        <div class="meta">
+                            <div class="category">질문</div>
+                            <div class="date">24.05.31</div>
+                        </div>
+                        <div class="title">안녕</div>
+                    </div>
+                </div>
+                <div class="view-all">전체 보기<i class="fa-solid fa-arrow-right"></i></div>
+            </div>
+            <div class="likeView">
+                <span>좋아요한 글</span>
+                <div class="like-list">
+                    <div class="like" id="like-1">
+                        <div class="meta">
+                            <div class="category">질문</div>
+                            <div class="date">24.05.31</div>
+                        </div>
+                        <div class="title">안녕</div>
+                    </div>
+                    <div class="like" id="like-2">
+                        <div class="meta">
+                            <div class="category">질문</div>
+                            <div class="date">24.05.31</div>
+                        </div>
+                        <div class="title">안녕</div>
+                    </div>
+                </div>
+                <div class="view-all">전체 보기<i class="fa-solid fa-arrow-right"></i></div>
+            </div>
 
+            <div class="scrapView">
+                <span>스크랩</span>
+                <div class="scrap-list">
+                    <div class="scrap" id="scrap-1">
+                        <div class="meta">
+                            <div class="category">질문</div>
+                            <div class="date">24.05.31</div>
+                        </div>
+                        <div class="title">안녕</div>
+                    </div>
+                    <div class="scrap" id="scrap-2">
+                        <div class="meta">
+                            <div class="category">질문</div>
+                            <div class="date">24.05.31</div>
+                        </div>
+                        <div class="title">안녕</div>
+                    </div>
+                </div>
+                <div class="view-all">전체 보기<i class="fa-solid fa-arrow-right"></i></div>
+            </div>
         </div>
-    </div>
 
-    <!-- 바닥글 -->
-    <div class="footers"></div>
+        <!-- 바닥글 -->
+        <div class="footers"></div>
+
+        <script src="/static/js/profileEvents.js"></script>
 </body>
 
 </html>
