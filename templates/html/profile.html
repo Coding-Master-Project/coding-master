@@ -56,7 +56,7 @@
             <!-- 프로필 이미지 -->
             <img src="/static/img/profileImg.png" class="profile-img">
             <!-- 이름 -->
-            <div class="userName">정수빈</div>
+            <div class="userName">{{ user.username }}</div>
             <div class="level">
                 <!-- 레벨이름 -->
                 <div class="top">
@@ -73,9 +73,9 @@
             </div>
             <div class="Btn">
                 <div class="allViewBtn"><img src="/static/img/gat.png">전체</div>
-                <div class="postViewBtn"><img src="/static/img/gat.png">게시글 <span>[3]</span></div>
-                <div class="commentViewBtn"><img src="/static/img/gat.png">댓글단 글 <span>[0]</span></div>
-                <div class="likeBtn"><img src="/static/img/gat.png">좋아요한 글 <span>[5]</span></div>
+                <div class="postViewBtn"><img src="/static/img/gat.png">게시글 <span>[{{ user.author_question.count }} + {{ user.author_information.count }}]</span></div>
+                <div class="commentViewBtn"><img src="/static/img/gat.png">댓글단 글 <span>[{{ user.author_comment.count }} + {{ user.author_information.count }}]</span></div>
+                <div class="likeBtn"><img src="/static/img/gat.png">좋아요한 글 <span>[{{ user.voter_question.count }} + {{ user.voter_information.count }}]</span></div>
                 <div class="scrapBtn"><img src="/static/img/gat.png">스크랩 <span>[10]</span></div>
             </div>
         </div>
@@ -92,6 +92,8 @@
             <div class="postView">
                 <span>게시글</span>
                 <div class="post-list">
+                    {% for question in user.author_question.all %}
+                    {% endfor %}
                     <div class="post" id="post-1">
                         <div class="meta">
                             <div class="category">질문</div>
